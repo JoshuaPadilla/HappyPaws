@@ -22,6 +22,7 @@ module.exports = {
         primary: {
           100: "#73C7C7",
           200: "#53A9A9",
+          300: "#3373C7C7",
         },
         accent: {
           100: "#F6F4F0",
@@ -32,11 +33,48 @@ module.exports = {
           100: "#F5F5F5",
         },
         black: {
-          100: "#191D31",
-          200: "#666876",
+          100: "#1E1E1E",
+          200: "#4D4D4D",
           300: "#8C8E98",
+          400: "#E5E5E5",
         },
         danger: "#F75555",
+        base: {
+          vaccine: "#A2D5F2",
+          groom: "#B2F2BB",
+          dental: "#E6E6FA",
+          checkup: "#FFDAB9",
+          medication: "#FFC0CB",
+          wound: "#FFFACD",
+          diet: "#F4A460",
+          followup: "#C1E1C1",
+        },
+        dark: {
+          vaccine: "#6FA8C9",
+          groom: "#7FC987",
+          dental: "#B3A8D8",
+          checkup: "#D4A276",
+          medication: "#D88E9B",
+          wound: "#D9D48E",
+          diet: "#C77D3E",
+          followup: "#8FB88F",
+        },
+        "base-medication": "#FFC0CB", // Light pink
+        "base-wound": "#FFFACD", // Light yellow
+        "base-diet": "#F4A460", // Sandy brown
+        "base-follow": "#C1E1C1", // Light green
+        "base-vaccine": "#A2D5F2", // Light blue
+        "base-groom": "#B2F2BB", // Light mint
+        "base-dental": "#E6E6FA", // Light purple
+        "base-checkup": "#FFDAB9", // Peach
+        "dark-medication": "#D88E9B", // Dark pink
+        "dark-wound": "#D9D48E", // Dark yellow
+        "dark-diet": "#C77D3E", // Dark brown
+        "dark-follow": "#8FB88F", // Dark green
+        "dark-vaccine": "#6FA8C9", // Dark blue
+        "dark-groom": "#7FC987", // Dark mint
+        "dark-dental": "#B3A8D8", // Dark purple
+        "dark-checkup": "#D4A276", // Dark peach
       },
     },
   },

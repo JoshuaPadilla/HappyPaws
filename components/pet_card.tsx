@@ -6,18 +6,15 @@ import {
   ImageSourcePropType,
 } from "react-native";
 import React from "react";
-
-import images from "@/constants/images";
-import icons from "@/constants/icons";
+import icons, { petCardsIcon } from "@/constants/icons";
 
 interface Props {
-  onPress?: () => void;
-  petImage?: any;
+  onPress: () => void;
   petName: string;
   petBreed: string;
-  petGender: string;
-  petAge: Number;
   petSpecie: string;
+  petImage?: any;
+  petGender: string;
 }
 
 const PetCard = ({
@@ -26,25 +23,28 @@ const PetCard = ({
   petName,
   petBreed,
   petGender,
-  petAge,
   petSpecie,
 }: Props) => {
-  const iconName = `${petSpecie}_${petGender}`;
-  const iconKey = iconName as keyof typeof icons; // Type assertion to keyof typeof
-  const icon = icons[iconKey]; // Now TypeScript knows this is safe
+  const iconName = `${petSpecie.toLowerCase()}_${petGender.toLowerCase()}`;
+  const iconKey = iconName as keyof typeof petCardsIcon; // Type assertion to keyof typeof
+  const icon = petCardsIcon[iconKey]; // Now TypeScript knows this is safe
 
   return (
     <TouchableOpacity
       onPress={onPress}
-      className="p-3 w-[48%] h-72 flex-col bg-background-100 rounded-2xl gap-2"
+      className="p-2 w-[48%] h-72 flex-col bg-white rounded-2xl gap-2"
     >
-      <Image source={petImage} className="w-full h-[75%] rounded-xl" />
+      <Image
+        source={petImage ? { uri: petImage } : icons.pet_image_holder}
+        className="w-full h-[75%] rounded-lg"
+        resizeMode="cover"
+      />
       <View className="w-full h-fit flex-row justify-between items-center">
         <View className="flex-col">
           <Text className="font-rubik-bold text-2xl tracking-widest text-black-100">
             {petName}
           </Text>
-          <Text className="font-rubik-light text-m text-primary-100">
+          <Text className="font-rubik-regular text-m text-primary-100">
             {petBreed}
           </Text>
         </View>

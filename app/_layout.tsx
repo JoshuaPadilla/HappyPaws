@@ -5,8 +5,6 @@ import "./globals.css";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
 
-import { PetsProvider } from "../contexts/pets";
-
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
@@ -34,11 +32,13 @@ export default function RootLayout() {
   }
 
   return (
-    <PetsProvider>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </PetsProvider>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      <Stack.Screen name="(utility)" options={{ headerShown: false }} />
+      <Stack.Screen name="(pets)" options={{ headerShown: false }} />
+      <Stack.Screen name="(appointments)" options={{ headerShown: false }} />
+      <Stack.Screen name="+not-found" />
+    </Stack>
   );
 }

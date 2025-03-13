@@ -1,47 +1,36 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, ImageBackground } from "react-native";
 import React from "react";
-import icons from "@/constants/icons";
+import { cards_bg } from "@/constants/images";
+import { Reminders } from "@/types/type";
+import { getRemindersCardBg } from "@/lib/utils";
 
-interface Props {
-  title: string;
-  desc: string;
-  type: string;
-  time: string;
-}
-
-const RemindersCard = ({ title, desc, type, time }: Props) => {
-  const icon =
-    title === "appointment" ? icons.reminders_appointment : icons.aftercare;
+const RemindersCard = ({ type, title, time }: Reminders) => {
+  const cardBgKey: keyof typeof cards_bg = getRemindersCardBg(type);
+  // console.log(cardBgKey);
 
   return (
-    <View className="w-[200px] max-h-[200px] rounded-xl mr-2 bg-primary-100 py-4 px-4 gap-2">
-      {/* headings */}
-      <View className="flex-row w-full justify-between items-center">
-        <Text className="font-rubik-semibold text-l text-accent-100">
-          {capitalize(title)}
+    <View className="shadow p-2">
+      <ImageBackground
+        source={cards_bg[cardBgKey]}
+        className="w-[200px] h-[160px] rounded-xl overflow-hidden px-4 py-6"
+        resizeMode="cover"
+      >
+        <Text className="font-poppins-bold text-xl mb-6 text-black-100 max-w-32">
+          {type}
         </Text>
-        <Image source={icon} className="size-5" tintColor="#F6F4F0" />
-      </View>
 
-      {/* Info */}
-      <View className="flex-col gap-1 border-l-2 border-accent-100 w-full px-2 py-2">
-        <Text className="font-rubik-semibold text-sm text-accent-100">
-          {desc}
-        </Text>
-        <Text className="font-rubik-bold text-l text-accent-200">{type}</Text>
-        <Text className="font-rubik-regular text-sm text-accent-100">
-          {time}
-        </Text>
-      </View>
+        <View className="flex gap-2 max-w-[150px]">
+          <Text className="font-rubik-medium text-m text-black-200">
+            {title}
+          </Text>
+
+          <Text className="font-rubik-medium text-sm text-black-300">
+            {time}
+          </Text>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
-
-function capitalize(str: string): string {
-  if (!str) {
-    return ""; // Handle empty input
-  }
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
 
 export default RemindersCard;

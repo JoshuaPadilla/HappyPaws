@@ -16,7 +16,11 @@
         "foregroundImage": "./assets/images/app-logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.joshua129.HappyPaws"
+      "package": "com.joshua129.HappyPaws",
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -40,7 +44,7 @@
           "fonts": [
             "./assets/fonts/Poppins-Bold.ttf",
             "./assets/fonts/Poppins-ExtraBold.ttf",
-            "./assets/fonts/Poppins-Light.ttf",
+            "./assets/fonts/Poppins-Light.ttyf",
             "./assets/fonts/Poppins-Medium.ttf",
             "./assets/fonts/Poppins-Regular.ttf",
             "./assets/fonts/Poppins-SemiBold.ttf",

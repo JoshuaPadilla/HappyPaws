@@ -1,106 +1,143 @@
-import { View, Text, Image, Pressable, ScrollView } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  ScrollView,
+  TouchableOpacity,
+  Button,
+  Alert,
+} from "react-native";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import icons from "@/constants/icons";
 import moment from "moment";
 import DateCalendar from "@/components/date_calendar";
-import AppointmentItem from "@/components/appointment_item";
-
+import Toggle from "@/components/toggle";
+import CustomButton from "@/components/custom_button";
+import TimeSlotList from "@/components/timeslot_list";
+import TabbedFilter from "@/components/tabbed_filter";
+import AppointmentCard from "@/components/appointment_card";
+import { Appointment, AppointmentForm } from "@/types/type";
+import { router } from "expo-router";
+import { useAppointmentsStore } from "@/store/useAppointments";
+import NewAppointmentModal from "@/components/new_appointment_modal";
+import { usePetStore } from "@/store/usePets";
+import { FILTER_CATEGORY } from "@/constants";
+import { findPetById } from "@/lib/utils";
+import { goToViewAppointment } from "@/lib/routerFunctions";
 const Appointments = () => {
-  const currDate = moment().format("MMMM YYYY");
+  const { appointments, setSelectedAppointment } = useAppointmentsStore();
+  const { pets } = usePetStore();
+  const currDate = moment().format("MMMM, YYYY");
+  const [all, setAll] = useState(false);
+  const [currFilter, setCurrFilter] = useState("All");
+  const [appointmentModalVisible, setAppointmentModalVisible] = useState(false);
+  const [viewAppointmentModalVisible, setViewAppointmentModalVisible] =
+    useState(false);
+
+  const handleAddAppointment = () => {
+    if (pets.length === 0) {
+      Alert.alert("Please add a pet first");
+      return;
+    }
+    setAppointmentModalVisible(true);
+  };
+
+  const handleViewAppointment = (appointment: AppointmentForm) => {
+    setSelectedAppointment(appointment);
+    goToViewAppointment();
+  };
 
   return (
-    <SafeAreaView className="flex-1 flex-col  bg-white px-4 py-5">
+    <SafeAreaView className="flex-1 flex-col  bg-accent-100 px-6 py-8">
+      <NewAppointmentModal
+        modalVisible={appointmentModalVisible}
+        setModalVisible={setAppointmentModalVisible}
+      />
+
       {/* Headings */}
-      <View className="w-full flex-row justify-between items-end mb-6">
-        <Pressable>
-          <Image source={icons.back} tintColor="#73C7C7" className="size-10" />
-        </Pressable>
+      <View className="flex-row w-full justify-between items-center mb-8">
+        <CustomButton
+          iconLeft={icons.back_green}
+          onPress={router.back}
+          iconSize="size-8"
+        />
 
-        <Pressable>
-          <Image source={icons.bell} tintColor="#73C7C7" className="size-7" />
-        </Pressable>
+        <Toggle
+          trueValue="Today"
+          falseValue="All"
+          onPress={() => setAll((all) => !all)}
+        />
       </View>
 
-      {/* Calendar */}
-      <View className=" w-full h-40 flex-col p-4">
-        {/* heading */}
-        <View className="flex-row justify-between items-end">
-          <View className="flex-col items-center ">
-            <Image
-              source={icons.left_arrow}
-              tintColor="#73C7C7"
-              className="size-4"
-              resizeMode="contain"
+      {/* All (All appointments) */}
+      {all && (
+        // Headding
+        <View>
+          <View className="flex-row justify-between items-end mb-6">
+            <Text className="font-poppins-semibold text-lg">{`Appointment: ${appointments.length}`}</Text>
+
+            <CustomButton
+              btnClassname="flex-row items-center justify-center gap-2 bg-primary-100 px-4 py-2 rounded-xl"
+              textClassname="font-poppins-semibold text-accent-100 h-[20px]"
+              iconLeft={icons.plus_icon}
+              title="New Appointment"
+              iconSize="size-4"
+              onPress={handleAddAppointment}
             />
-            <Text className="font-rubik-bold text-xs">Prev</Text>
           </View>
 
-          <Text className="font-poppins-bold text-2xl">{currDate}</Text>
-
-          <View className="flex-col items-center">
-            <Image
-              source={icons.right_arrow}
-              tintColor="#73C7C7"
-              className="size-4"
-              resizeMode="contain"
-            />
-            <Text className="font-rubik-bold text-xs">Next</Text>
-          </View>
-        </View>
-
-        <View className="mt-4">
-          <DateCalendar />
-        </View>
-      </View>
-
-      {/* New Appointment button */}
-      <View className="px-4 mb-6">
-        <Pressable className="bg-primary-100 w-full h-12 mt-4 rounded-xl flex-row justify-center items-center gap-4">
-          <Image
-            source={icons.new_appointment}
-            resizeMode="contain"
-            tintColor="#f5f5f5"
-            className="size-7"
+          {/* Filter */}
+          <TabbedFilter
+            filterCategory={FILTER_CATEGORY}
+            value={currFilter}
+            setValue={setCurrFilter}
           />
-          <Text className="font-rubik-medium text-accent-100">
-            Book an Appointment
-          </Text>
-        </Pressable>
-      </View>
 
-      {/* Appoinrtments list */}
-      <View className="flex-col w-full px-4">
-        {/* heading */}
-        <View className="flex-row justify-between items-end">
-          <Text className="font-rubik-semibold text-xl">Appointments</Text>
-          <View className="flex-row items-start gap-1">
-            <Text className="font-rubik-medium text-sm text-primary-100">
-              Filter
-            </Text>
-            <Image
-              source={icons.filter}
-              resizeMode="contain"
-              className="size-4"
-            />
-          </View>
+          {/* Appointment List */}
+          <ScrollView contentContainerClassName="gap-2 pb-[120px]">
+            {appointments.map((appointment: AppointmentForm) => (
+              <AppointmentCard
+                appointment={appointment}
+                key={appointment._id}
+                onPress={() => handleViewAppointment(appointment)}
+              />
+            ))}
+          </ScrollView>
         </View>
-      </View>
+      )}
 
-      {/* List */}
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerClassName="flex-col gap-2 px-4 pb-[]"
-      >
-        <AppointmentItem />
-        <AppointmentItem />
-        <AppointmentItem />
-        <AppointmentItem />
-        <AppointmentItem />
-        <AppointmentItem />
-        <AppointmentItem />
-        <AppointmentItem />
-      </ScrollView>
+      {/* not all (today list) */}
+      {!all && (
+        <View>
+          {/* Heading */}
+          <View>
+            <View className="flex-row justify-between items-end mb-4">
+              <Text className="font-poppins-bold text-2xl">{currDate}</Text>
+
+              <CustomButton
+                btnClassname=" flex-row items-center justify-center gap-2 bg-primary-100 px-4 py-2 rounded-xl"
+                textClassname="font-poppins-semibold text-accent-100 h-[20px]"
+                iconLeft={icons.plus_icon}
+                title="New Appointment"
+                iconSize="size-4"
+                onPress={handleAddAppointment}
+              />
+
+              {/* Filters */}
+            </View>
+
+            <View className="mb-4">
+              <DateCalendar />
+            </View>
+          </View>
+
+          {/* List */}
+
+          <TimeSlotList appointmentList={appointments} />
+        </View>
+      )}
     </SafeAreaView>
   );
 };

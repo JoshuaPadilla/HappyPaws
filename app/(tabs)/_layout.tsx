@@ -1,7 +1,8 @@
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { Image, Text, View } from "react-native";
 
-import icons from "@/constants/icons";
+import icons, { navIcons } from "@/constants/icons";
+import { useAuthStore } from "@/store/useAuth";
 
 const TabIcon = ({
   focused,
@@ -32,6 +33,10 @@ const TabIcon = ({
 );
 
 export default function TabLayout() {
+  const { authUser } = useAuthStore();
+
+  if (!authUser) return <Redirect href="/welcome" />;
+
   return (
     <Tabs
       screenOptions={{
@@ -46,12 +51,12 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: "Home",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon icon={icons.home} focused={focused} title="Home" />
+            <TabIcon icon={navIcons.nav_home} focused={focused} title="Home" />
           ),
         }}
       />
@@ -62,9 +67,23 @@ export default function TabLayout() {
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <TabIcon
-              icon={icons.appointments}
+              icon={navIcons.nav_appointment}
               focused={focused}
               title="Appointment"
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="aftercare"
+        options={{
+          title: "Aftercare",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon
+              icon={navIcons.nav_aftercare}
+              focused={focused}
+              title="Aftercare"
             />
           ),
         }}
@@ -75,7 +94,21 @@ export default function TabLayout() {
           title: "Pets",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon icon={icons.pets} focused={focused} title="Pets" />
+            <TabIcon icon={navIcons.nav_pets} focused={focused} title="Pets" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon
+              icon={navIcons.nav_profile}
+              focused={focused}
+              title="Profile  "
+            />
           ),
         }}
       />

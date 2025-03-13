@@ -1,85 +1,202 @@
 import { ImageSourcePropType } from "react-native";
 
-interface Icons {
-  home: ImageSourcePropType;
-  age: ImageSourcePropType;
-  appointments: ImageSourcePropType;
-  back: ImageSourcePropType;
-  breed: ImageSourcePropType;
-  calendar_day: ImageSourcePropType;
-  filter: ImageSourcePropType;
-  new_appointment: ImageSourcePropType;
-  pets: ImageSourcePropType;
-  search: ImageSourcePropType;
-  time: ImageSourcePropType;
-  bell: ImageSourcePropType;
-  aftercare: ImageSourcePropType;
-  reminders_appointment: ImageSourcePropType;
-  gradient: ImageSourcePropType;
-  details_arrow: ImageSourcePropType;
-  bird_boy: ImageSourcePropType;
-  bird_girl: ImageSourcePropType;
-  cat_boy: ImageSourcePropType;
-  cat_girl: ImageSourcePropType;
-  dog_boy: ImageSourcePropType;
-  dog_girl: ImageSourcePropType;
-  left_arrow: ImageSourcePropType;
-  right_arrow: ImageSourcePropType;
+import back_green from "@/assets/icons/back_green.png";
+import back_white from "@/assets/icons/back_white.png";
+import next from "@/assets/icons/next.png";
+import signin_cat from "@/assets/icons/signin_cat.png";
+import signin_email from "@/assets/icons/signin_email.png";
+import signin_google from "@/assets/icons/signin_google.png";
+import signin_password from "@/assets/icons/signin_password.png";
+import dropdown from "@/assets/icons/dropdown.png";
+import bell_icon from "@/assets/icons/bell_icon.png";
+import add_appointment from "@/assets/icons/add_appointment.png";
+import bird_male from "@/assets/icons/pet_card_icons/bird_boy.png";
+import bird_female from "@/assets/icons/pet_card_icons/bird_girl.png";
+import dog_male from "@/assets/icons/pet_card_icons/dog_boy.png";
+import dog_female from "@/assets/icons/pet_card_icons/dog_girl.png";
+import cat_male from "@/assets/icons/pet_card_icons/cat_boy.png";
+import cat_female from "@/assets/icons/pet_card_icons/cat_girl.png";
+import nav_aftercare from "@/assets/icons/nav_icons/nav_aftercare.png";
+import nav_appointment from "@/assets/icons/nav_icons/nav_appointment.png";
+import nav_home from "@/assets/icons/nav_icons/nav_home.png";
+import nav_pets from "@/assets/icons/nav_icons/nav_pets.png";
+import nav_profile from "@/assets/icons/nav_icons/nav_profile.png";
+import plus_icon from "@/assets/icons/plus_icon.png";
+import caret_right from "@/assets/icons/caret_right.png";
+import appointment_date from "@/assets/icons/appointment_date.png";
+import appointment_notes from "@/assets/icons/appointment_notes.png";
+import appointment_time from "@/assets/icons/appointment_time.png";
+import appointment_type from "@/assets/icons/appointment_type.png";
+
+import profile_address from "@/assets/icons/profile_icons/profile_address.png";
+import profile_appointments from "@/assets/icons/profile_icons/profile_appointments.png";
+import profile_birthday from "@/assets/icons/profile_icons/profile_birthday.png";
+import profile_gender from "@/assets/icons/profile_icons/profile_gender.png";
+import profile_logout from "@/assets/icons/profile_icons/profile_logout.png";
+import profile_phone from "@/assets/icons/profile_icons/profile_phone.png";
+import profile_settings from "@/assets/icons/profile_icons/profile_settings.png";
+import profile_userImgPlaceholder from "@/assets/icons/profile_icons/profile_userImgPlaceholder.png";
+import profile_edit from "@/assets/icons/profile_icons/profile_edit.png";
+import profile_detailsEdit from "@/assets/icons/profile_icons/profile_detailsEdit.png";
+import edit_check from "@/assets/icons/edit_check.png";
+import filter from "@/assets/icons/filter_icon.png";
+import search_icon from "@/assets/icons/search_icon.png";
+import pet_image_holder from "@/assets/icons/pet_image_holder.png";
+import cancel from "@/assets/icons/cancel.png";
+import appointment_status from "@/assets/icons/appointment_status.png";
+
+import view_pet_aftercare from "@/assets/icons/view_pets_icons/view_pet_aftercare.png";
+import view_pet_medicalrecords from "@/assets/icons/view_pets_icons/view_pet_medicalrecords.png";
+import view_pet_petdetails from "@/assets/icons/view_pets_icons/view_pet_petdetails.png";
+import view_pet_vaccinehistory from "@/assets/icons/view_pets_icons/view_pet_vaccinehistory.png";
+import trash from "@/assets/icons/trash.png";
+
+import pet_age from "@/assets/icons/pet_details/pet_details_age.png";
+import pet_breed from "@/assets/icons/pet_details/pet_details_breed.png";
+import pet_gender from "@/assets/icons/pet_details/pet_details_gender.png";
+import pet_specie from "@/assets/icons/pet_details/pet_details_specie.png";
+import pet_name from "@/assets/icons/pet_details/pet_details_name.png";
+
+interface IconsProps {
+  back_green: ImageSourcePropType;
+  back_white: ImageSourcePropType;
+  next: ImageSourcePropType;
+  signin_cat: ImageSourcePropType;
+  signin_email: ImageSourcePropType;
+  signin_google: ImageSourcePropType;
+  signin_password: ImageSourcePropType;
+  dropdown: ImageSourcePropType;
+  bell_icon: ImageSourcePropType;
   add_appointment: ImageSourcePropType;
+  plus_icon: ImageSourcePropType;
+  caret_right: ImageSourcePropType;
+  edit_check: ImageSourcePropType;
+  filter: ImageSourcePropType;
+  search_icon: ImageSourcePropType;
+  pet_image_holder: ImageSourcePropType;
+  trash: ImageSourcePropType;
+  appointment_date: ImageSourcePropType;
+  appointment_notes: ImageSourcePropType;
+  appointment_time: ImageSourcePropType;
+  appointment_type: ImageSourcePropType;
+  cancel: ImageSourcePropType;
+  appointment_status: ImageSourcePropType;
 }
 
-import home from "@/assets/icons/home.png";
-import age from "@/assets/icons/age.png";
-import appointments from "@/assets/icons/appointments.png";
-import back from "@/assets/icons/back.png";
-import breed from "@/assets/icons/breed.png";
-import calendar_day from "@/assets/icons/calendar_day.png";
-import filter from "@/assets/icons/filter.png";
-import new_appointment from "@/assets/icons/new_appointment.png";
-import pets from "@/assets/icons/pets.png";
-import search from "@/assets/icons/search.png";
-import time from "@/assets/icons/time.png";
-import bell from "@/assets/icons/bell.png";
-import aftercare from "@/assets/icons/aftercare.png";
-import reminders_appointment from "@/assets/icons/reminders_appointment.png";
-import gradient from "@/assets/icons/gradient.png";
-import details_arrow from "@/assets/icons/details_arrow.png";
-import bird_boy from "@/assets/icons/bird_boy.png";
-import bird_girl from "@/assets/icons/bird_girl.png";
-import cat_girl from "@/assets/icons/cat_girl.png";
-import cat_boy from "@/assets/icons/cat_boy.png";
-import dog_boy from "@/assets/icons/dog_boy.png";
-import dog_girl from "@/assets/icons/dog_girl.png";
-import left_arrow from "@/assets/icons/left_arrow.png";
-import right_arrow from "@/assets/icons/right_arrow.png";
-import add_appointment from "@/assets/icons/add_appointment.png";
+interface PetCardsIconsProps {
+  bird_male: ImageSourcePropType;
+  bird_female: ImageSourcePropType;
+  dog_male: ImageSourcePropType;
+  dog_female: ImageSourcePropType;
+  cat_male: ImageSourcePropType;
+  cat_female: ImageSourcePropType;
+}
 
-const icons: Icons = {
-  home,
-  age,
-  appointments,
-  back,
-  breed,
-  calendar_day,
-  filter,
-  new_appointment,
-  pets,
-  search,
-  time,
-  bell,
-  aftercare,
-  reminders_appointment,
-  gradient,
-  details_arrow,
-  bird_boy,
-  bird_girl,
-  cat_boy,
-  cat_girl,
-  dog_boy,
-  dog_girl,
-  left_arrow,
-  right_arrow,
+interface NavIconsProps {
+  nav_aftercare: ImageSourcePropType;
+  nav_appointment: ImageSourcePropType;
+  nav_home: ImageSourcePropType;
+  nav_pets: ImageSourcePropType;
+  nav_profile: ImageSourcePropType;
+}
+
+interface ProfileIconsProps {
+  profile_address: ImageSourcePropType;
+  profile_appointments: ImageSourcePropType;
+  profile_birthday: ImageSourcePropType;
+  profile_gender: ImageSourcePropType;
+  profile_logout: ImageSourcePropType;
+  profile_phone: ImageSourcePropType;
+  profile_settings: ImageSourcePropType;
+  profile_userImgPlaceholder: ImageSourcePropType;
+  profile_edit: ImageSourcePropType;
+  profile_detailsEdit: ImageSourcePropType;
+}
+
+interface ViewPetIconsProps {
+  view_pet_aftercare: ImageSourcePropType;
+  view_pet_medicalrecords: ImageSourcePropType;
+  view_pet_petdetails: ImageSourcePropType;
+  view_pet_vaccinehistory: ImageSourcePropType;
+}
+
+interface PetDetailsIconsProps {
+  pet_age: ImageSourcePropType;
+  pet_breed: ImageSourcePropType;
+  pet_gender: ImageSourcePropType;
+  pet_specie: ImageSourcePropType;
+  pet_name: ImageSourcePropType;
+}
+
+const icons: IconsProps = {
+  back_green,
+  back_white,
+  next,
+  signin_cat,
+  signin_email,
+  signin_google,
+  signin_password,
+  dropdown,
+  bell_icon,
   add_appointment,
+  plus_icon,
+  caret_right,
+  edit_check,
+  filter,
+  search_icon,
+  pet_image_holder,
+  trash,
+  appointment_date,
+  appointment_notes,
+  appointment_time,
+  appointment_type,
+  appointment_status,
+  cancel,
+};
+
+export const petCardsIcon: PetCardsIconsProps = {
+  bird_male,
+  bird_female,
+  dog_male,
+  dog_female,
+  cat_male,
+  cat_female,
+};
+
+export const navIcons: NavIconsProps = {
+  nav_aftercare,
+  nav_appointment,
+  nav_home,
+  nav_pets,
+  nav_profile,
+};
+
+export const profileIcons: ProfileIconsProps = {
+  profile_address,
+  profile_appointments,
+  profile_birthday,
+  profile_gender,
+  profile_logout,
+  profile_phone,
+  profile_settings,
+  profile_userImgPlaceholder,
+  profile_edit,
+  profile_detailsEdit,
+};
+
+export const viewPetIcons: ViewPetIconsProps = {
+  view_pet_aftercare,
+  view_pet_medicalrecords,
+  view_pet_petdetails,
+  view_pet_vaccinehistory,
+};
+
+export const petDetailsIcons: PetDetailsIconsProps = {
+  pet_age,
+  pet_breed,
+  pet_gender,
+  pet_specie,
+  pet_name,
 };
 
 export default icons;

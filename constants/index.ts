@@ -1,0 +1,60 @@
+export const BASE_URL = "http://192.168.101.18:3000/api/happy-paws";
+
+// 192.168.101.18 Home
+// 172.20.10.13 hotspot
+
+export const genderDropdownData = ["Male", "Female"];
+
+export const days = Array.from({ length: 31 }, (_, i) => i + 1);
+
+export const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+export const petSpecies = ["Dog", "Cat", "Bird", "Other"];
+
+export const gender = ["Male", "Female"];
+
+export const ageFormat = ["Years", "Months"];
+
+const currentYear = new Date().getFullYear();
+const startYear = currentYear; // Example: 100 years in the past
+const endYear = currentYear - 100;
+
+export const years = Array.from(
+  { length: startYear - endYear + 1 },
+  (_, i) => startYear - i
+);
+
+export const businessHours = [
+  "7:00-8:00 AM",
+  "8:00-9:00 AM",
+  "9:00-10:00 AM",
+  "10:00-11:00 AM",
+  "1:00-2:00 PM",
+  "2:00-3:00 PM",
+  "3:00-4:00 PM",
+  "4:00-5:00 PM",
+];
+
+export const appointmentTypes = [
+  "Vaccination",
+  "Checkup",
+  "Grooming",
+  "Dental",
+];
+
+export const appointmentStatus = ["Pending", "Confirmed", "Cancelled"];
+
+export const FILTER_CATEGORY = ["All", "Checkup", "Dental", "Vaccine", "Groom"];
