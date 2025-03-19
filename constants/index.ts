@@ -1,7 +1,9 @@
-export const BASE_URL = "http://192.168.101.18:3000/api/happy-paws";
+export const BASE_URL = "http://192.168.101.5:3000/api/happy-paws";
 
 // 192.168.101.18 Home
 // 172.20.10.13 hotspot
+//  192.168.101.39 sk hall
+// 10.0.0.222 piso wifi
 
 export const genderDropdownData = ["Male", "Female"];
 
@@ -57,4 +59,12 @@ export const appointmentTypes = [
 
 export const appointmentStatus = ["Pending", "Confirmed", "Cancelled"];
 
-export const FILTER_CATEGORY = ["All", "Checkup", "Dental", "Vaccine", "Groom"];
+export const SERVICE_TYPES_CATEGORY = [
+  "All",
+  "Checkup",
+  "Dental",
+  "Vaccination",
+  "Grooming",
+];
+
+export const AGE_FORMAT = ["Years", "Months"];

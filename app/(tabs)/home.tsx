@@ -14,11 +14,15 @@ import { goToViewPet } from "@/lib/routerFunctions";
 import { useState } from "react";
 import NewAppointmentModal from "@/components/new_appointment_modal";
 import { useAppointmentsStore } from "@/store/useAppointments";
+import { useAftercareStore } from "@/store/useAftercare";
+import moment from "moment";
+import { Reminders } from "@/types/type";
+import { isBetweenDates } from "@/lib/utils";
 export default function Home() {
   const { pets, setSelectedPet } = usePetStore();
   const { user } = useUserStore();
-  const { addAppointment } = useAppointmentsStore();
   const [modalVisible, setModalVisible] = useState(false);
+  const reminders = getReminders();
 
   const handleSelecPet = (pet: Pet) => {
     setSelectedPet(pet);
@@ -35,12 +39,6 @@ export default function Home() {
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-4 py-8">
-      <StatusBar
-        backgroundColor="#F6F4F0"
-        barStyle="dark-content"
-        translucent={true}
-      />
-
       <NewAppointmentModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -73,20 +71,28 @@ export default function Home() {
           Reminders
         </Text>
 
-        <ScrollView
-          contentContainerClassName="flex-row mb-3"
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        >
-          {remindersDevData.map((reminder, index) => (
-            <RemindersCard
-              time={reminder.time}
-              title={reminder.title}
-              type={reminder.type}
-              key={index}
-            />
-          ))}
-        </ScrollView>
+        {reminders.length > 0 ? (
+          <ScrollView
+            contentContainerClassName="flex-row mb-3"
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          >
+            {reminders.map((reminder, index) => (
+              <RemindersCard
+                time={reminder.time}
+                title={reminder.title}
+                type={reminder.type}
+                key={index}
+              />
+            ))}
+          </ScrollView>
+        ) : (
+          <View className="h-[200px] justify-center items-center">
+            <Text className="font-rubik-medium text-2xl text-black-100">
+              no reminders {"\n"}for today 😊🎉
+            </Text>
+          </View>
+        )}
       </View>
 
       {/* New Apppointment Button */}
@@ -129,3 +135,40 @@ export default function Home() {
     </SafeAreaView>
   );
 }
+
+const getReminders = (): Reminders[] => {
+  const { appointments } = useAppointmentsStore();
+  const { allAftercares } = useAftercareStore();
+  const { pets } = usePetStore();
+
+  const reminders: Reminders[] = [];
+
+  appointments.forEach((appointment) => {
+    if (
+      moment(appointment.appointmentDate).isSame(moment(), "day") &&
+      appointment.status !== "Cancelled"
+    ) {
+      const pet = pets.find((pet) => pet._id === appointment.petID);
+
+      reminders.push({
+        type: appointment.typeOfService,
+        title: `${pet?.petName}'s \n${appointment.typeOfService}`,
+        time: appointment.appointmentDate,
+      });
+    }
+  });
+
+  allAftercares.forEach((aftercare) => {
+    if (isBetweenDates(aftercare.startDate, aftercare.endDate)) {
+      const pet = pets.find((pet) => pet._id === aftercare.petID);
+
+      reminders.push({
+        type: aftercare.type,
+        title: aftercare.notes,
+        time: aftercare.startDate,
+      });
+    }
+  });
+
+  return reminders;
+};

@@ -18,23 +18,38 @@ import CustomButton from "@/components/custom_button";
 import TimeSlotList from "@/components/timeslot_list";
 import TabbedFilter from "@/components/tabbed_filter";
 import AppointmentCard from "@/components/appointment_card";
-import { Appointment, AppointmentForm } from "@/types/type";
+import { AppointmentForm } from "@/types/type";
 import { router } from "expo-router";
 import { useAppointmentsStore } from "@/store/useAppointments";
 import NewAppointmentModal from "@/components/new_appointment_modal";
 import { usePetStore } from "@/store/usePets";
-import { FILTER_CATEGORY } from "@/constants";
-import { findPetById } from "@/lib/utils";
+import { SERVICE_TYPES_CATEGORY } from "@/constants";
 import { goToViewAppointment } from "@/lib/routerFunctions";
 const Appointments = () => {
   const { appointments, setSelectedAppointment } = useAppointmentsStore();
+  // after getting all the appointment from the backend, filter the appointment for today
+
   const { pets } = usePetStore();
   const currDate = moment().format("MMMM, YYYY");
   const [all, setAll] = useState(false);
   const [currFilter, setCurrFilter] = useState("All");
   const [appointmentModalVisible, setAppointmentModalVisible] = useState(false);
-  const [viewAppointmentModalVisible, setViewAppointmentModalVisible] =
-    useState(false);
+
+  //  filter the todays appointment
+  const todayAppointments = appointments.filter(
+    (appointment) =>
+      moment(appointment.appointmentDate).isSame(moment(), "day") &&
+      appointment.status !== "Cancelled"
+  );
+
+  const filteredAppointments =
+    currFilter === "All"
+      ? appointments.filter((appointment) => appointment.status !== "Cancelled")
+      : appointments.filter(
+          (appointment) =>
+            appointment.typeOfService === currFilter &&
+            appointment.status !== "Cancelled"
+        );
 
   const handleAddAppointment = () => {
     if (pets.length === 0) {
@@ -54,6 +69,7 @@ const Appointments = () => {
       <NewAppointmentModal
         modalVisible={appointmentModalVisible}
         setModalVisible={setAppointmentModalVisible}
+        action="add"
       />
 
       {/* Headings */}
@@ -75,8 +91,8 @@ const Appointments = () => {
       {all && (
         // Headding
         <View>
-          <View className="flex-row justify-between items-end mb-6">
-            <Text className="font-poppins-semibold text-lg">{`Appointment: ${appointments.length}`}</Text>
+          <View className="flex-row justify-between items-end mb-6 bg-accent-100">
+            <Text className="font-poppins-semibold text-lg">{`Appointment: ${filteredAppointments.length}`}</Text>
 
             <CustomButton
               btnClassname="flex-row items-center justify-center gap-2 bg-primary-100 px-4 py-2 rounded-xl"
@@ -90,20 +106,26 @@ const Appointments = () => {
 
           {/* Filter */}
           <TabbedFilter
-            filterCategory={FILTER_CATEGORY}
+            filterCategory={SERVICE_TYPES_CATEGORY}
             value={currFilter}
             setValue={setCurrFilter}
           />
 
           {/* Appointment List */}
-          <ScrollView contentContainerClassName="gap-2 pb-[120px]">
-            {appointments.map((appointment: AppointmentForm) => (
-              <AppointmentCard
-                appointment={appointment}
-                key={appointment._id}
-                onPress={() => handleViewAppointment(appointment)}
-              />
-            ))}
+          <ScrollView
+            contentContainerClassName="gap-2 pb-[200px]"
+            showsVerticalScrollIndicator={false}
+          >
+            {filteredAppointments.map(
+              (appointment: AppointmentForm) =>
+                appointment.status !== "Cancelled" && (
+                  <AppointmentCard
+                    appointment={appointment}
+                    key={appointment._id}
+                    onPress={() => handleViewAppointment(appointment)}
+                  />
+                )
+            )}
           </ScrollView>
         </View>
       )}
@@ -135,7 +157,7 @@ const Appointments = () => {
 
           {/* List */}
 
-          <TimeSlotList appointmentList={appointments} />
+          <TimeSlotList appointmentList={todayAppointments} />
         </View>
       )}
     </SafeAreaView>

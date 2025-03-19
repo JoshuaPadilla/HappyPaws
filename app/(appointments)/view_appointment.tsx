@@ -5,7 +5,6 @@ import { useAppointmentsStore } from "@/store/useAppointments";
 import {
   findPetById,
   formatDate,
-  getAppointmentCardColor,
   getAppointmentColors,
   getStatusColor,
 } from "@/lib/utils";
@@ -58,29 +57,30 @@ const ViewAppointment = () => {
           onPress={goBack}
         />
 
-        {selectedAppointment?.status !== "Cancelled" && (
-          <View className="flex-row gap-2">
-            <CustomButton
-              iconLeft={icons.cancel}
-              title="Cancel"
-              btnClassname="flex-row items-center justify-center gap-2 rounded-xl px-4 py-1 bg-danger"
-              textClassname="font-rubik-light text-m text-accent-100"
-              iconSize="size-3"
-              tintColor="#F6F4F0"
-              onPress={handleCancelAppointment}
-            />
+        {selectedAppointment?.status !== "Cancelled" &&
+          selectedAppointment?.status !== "Completed" && (
+            <View className="flex-row gap-2">
+              <CustomButton
+                iconLeft={icons.cancel}
+                title="Cancel"
+                btnClassname="flex-row items-center justify-center gap-2 rounded-xl px-4 py-1 bg-danger"
+                textClassname="font-rubik-light text-m text-accent-100"
+                iconSize="size-3"
+                tintColor="#F6F4F0"
+                onPress={handleCancelAppointment}
+              />
 
-            <CustomButton
-              iconLeft={profileIcons.profile_detailsEdit}
-              title="Edit"
-              btnClassname="flex-row items-center justify-center gap-2 rounded-xl px-4 py-1 bg-primary-100"
-              textClassname="font-rubik-light text-m text-accent-100"
-              iconSize="size-3"
-              tintColor="#F6F4F0"
-              onPress={handleEditAppointment}
-            />
-          </View>
-        )}
+              <CustomButton
+                iconLeft={profileIcons.profile_detailsEdit}
+                title="Edit"
+                btnClassname="flex-row items-center justify-center gap-2 rounded-xl px-4 py-1 bg-primary-100"
+                textClassname="font-rubik-light text-m text-accent-100"
+                iconSize="size-3"
+                tintColor="#F6F4F0"
+                onPress={handleEditAppointment}
+              />
+            </View>
+          )}
       </View>
 
       {/* Pet detials */}

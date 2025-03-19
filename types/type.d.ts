@@ -1,20 +1,4 @@
-import { TextInputProps, TouchableOpacityProps } from "react-native";
-
-declare interface Appointment {
-  appointmentId: string; // Or number
-  appointmentTitle?: string;
-  userName: string;
-  userPhoneNumber: string;
-  userEmailAddress: string;
-  userAddress: string;
-  appointmentDate: string;
-  appointmentTime: string;
-  typeOfService: string;
-  petName: string;
-  petSpecie: string;
-  petBreed: string;
-  petAge: number;
-}
+import { Image, TextInputProps, TouchableOpacityProps } from "react-native";
 
 declare interface AppointmentForm {
   _id?: string;
@@ -87,5 +71,67 @@ declare interface PetFormData {
   petBreed: string;
   petAge: string;
   petGender: string;
-  petImage: string | null;
+  petImage: ImageInfo | null;
 }
+
+declare interface AddPetForm {
+  petName: string;
+  petSpecie: string;
+  petBreed: string;
+  petAge: string;
+  petGender: string;
+  petImage: ImageInfo | null;
+}
+
+declare interface Medication {
+  _id: string;
+  name: string;
+  dosage: string;
+  frequency: string;
+  startDate: string;
+  endDate: string;
+}
+
+declare interface Aftercare {
+  _id: string;
+  petID: string;
+  type: "Medication" | "Wound Care" | "Diet and Nutrition" | "Follow-up";
+  instructions: string;
+  medications: Medication[];
+  followUpDate: string;
+  restrictions: string[];
+  careInstructions: string;
+  notes: string;
+  endDate: string;
+  startDate: string;
+}
+
+declare interface userFormData {
+  lastName: string;
+  firstName: string;
+  address: string;
+  phone: string;
+  gender: "Male" | "Female" | "";
+  birthday: userBirthday;
+  profilePicture: any;
+}
+
+declare interface ImageInfo {
+  uri: string;
+  type: string;
+  fileName: string;
+}
+
+// const [form, setForm] = useState({
+//   firstName: user?.firstName,
+//   lastName: user?.lastName,
+//   address: user?.address,
+//   phone: user?.phone,
+//   gender: user?.gender,
+//   birthday: {
+//     date: user?.birthday.date,
+//     month: user?.birthday.month,
+//     year: user?.birthday.year,
+//   },
+//   profilePicture: user?.profilePicture,
+// });

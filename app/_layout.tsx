@@ -4,6 +4,8 @@ import * as SplashScreen from "expo-splash-screen";
 import "./globals.css";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
+import { Image, StatusBar, View } from "react-native";
+import icons from "@/constants/icons";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -32,13 +34,22 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      <Stack.Screen name="(utility)" options={{ headerShown: false }} />
-      <Stack.Screen name="(pets)" options={{ headerShown: false }} />
-      <Stack.Screen name="(appointments)" options={{ headerShown: false }} />
-      <Stack.Screen name="+not-found" />
-    </Stack>
+    <View className="flex-1">
+      <Image
+        source={icons.add_appointment}
+        tintColor={"#FFC700"}
+        className="size-20 rounded-full absolute bg-white z-50 bottom-[100px] right-8"
+      />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(utility)" options={{ headerShown: false }} />
+        <Stack.Screen name="(pets)" options={{ headerShown: false }} />
+        <Stack.Screen name="(appointments)" options={{ headerShown: false }} />
+        <Stack.Screen name="(aftercares)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <StatusBar backgroundColor={"#f6f4f0"} barStyle={"dark-content"} />
+    </View>
   );
 }

@@ -12,15 +12,17 @@ import CustomButton from "@/components/custom_button";
 import { router } from "expo-router";
 import Dropdown from "@/components/dropdown";
 import { ImageAvatar } from "@/components/image_avatar";
-import { gender, petSpecies, ageFormat } from "@/constants";
+import { gender, petSpecies, ageFormat, AGE_FORMAT } from "@/constants";
 import TabSelect from "@/components/tab_select";
 import * as ImagePicker from "expo-image-picker";
 import Spinner from "react-native-loading-spinner-overlay";
 import { usePetStore } from "@/store/usePets";
+import { AddPetForm } from "@/types/type";
 const AddPet = () => {
   const { addPet, isAdding } = usePetStore();
+  const [ageInNum, setAgeInNum] = useState("");
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<AddPetForm>({
     petName: "",
     petSpecie: "",
     petBreed: "",
@@ -28,23 +30,36 @@ const AddPet = () => {
     petGender: "",
     petImage: null,
   });
-  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
-  const handleImagePick = async () => {
+  const selectImage = async () => {
     try {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permission required",
+          "Please allow access to your photo library to select an image."
+        );
+        return;
+      }
+
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images, // Use "Images" for images only
         allowsEditing: true,
-        aspect: [1, 1],
-        quality: 1,
+        aspect: [1, 1], // Square aspect ratio for profile pictures
+        quality: 0.8, // Highest quality
       });
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        const newImageUri = result.assets[0].uri;
+        const newImageUri = result.assets[0]; // Get the first selected image
 
         setForm((prevForm) => ({
           ...prevForm,
-          petImage: newImageUri as unknown as null, // Type assertion to match state type
+          petImage: {
+            uri: newImageUri.uri,
+            type: newImageUri.type || "image/jpeg", // Default to 'image/jpeg' if type is not provided
+            fileName: newImageUri.fileName || `${Date.now()}.jpg`, // Generate a unique filename if not provided
+          },
         }));
       }
     } catch (error) {
@@ -74,7 +89,7 @@ const AddPet = () => {
       {/* Headings */}
 
       <Spinner
-        visible={isUploadingImage || isAdding}
+        visible={isAdding}
         textContent={"Uploading image..."}
         textStyle={{ color: "#FFF" }}
       />
@@ -91,17 +106,13 @@ const AddPet = () => {
       {/* Form*/}
       <View className="px-8 justify-center items-center">
         <View className="mt-4 mb-8">
-          <ImageAvatar
-            placeholder={icons.pet_image_holder}
-            imageUrl={form?.petImage}
-            size="40"
-          />
+          <ImageAvatar imageUrl={form?.petImage?.uri} size="40" />
 
           {/* Edit image profile button */}
           <CustomButton
             iconLeft={profileIcons.profile_edit}
             btnClassname="absolute bottom-0 right-[-12]"
-            onPress={handleImagePick}
+            onPress={selectImage}
           />
         </View>
       </View>
@@ -164,7 +175,7 @@ const AddPet = () => {
           </View>
         </View>
 
-        {/* pet gender and age*/}
+        {/*age*/}
         <View className="flex-row justify-between gap-4">
           <View className="flex gap-1 w-[20%]">
             <Text className="text-black-200 font-rubik-regular text-m">
@@ -172,29 +183,42 @@ const AddPet = () => {
             </Text>
 
             <TextInput
-              value={form.petAge}
-              onChange={(value) =>
-                setForm({
-                  ...form,
-                  petAge: value.nativeEvent.text,
-                })
-              }
+              value={ageInNum}
+              onChange={(value) => setAgeInNum(value.nativeEvent.text)}
               keyboardType="numeric"
-              className=" h-[50px] border rounded-xl border-primary-100 p-2 font-poppins-medium text-lg"
+              className=" h-[50px] border rounded-xl border-primary-100 pl-4 font-poppins-medium text-lg"
             />
           </View>
 
-          <View className="flex gap-1 w-[70%]">
+          {ageInNum && (
+            <View className="flex gap-1 w-[70%]">
+              <Text className="text-black-200 font-rubik-regular text-m">
+                in
+              </Text>
+              <TabSelect
+                data={AGE_FORMAT}
+                onSelect={(value) => {
+                  setForm({ ...form, petAge: `${ageInNum} ${value}` });
+                }}
+                defaultSelected="Years"
+              />
+            </View>
+          )}
+        </View>
+
+        {/* gender */}
+        <View className="flex-row justify-between gap-4">
+          <View className="flex gap-1">
             <Text className="text-black-200 font-rubik-regular text-m">
               Gender
             </Text>
             <TabSelect
               data={gender}
               onSelect={(item) => setForm({ ...form, petGender: item })}
+              defaultSelected="Male"
             />
           </View>
         </View>
-
         {/* buttons */}
 
         <CustomButton

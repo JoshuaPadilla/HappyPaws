@@ -18,14 +18,14 @@ const Toggle = ({ trueValue, falseValue, onPress }: ToggleProps) => {
 
   return (
     <Pressable
-      className="flex-row px-2 py-2 bg-primary-100 rounded-[20px]"
+      className="flex-row px-1 py-1 bg-primary-100 rounded-[20px]"
       onPress={() => toggle()}
     >
       <Text
         className={`px-4 py-2 text-center ${
           value
             ? "font-poppins-bold text-sm text-black-100 bg-accent-100 rounded-[20px]"
-            : ""
+            : "text-white"
         }`}
       >
         {trueValue}
@@ -35,7 +35,7 @@ const Toggle = ({ trueValue, falseValue, onPress }: ToggleProps) => {
         className={`px-4 py-2 text-center ${
           !value
             ? "font-poppins-bold text-sm text-black-100 bg-accent-100 rounded-[20px]"
-            : ""
+            : "text-white"
         }`}
       >
         {falseValue}

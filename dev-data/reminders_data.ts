@@ -2,12 +2,12 @@ import { Reminders } from "@/types/type";
 
 const remindersDevData: Reminders[] = [
   {
-    type: "Vaccine",
+    type: "Vaccination",
     title: "Booster Shot for Fido",
     time: "10:00 AM",
   },
   {
-    type: "Groom",
+    type: "Grooming",
     title: "Fluffy's Spa Day",
     time: "2:30 PM",
   },
@@ -42,17 +42,17 @@ const remindersDevData: Reminders[] = [
     time: "1:30 PM",
   },
   {
-    type: "Follow up",
+    type: "Follow-up",
     title: "Post-Surgery Checkup",
     time: "3:45 PM",
   },
   {
-    type: "Vaccine",
+    type: "Vaccination",
     title: "Rabies Vaccine",
     time: "4:00 PM",
   },
   {
-    type: "Groom",
+    type: "Grooming",
     title: "Nail Trim",
     time: "8:00 AM",
   },

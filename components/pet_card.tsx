@@ -1,12 +1,7 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ImageSourcePropType,
-} from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import icons, { petCardsIcon } from "@/constants/icons";
+import { Image } from "expo-image";
 
 interface Props {
   onPress: () => void;
@@ -36,8 +31,9 @@ const PetCard = ({
     >
       <Image
         source={petImage ? { uri: petImage } : icons.pet_image_holder}
-        className="w-full h-[75%] rounded-lg"
-        resizeMode="cover"
+        className="w-full h-[75%] rounded-m"
+        style={{ borderRadius: 10, width: "100%", height: "75%" }}
+        contentFit="cover"
       />
       <View className="w-full h-fit flex-row justify-between items-center">
         <View className="flex-col">

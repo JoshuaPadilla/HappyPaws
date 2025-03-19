@@ -1,5 +1,5 @@
 import { View, Text, Image, ActivityIndicator } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import icons, { profileIcons } from "@/constants/icons";
 import CustomButton from "@/components/custom_button";
@@ -8,41 +8,68 @@ import SettingsItem from "@/components/settingsItems";
 import { useRouter } from "expo-router";
 import { useUserStore } from "@/store/useUser";
 import { ImageAvatar } from "@/components/image_avatar";
-
+import { goToAppointmentHistory, goToEditProfile } from "@/lib/routerFunctions";
+import ConfirmationModal from "@/components/confirmationModal";
 const Profile = () => {
   const router = useRouter();
-  const { user } = useUserStore();
+  const { user, isUpdating } = useUserStore();
   const { logout } = useAuthStore();
 
-  const goToEditProfile = () => {
-    router.push("/(utility)/edit_profile");
+  const [confirmationModalVisible, setConfirmationModalVisible] =
+    useState(false);
+
+  const handleLogout = () => {
+    setConfirmationModalVisible(true);
   };
 
-  const goToAppointments = () => {
-    router.push("/(utility)/user_appointments");
+  const handleLogoutConfirm = () => {
+    logout();
+    setConfirmationModalVisible(false);
+  };
+
+  const handleLogoutCancel = () => {
+    setConfirmationModalVisible(false);
   };
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
+      <ConfirmationModal
+        icon={profileIcons.profile_logout}
+        modalVisible={confirmationModalVisible}
+        setModalVisible={setConfirmationModalVisible}
+        onConfirm={handleLogoutConfirm}
+        onCancel={handleLogoutCancel}
+        title="Logout"
+        message="Are you sure you want to logout?"
+        onCancelBtnClassname="w-[45%] bg-black-400 items-center py-2 rounded-lg"
+        onConfirmBtnClassname="w-[45%] bg-primary-100 items-center py-2 rounded-lg"
+      />
+
+      {isUpdating && (
+        <ActivityIndicator
+          color={"#73C7C7"}
+          size={"large"}
+          className="absolute top-1/2 left-1/2"
+        />
+      )}
+
       {/* Headings */}
       <View className="flex-row justify-between items-end mb-4">
         <Text className="font-poppins-bold text-2xl">Profile</Text>
 
-        <Image
-          source={icons.bell_icon}
-          className="size-8"
-          resizeMode="contain"
+        <CustomButton
+          btnClassname=""
+          textClassname=""
+          iconLeft={icons.bell_icon}
+          iconSize="size-8"
+          onPress={() => {}}
         />
       </View>
 
       {/* Profile Header */}
       <View className="flex items-center pb-4 border-b border-black-400">
         <View className="mt-4">
-          <ImageAvatar
-            placeholder={profileIcons.profile_userImgPlaceholder}
-            imageUrl={user?.profilePicture}
-            size="40"
-          />
+          <ImageAvatar imageUrl={user?.profilePicture} size="32" />
         </View>
 
         <Text className="font-poppins-bold text-2xl mt-4 text-black-100">
@@ -55,12 +82,12 @@ const Profile = () => {
       </View>
 
       {/* Clickables */}
-      <View className="py-8 border-b border-black-400 gap-6">
+      <View className="py-8 border-b border-black-400 gap-4">
         <SettingsItem
           iconLeft={profileIcons.profile_appointments}
           titleLeft="Appointment History"
           iconRight={icons.caret_right}
-          onPress={goToAppointments}
+          onPress={goToAppointmentHistory}
         />
 
         <SettingsItem
@@ -123,7 +150,7 @@ const Profile = () => {
         iconLeft={profileIcons.profile_logout}
         btnClassname="flex-row gap-2"
         textClassname="font-rubik-regular text-black-100"
-        onPress={logout}
+        onPress={handleLogout}
       />
     </SafeAreaView>
   );

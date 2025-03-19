@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, Pressable } from "react-native";
 import React from "react";
-import { getAppointmentColors } from "@/lib/utils";
+import { findPetById, getAppointmentColors } from "@/lib/utils";
 import { businessHours } from "@/constants";
 import { AppointmentForm } from "@/types/type";
 
@@ -14,14 +14,26 @@ interface TimeSlotListProps {
 
 const TimeSlotList = ({ appointmentList }: TimeSlotListProps) => {
   return (
-    <ScrollView contentContainerClassName="pb-[300px] pt-[50px] pr-8 gap-1">
-      {businessHours.map((time) => {
-        const appointment = appointmentList.find(
-          (appointment) => appointment.appointmentTime === time
-        );
-        return <TimeSlot time={time} appointment={appointment} key={time} />;
-      })}
-    </ScrollView>
+    <>
+      {appointmentList.length === 0 ? (
+        <View className="w-full h-[300px] border-black-300 items-center justify-center">
+          <Text className="font-rubik-semibold text-2xl">
+            You have no appointments today
+          </Text>
+        </View>
+      ) : (
+        <ScrollView contentContainerClassName="pb-[300px] pt-[50px] pr-8 gap-1">
+          {businessHours.map((time) => {
+            const appointment = appointmentList.find(
+              (appointment) => appointment.appointmentTime === time
+            );
+            return (
+              <TimeSlot time={time} appointment={appointment} key={time} />
+            );
+          })}
+        </ScrollView>
+      )}
+    </>
   );
 };
 
@@ -29,6 +41,7 @@ const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
   const colors = appointment
     ? getAppointmentColors(appointment.typeOfService)
     : null;
+  const appointedPet = appointment ? findPetById(appointment.petID) : null;
 
   return (
     <View className="flex-row justify-between h-[100px]">
@@ -46,7 +59,7 @@ const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
           <Text className="font-rubik-semibold text-xl">
             {appointment.typeOfService}
           </Text>
-          <Text>{appointment.petName}</Text>
+          <Text>{appointedPet?.petName}</Text>
         </Pressable>
       ) : (
         <Pressable className="w-[70%] items-center justify-center">

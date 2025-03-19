@@ -4,6 +4,7 @@ import {
   Image,
   KeyboardAvoidingView,
   TextInput,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -22,8 +23,7 @@ import { ImageAvatar } from "@/components/image_avatar";
 const EditProfile = () => {
   const router = useRouter();
 
-  const { user, isUpdating, updateUser } = useUserStore();
-  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const { user, updateUser } = useUserStore();
 
   const [form, setForm] = useState({
     firstName: user?.firstName,
@@ -41,67 +41,71 @@ const EditProfile = () => {
 
   const handleUpdate = () => {
     updateUser(form);
+
     router.dismiss();
   };
 
-  const handleImagePick = async () => {
+  const selectImage = async () => {
     try {
-      setIsUploadingImage(true);
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permission required",
+          "Please allow access to your photo library to select an image."
+        );
+        return;
+      }
 
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images, // Use "Images" for images only
         allowsEditing: true,
-        aspect: [1, 1],
-        quality: 1,
+        aspect: [1, 1], // Square aspect ratio for profile pictures
+        quality: 0.8, // Highest quality
       });
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        const newImageUri = result.assets[0].uri;
+        const newImageUri = result.assets[0]; // Get the first selected image
 
         setForm((prevForm) => ({
           ...prevForm,
-          profilePicture: newImageUri,
+          profilePicture: {
+            uri: newImageUri.uri,
+            type: newImageUri.type || "image/jpeg", // Default to 'image/jpeg' if type is not provided
+            fileName: newImageUri.fileName || `profile-${Date.now()}.jpg`, // Generate a unique filename if not provided
+          },
         }));
       }
     } catch (error) {
       console.error("Error picking image:", error);
-    } finally {
-      setIsUploadingImage(false);
     }
   };
 
   return (
     <SafeAreaView className="flex-1 p-8">
       {/* Headings */}
+
       <View className="flex-row justify-between items-end mb-4">
         <Text className="font-poppins-bold text-2xl">Edit Profile</Text>
 
         <CustomButton
           iconLeft={icons.edit_check}
           iconSize="size-8"
-          onPress={handleUpdate}
-        />
-
-        <Spinner
-          visible={isUpdating}
-          textContent={"Saving..."}
-          textStyle={{ color: "#FFF" }}
+          onPress={() => {
+            handleUpdate();
+          }}
         />
       </View>
 
       <View className="px-8 justify-center items-center">
         <View className="mt-4 mb-8">
-          <ImageAvatar
-            placeholder={profileIcons.profile_userImgPlaceholder}
-            imageUrl={form.profilePicture}
-            size="40"
-          />
+          <ImageAvatar imageUrl={form.profilePicture} size="40" />
 
           {/* Edit image profile button */}
           <CustomButton
             iconLeft={profileIcons.profile_edit}
             btnClassname="absolute bottom-0 right-[-12]"
-            onPress={handleImagePick}
+            onPress={selectImage}
           />
         </View>
       </View>

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, ScrollView, Pressable, Keyboard } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom_button";
@@ -8,11 +8,20 @@ import PetCard from "@/components/pet_card";
 import { usePetStore } from "@/store/usePets";
 import { goBack, goToViewPet, goToAddPet } from "@/lib/routerFunctions";
 import { Pet } from "@/types/type";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const Pets = () => {
-  const { pets, setSelectedPet } = usePetStore();
+  const { pets, setSelectedPet, isAdding } = usePetStore();
 
   const [query, setQuery] = useState("");
+
+  const filteredPets = query
+    ? pets.filter((pet) =>
+        `${pet.petName} ${pet.petBreed} ${pet.petSpecie}`
+          .toLowerCase()
+          .includes(query.toLowerCase())
+      )
+    : pets;
 
   const handleSelecPet = (pet: Pet) => {
     setSelectedPet(pet);
@@ -21,6 +30,11 @@ const Pets = () => {
 
   return (
     <SafeAreaView className="flex-1 px-6 py-8">
+      <Spinner
+        visible={isAdding}
+        textContent={"Adding..."}
+        textStyle={{ color: "#FFF" }}
+      />
       {/* Headings */}
       <View className="flex-row justify-between mb-6">
         <CustomButton
@@ -39,7 +53,9 @@ const Pets = () => {
           queryValue={query}
           setQuery={setQuery}
           placeholder="Search for pet"
-          onSubmit={() => console.log("query")}
+          onSubmit={() => {
+            Keyboard.dismiss();
+          }}
         />
       </View>
 
@@ -54,8 +70,8 @@ const Pets = () => {
       </View>
 
       <ScrollView contentContainerClassName="flex-row flex-wrap justify-between gap-2 pb-[70px] ">
-        {pets &&
-          pets.map((pet, index) => (
+        {filteredPets &&
+          filteredPets.map((pet, index) => (
             <PetCard
               petBreed={pet.petBreed}
               petGender={pet.petGender}

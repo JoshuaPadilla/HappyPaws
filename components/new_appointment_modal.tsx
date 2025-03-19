@@ -20,7 +20,6 @@ import NewAppointmentTimeSlot from "./new_appointment_time_slot";
 import Dropdown from "./dropdown";
 import { appointmentTypes } from "@/constants";
 import AppointmentDetailsCard from "./appointment_details_card";
-import { findPetById } from "@/lib/utils";
 
 interface newAppointmentModalProps {
   modalVisible: boolean;

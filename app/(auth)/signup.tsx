@@ -50,9 +50,9 @@ const SignUp = () => {
     signup(form);
   };
 
-  // if (authUser) {
-  //   return <Redirect href="/(tabs)/home" />;
-  // }
+  if (authUser) {
+    return <Redirect href="/(tabs)/home" />;
+  }
 
   return (
     <SafeAreaView className="flex flex-1 mb-2">

@@ -4,10 +4,11 @@ import React, { useState } from "react";
 interface TabSelectProps {
   data: string[];
   onSelect: (item: string) => void;
+  defaultSelected?: string;
 }
 
-const TabSelect = ({ data, onSelect }: TabSelectProps) => {
-  const [selected, setSelected] = useState("");
+const TabSelect = ({ data, onSelect, defaultSelected }: TabSelectProps) => {
+  const [selected, setSelected] = useState(defaultSelected || "");
 
   const handleSelect = (item: string) => {
     setSelected(item);
@@ -17,7 +18,7 @@ const TabSelect = ({ data, onSelect }: TabSelectProps) => {
   return (
     <View className="flex-row justify-between gap-4 h-[50px]">
       <Pressable
-        className={`w-[48%] border-primary-100 border rounded-xl p-2 items-center ${
+        className={`w-[48%] border-primary-100 border rounded-xl p-2 items-center justify-center ${
           data[0] === selected ? "bg-primary-100" : ""
         }`}
         onPress={() => handleSelect(data[0])}
@@ -25,7 +26,7 @@ const TabSelect = ({ data, onSelect }: TabSelectProps) => {
         <Text className="font-poppins-medium text-lg">{data[0]}</Text>
       </Pressable>
       <Pressable
-        className={`w-[48%] border-primary-100 border rounded-xl p-2 items-center ${
+        className={`w-[48%] border-primary-100 border rounded-xl p-2 items-center justify-center ${
           data[1] === selected ? "bg-primary-100" : ""
         }`}
         onPress={() => handleSelect(data[1])}

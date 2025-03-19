@@ -8,6 +8,7 @@ import { useUserStore } from "./useUser";
 import { BASE_URL } from "@/constants";
 import { useAppointmentsStore } from "./useAppointments";
 import { router } from "expo-router";
+import { useAftercareStore } from "./useAftercare";
 
 interface StoreState {
   authUser: User | null;
@@ -148,11 +149,12 @@ export const useAuthStore = create<StoreState>((set) => ({
         // to fetch pets after successful signin
 
         const { fetchPets } = usePetStore.getState();
-
+        const { fetchAllAftercare } = useAftercareStore.getState();
         const { fetchAppointments } = useAppointmentsStore.getState();
 
         await fetchPets();
         await fetchAppointments();
+        await fetchAllAftercare();
 
         addUser(data.user);
       }

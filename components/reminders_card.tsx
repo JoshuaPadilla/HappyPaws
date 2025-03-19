@@ -12,7 +12,7 @@ const RemindersCard = ({ type, title, time }: Reminders) => {
     <View className="shadow p-2">
       <ImageBackground
         source={cards_bg[cardBgKey]}
-        className="w-[200px] h-[160px] rounded-xl overflow-hidden px-4 py-6"
+        className="w-[200px] h-[170px] rounded-xl overflow-hidden px-4 py-6 justify-between"
         resizeMode="cover"
       >
         <Text className="font-poppins-bold text-xl mb-6 text-black-100 max-w-32">

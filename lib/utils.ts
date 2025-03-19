@@ -1,67 +1,44 @@
 import { signupForm } from "@/types/type";
 import { parseSync } from "@babel/core";
 import { router, useRouter } from "expo-router";
-import * as ImagePicker from "expo-image-picker";
 import moment from "moment";
+import * as ImageManipulator from "expo-image-manipulator";
 import { usePetStore } from "@/store/usePets";
 
-// Color mappings for different types of care
-export const typeToColorClass = {
-  medication: {
-    bg: "bg-base-medication",
-    border: "border-dark-medication",
-    tag: "bg-dark-medication",
-  },
-  "wound care": {
-    bg: "bg-base-wound",
-    border: "border-dark-wound",
-    tag: "bg-dark-wound",
-  },
-  "diet and nutrition": {
-    bg: "bg-base-diet",
-    border: "border-dark-diet",
-    tag: "bg-dark-diet",
-  },
-  "Follow up": {
-    bg: "bg-base-follow",
-    border: "border-dark-follow",
-    tag: "bg-dark-follow",
-  },
-} as const;
+export const getAftercareBg = (type: string) => {
+  switch (type.toLowerCase()) {
+    case "medication":
+      return "#FFC0CB";
+    case "wound care":
+      return "#D9D48E";
+    case "diet and nutrition":
+      return "#C77D3E";
+    default:
+      return "#8FB88F";
+  }
+};
 
 // Color mappings for appointment types
 export const appointmentTypeToColorClass = {
   Vaccination: {
-    bg: "bg-base-vaccine",
-    border: "border-dark-vaccine",
-    tag: "bg-dark-vaccine",
     colors: {
       base: "#A2D5F2",
       dark: "#6FA8C9",
     },
   },
   Grooming: {
-    bg: "bg-base-groom",
-    border: "border-dark-groom",
-    tag: "bg-dark-groom",
     colors: {
       base: "#B2F2BB",
       dark: "#7FC987",
     },
   },
   Dental: {
-    bg: "bg-base-dental",
-    border: "border-dark-dental",
-    tag: "bg-dark-dental",
     colors: {
       base: "#E6E6FA",
       dark: "#B3A8D8",
     },
   },
   Checkup: {
-    bg: "bg-base-checkup",
-    border: "border-dark-checkup",
-    tag: "bg-dark-checkup",
     colors: {
       base: "#FFDAB9",
       dark: "#D4A276",
@@ -110,55 +87,8 @@ export const getAppointmentColors = (type: string | undefined) => {
 };
 
 // Keeping these for backward compatibility
-export const getAppointmentCardColor = (
-  type: string | undefined
-): string | undefined => {
-  if (!type) return;
 
-  switch (type.toLowerCase()) {
-    case "vaccination":
-      return "bg-base-vaccine";
-    case "grooming":
-      return "bg-base-groom";
-    case "dental":
-      return "bg-base-dental";
-    case "checkup":
-      return "bg-base-checkup";
-    default:
-      return "bg-primary-100";
-  }
-};
-
-export const getAppointmentCardBorder = (type: string): string | undefined => {
-  switch (type.toLowerCase()) {
-    case "vaccination":
-      return "border-dark-vaccine";
-    case "grooming":
-      return "border-dark-groom";
-    case "dental":
-      return "border-dark-dental";
-    case "checkup":
-      return "border-dark-checkup";
-    default:
-      return "border-primary-200";
-  }
-};
-
-export const getAfterCareCardColor = (type: string): string | undefined => {
-  switch (type.toLowerCase()) {
-    case "medication":
-      return "base-medication";
-    case "wound care":
-      return "base-wound";
-    case "diet and nutrition":
-      return "base-diet";
-    case "Follow up":
-      return "base-follow";
-    default:
-      "primary-100";
-  }
-};
-
+// reminders card bg
 export const getRemindersCardBg = (type: string): any => {
   switch (type.toLowerCase()) {
     case "medication":
@@ -167,11 +97,11 @@ export const getRemindersCardBg = (type: string): any => {
       return "card_wound";
     case "diet and nutrition":
       return "card_diet";
-    case "follow up":
+    case "follow-up":
       return "card_followup";
-    case "vaccine":
+    case "vaccination":
       return "card_vaccine";
-    case "groom":
+    case "grooming":
       return "card_groom";
     case "dental":
       return "card_dental";
@@ -179,6 +109,19 @@ export const getRemindersCardBg = (type: string): any => {
       return "card_checkup";
     default:
       "card_checkup";
+  }
+};
+
+export const getAftercareCardBg = (type: string): any => {
+  switch (type.toLowerCase()) {
+    case "medication":
+      return "card_medication";
+    case "wound care":
+      return "card_wound";
+    case "diet and nutrition":
+      return "card_diet";
+    default:
+      return "card_followup";
   }
 };
 
@@ -243,7 +186,31 @@ export const getStatusColor = (status: string) => {
       return "#F93827";
     case "Rescheduled":
       return "#FFD65A";
+    case "Completed":
+      return "#16C47F";
     default:
       return "bg-primary-100";
   }
+};
+
+export const isActive = (endDate: string) => {
+  const inputDate = moment(endDate, "YYYY-MM-DD");
+  const currentDate = moment().startOf("day");
+  return inputDate.isAfter(currentDate) || inputDate.isSame(currentDate);
+};
+
+export const isBetweenDates = (startDate: string, endDate: string) => {
+  const start = moment(startDate, "YYYY-MM-DD");
+  const end = moment(endDate, "YYYY-MM-DD");
+  const current = moment();
+  return current.isAfter(start) && current.isBefore(end);
+};
+
+export const resizeImage = async (uri: string): Promise<string> => {
+  const resizedImage = await ImageManipulator.manipulateAsync(
+    uri,
+    [{ resize: { width: 800 } }], // Resize to a maximum width of 800px
+    { compress: 0.2, format: ImageManipulator.SaveFormat.JPEG } // Compress to 70% quality
+  );
+  return resizedImage.uri;
 };

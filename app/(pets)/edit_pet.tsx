@@ -12,7 +12,7 @@ import CustomButton from "@/components/custom_button";
 import { router } from "expo-router";
 import Dropdown from "@/components/dropdown";
 import { ImageAvatar } from "@/components/image_avatar";
-import { gender, petSpecies, ageFormat } from "@/constants";
+import { gender, petSpecies, AGE_FORMAT } from "@/constants";
 import TabSelect from "@/components/tab_select";
 import * as ImagePicker from "expo-image-picker";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -31,8 +31,22 @@ const EditPet = () => {
     petImage: selectedPet?.petImage,
   });
 
-  const handleImagePick = async () => {
+  const [ageInNum, setAgeInNum] = useState(
+    selectedPet?.petAge.toString().split(" ")[0]
+  );
+
+  const selectImage = async () => {
     try {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permission required",
+          "Please allow access to your photo library to select an image."
+        );
+        return;
+      }
+
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
@@ -41,11 +55,15 @@ const EditPet = () => {
       });
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        const newImageUri = result.assets[0].uri;
+        const newImageUri = result.assets[0];
 
         setForm((prevForm) => ({
           ...prevForm,
-          petImage: newImageUri as unknown as null, // Type assertion to match state type
+          petImage: {
+            uri: newImageUri.uri,
+            type: newImageUri.type || "image/jpeg", // Default to 'image/jpeg' if type is not provided
+            fileName: newImageUri.fileName || `${Date.now()}.jpg`, // Generate a unique filename if not provided
+          },
         }));
       }
     } catch (error) {
@@ -96,17 +114,13 @@ const EditPet = () => {
       {/* Form*/}
       <View className="px-8 justify-center items-center">
         <View className="mt-4 mb-8">
-          <ImageAvatar
-            placeholder={icons.pet_image_holder}
-            imageUrl={form?.petImage}
-            size="40"
-          />
+          <ImageAvatar imageUrl={form?.petImage} size="40" />
 
           {/* Edit image profile button */}
           <CustomButton
             iconLeft={profileIcons.profile_edit}
             btnClassname="absolute bottom-0 right-[-12]"
-            onPress={handleImagePick}
+            onPress={selectImage}
           />
         </View>
       </View>
@@ -167,7 +181,7 @@ const EditPet = () => {
           </View>
         </View>
 
-        {/* pet gender and age*/}
+        {/*age*/}
         <View className="flex-row justify-between gap-4">
           <View className="flex gap-1 w-[20%]">
             <Text className="text-black-200 font-rubik-regular text-m">
@@ -175,25 +189,39 @@ const EditPet = () => {
             </Text>
 
             <TextInput
-              value={form.petAge?.toString()}
-              onChange={(value) =>
-                setForm({
-                  ...form,
-                  petAge: value.nativeEvent.text,
-                })
-              }
+              value={ageInNum}
+              onChange={(value) => setAgeInNum(value.nativeEvent.text)}
               keyboardType="numeric"
-              className=" h-[50px] border rounded-xl border-primary-100 p-2 font-poppins-medium text-lg"
+              className=" h-[50px] border rounded-xl border-primary-100 pl-4 font-poppins-medium text-lg"
             />
           </View>
 
-          <View className="flex gap-1 w-[70%]">
+          {ageInNum && (
+            <View className="flex gap-1 w-[70%]">
+              <Text className="text-black-200 font-rubik-regular text-m">
+                in
+              </Text>
+              <TabSelect
+                data={AGE_FORMAT}
+                onSelect={(value) => {
+                  setForm({ ...form, petAge: `${ageInNum} ${value}` });
+                }}
+                defaultSelected={selectedPet?.petAge.toString().split(" ")[1]}
+              />
+            </View>
+          )}
+        </View>
+
+        {/* gender */}
+        <View className="flex-row justify-between gap-4">
+          <View className="flex gap-1">
             <Text className="text-black-200 font-rubik-regular text-m">
               Gender
             </Text>
             <TabSelect
               data={gender}
               onSelect={(item) => setForm({ ...form, petGender: item })}
+              defaultSelected={selectedPet?.petGender}
             />
           </View>
         </View>
