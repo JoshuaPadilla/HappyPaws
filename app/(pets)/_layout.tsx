@@ -9,6 +9,16 @@ const PetScreens = () => {
       <Stack.Screen name="update_pet" options={{ headerShown: false }} />
       <Stack.Screen name="pet_details" options={{ headerShown: false }} />
       <Stack.Screen name="edit_pet" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="aftercares_list_view"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="view_aftercare" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="medical_record_list_view"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="vaccine_list_view" options={{ headerShown: false }} />
     </Stack>
   );
 };

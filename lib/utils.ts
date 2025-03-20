@@ -196,7 +196,7 @@ export const getStatusColor = (status: string) => {
 export const isActive = (endDate: string) => {
   const inputDate = moment(endDate, "YYYY-MM-DD");
   const currentDate = moment().startOf("day");
-  return inputDate.isAfter(currentDate) || inputDate.isSame(currentDate);
+  return inputDate.isSame(currentDate) || inputDate.isAfter(currentDate);
 };
 
 export const isBetweenDates = (startDate: string, endDate: string) => {

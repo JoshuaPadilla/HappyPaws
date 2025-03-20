@@ -69,8 +69,6 @@ export const useUserStore = create<UserStoreState>((set) => ({
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.status);
-      console.log(res.ok);
 
       const data = await res.json();
 

@@ -3,16 +3,21 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom_button";
 import icons, { petDetailsIcons } from "@/constants/icons";
-import { goBack } from "@/lib/routerFunctions";
+import { goBack, goToViewAftercare } from "@/lib/routerFunctions";
 import { useAftercareStore } from "@/store/useAftercare";
 import { usePetStore } from "@/store/usePets";
 import AfterCareCard from "@/components/aftercare_card";
+import { Aftercare } from "@/types/type";
 
-const ViewAftercare = () => {
-  const { petAftercares, isLoading } = useAftercareStore();
+const AftercareListView = () => {
+  const { petAftercares, isLoading, setSelectedAftercare } =
+    useAftercareStore();
   const { selectedPet } = usePetStore();
 
-  const selectedAftercare = petAftercares[0];
+  const handleAftercarePress = (aftercare: Aftercare) => {
+    setSelectedAftercare(aftercare);
+    goToViewAftercare();
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8 gap-4">
@@ -70,9 +75,14 @@ const ViewAftercare = () => {
           <ActivityIndicator color={"#73C7C7"} className="p-16" />
         ) : (
           <ScrollView contentContainerClassName="pb-[200px]">
-            {petAftercares.map((aftercare) => (
-              <AfterCareCard aftercare={aftercare} key={aftercare._id} />
-            ))}
+            {petAftercares.length > 0 &&
+              petAftercares.map((aftercare) => (
+                <AfterCareCard
+                  aftercare={aftercare}
+                  key={aftercare._id}
+                  onPress={() => handleAftercarePress(aftercare)}
+                />
+              ))}
           </ScrollView>
         )}
       </View>
@@ -80,4 +90,4 @@ const ViewAftercare = () => {
   );
 };
 
-export default ViewAftercare;
+export default AftercareListView;

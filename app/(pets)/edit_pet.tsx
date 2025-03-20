@@ -23,12 +23,12 @@ const EditPet = () => {
   const { updatePet, isAdding, selectedPet, isUpdating } = usePetStore();
 
   const [form, setForm] = useState({
-    petName: selectedPet?.petName,
-    petSpecie: selectedPet?.petSpecie,
-    petBreed: selectedPet?.petBreed,
-    petAge: selectedPet?.petAge,
-    petGender: selectedPet?.petGender,
-    petImage: selectedPet?.petImage,
+    petName: selectedPet?.petName || "",
+    petSpecie: selectedPet?.petSpecie || "",
+    petBreed: selectedPet?.petBreed || "",
+    petAge: selectedPet?.petAge || "",
+    petGender: selectedPet?.petGender || "",
+    petImage: selectedPet?.petImage || null,
   });
 
   const [ageInNum, setAgeInNum] = useState(

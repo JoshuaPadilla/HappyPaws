@@ -11,6 +11,8 @@ interface AftercareStoreState {
   selectedAftercare: Aftercare | null;
   isLoading: boolean;
   isAdding: boolean;
+
+  setSelectedAftercare: (aftercare: Aftercare) => void;
   fecthPetAftercare: (petID: string) => Promise<void>;
   fetchAllAftercare: () => Promise<void>;
 }
@@ -61,5 +63,9 @@ export const useAftercareStore = create<AftercareStoreState>((set) => ({
     } finally {
       set({ isLoading: false });
     }
+  },
+
+  setSelectedAftercare: (aftercare: Aftercare) => {
+    set({ selectedAftercare: aftercare });
   },
 }));

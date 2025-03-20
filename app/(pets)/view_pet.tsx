@@ -5,7 +5,10 @@ import CustomButton from "@/components/custom_button";
 import icons, { viewPetIcons } from "@/constants/icons";
 import {
   goBack,
+  goToAftercaresList,
+  goToMedicalRecordListView,
   goToPetDetails,
+  goToVaccineListView,
   goToViewAftercare,
 } from "@/lib/routerFunctions";
 import { usePetStore } from "@/store/usePets";
@@ -27,9 +30,17 @@ const ViewPet = () => {
     goBack();
   };
 
-  const handleViewAftercare = () => {
+  const handleViewAftercares = () => {
     fecthPetAftercare(selectedPet?._id || "");
-    goToViewAftercare();
+    goToAftercaresList();
+  };
+
+  const handleViewMedicalRecords = () => {
+    goToMedicalRecordListView();
+  };
+
+  const handleViewVaccineHistory = () => {
+    goToVaccineListView();
   };
 
   return (
@@ -80,21 +91,21 @@ const ViewPet = () => {
           iconLeft={viewPetIcons.view_pet_medicalrecords}
           titleLeft="Medical Records"
           iconRight={icons.caret_right}
-          onPress={() => {}}
+          onPress={handleViewMedicalRecords}
         />
 
         <SettingsItem
           iconLeft={viewPetIcons.view_pet_vaccinehistory}
           titleLeft="Vaccine History"
           iconRight={icons.caret_right}
-          onPress={() => {}}
+          onPress={handleViewVaccineHistory}
         />
 
         <SettingsItem
           iconLeft={viewPetIcons.view_pet_aftercare}
           titleLeft="Aftercare"
           iconRight={icons.caret_right}
-          onPress={handleViewAftercare}
+          onPress={handleViewAftercares}
         />
       </View>
 

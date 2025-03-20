@@ -58,7 +58,7 @@ declare interface signinForm {
 declare interface Pet {
   _id: string;
   petName: string;
-  petAge: number | string;
+  petAge: string;
   petBreed: string;
   petSpecie: string;
   petGender: string;
@@ -96,7 +96,6 @@ declare interface Aftercare {
   _id: string;
   petID: string;
   type: "Medication" | "Wound Care" | "Diet and Nutrition" | "Follow-up";
-  instructions: string;
   medications: Medication[];
   followUpDate: string;
   restrictions: string[];

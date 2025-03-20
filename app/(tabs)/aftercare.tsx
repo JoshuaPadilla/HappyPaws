@@ -8,12 +8,14 @@ import Toggle from "@/components/toggle";
 import { isActive } from "@/lib/utils";
 import { useAftercareStore } from "@/store/useAftercare";
 import AfterCareCard from "@/components/aftercare_card";
-import FastSample from "@/components/fast_sample";
+import { goToViewAftercare } from "@/lib/routerFunctions";
+import { Aftercare } from "@/types/type";
 
-const Aftercare = () => {
+const AftercareTab = () => {
   const [active, setActive] = useState(true);
 
-  const { allAftercares, isLoading } = useAftercareStore();
+  const { allAftercares, isLoading, setSelectedAftercare } =
+    useAftercareStore();
 
   const activeAftercares = allAftercares.filter((aftercare) =>
     isActive(aftercare.endDate)
@@ -22,6 +24,11 @@ const Aftercare = () => {
   const completedAftercares = allAftercares.filter(
     (aftercare) => !isActive(aftercare.endDate)
   );
+
+  const handleAftercarePress = (aftercare: Aftercare) => {
+    setSelectedAftercare(aftercare);
+    goToViewAftercare();
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
@@ -49,14 +56,22 @@ const Aftercare = () => {
             {active ? ( // if active is true, show active aftercares
               activeAftercares.length > 0 ? ( //check if there are any active aftercares
                 activeAftercares.map((aftercare) => (
-                  <AfterCareCard aftercare={aftercare} key={aftercare._id} />
+                  <AfterCareCard
+                    aftercare={aftercare}
+                    key={aftercare._id}
+                    onPress={() => handleAftercarePress(aftercare)}
+                  />
                 ))
               ) : (
                 <Text>No active aftercares</Text>
               )
             ) : completedAftercares.length > 0 ? (
               completedAftercares.map((aftercare) => (
-                <AfterCareCard aftercare={aftercare} key={aftercare._id} />
+                <AfterCareCard
+                  aftercare={aftercare}
+                  key={aftercare._id}
+                  onPress={() => handleAftercarePress(aftercare)}
+                />
               ))
             ) : (
               <Text>No completed aftercares</Text>
@@ -68,4 +83,4 @@ const Aftercare = () => {
   );
 };
 
-export default Aftercare;
+export default AftercareTab;
