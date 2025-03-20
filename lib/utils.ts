@@ -18,6 +18,19 @@ export const getAftercareBg = (type: string) => {
   }
 };
 
+export const getAppointmentBg = (type: string) => {
+  switch (type.toLowerCase()) {
+    case "vaccination":
+      return "#A2D5F2";
+    case "checkup":
+      return "#FFDAB9";
+    case "grooming":
+      return "#B2F2BB";
+    default:
+      return "#E6E6FA";
+  }
+};
+
 // Color mappings for appointment types
 export const appointmentTypeToColorClass = {
   Vaccination: {

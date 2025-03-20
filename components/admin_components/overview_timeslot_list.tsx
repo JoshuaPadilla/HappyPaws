@@ -1,14 +1,9 @@
-import { View, Text, ScrollView, Pressable, Image } from "react-native";
-import React, { useMemo } from "react";
-import {
-  findPetById,
-  getAppointmentBg,
-  getAppointmentColors,
-} from "@/lib/utils";
+import { View, Text, ScrollView, Pressable } from "react-native";
+import React from "react";
+import { findPetById, getAppointmentColors } from "@/lib/utils";
 import { businessHours } from "@/constants";
 import { AppointmentForm } from "@/types/type";
-import icons from "@/constants/icons";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { Image } from "expo-image";
 
 interface TimeSlotProps {
   time: string;
@@ -18,7 +13,7 @@ interface TimeSlotListProps {
   appointmentList: AppointmentForm[];
 }
 
-const TimeSlotList = ({ appointmentList }: TimeSlotListProps) => {
+const OverviewTimeslotList = ({ appointmentList }: TimeSlotListProps) => {
   return (
     <>
       {appointmentList.length === 0 ? (
@@ -44,9 +39,8 @@ const TimeSlotList = ({ appointmentList }: TimeSlotListProps) => {
 };
 
 const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
-  const bgColor = getAppointmentBg(appointment?.typeOfService || "");
-  const appointedPet = appointment
-    ? findPetById(appointment.petID._id || "")
+  const colors = appointment
+    ? getAppointmentColors(appointment.typeOfService)
     : null;
 
   return (
@@ -59,13 +53,33 @@ const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
 
       {appointment ? (
         <Pressable
-          style={bgColor && { backgroundColor: bgColor }}
-          className="w-[70%] rounded-lg p-4 gap-2"
+          style={{ backgroundColor: colors?.colors.base }}
+          className="flex-row w-[70%] rounded-lg p-4 gap-2"
         >
-          <Text className="font-rubik-semibold text-xl">
-            {appointment.typeOfService}
-          </Text>
-          <Text>{appointedPet?.petName}</Text>
+          <View className="w-full h-full">
+            <Image
+              source={appointment.userID.profilePicture}
+              style={{
+                borderColor: colors?.colors.base,
+                width: 70,
+                height: 70,
+                borderRadius: 9999,
+              }}
+            />
+
+            <Image
+              source={appointment.petID.petImage}
+              style={{
+                borderColor: colors?.colors.base,
+                width: 40,
+                height: 40,
+                borderWidth: 2,
+                borderRadius: 9999,
+                position: "absolute",
+                bottom: 0,
+              }}
+            />
+          </View>
         </Pressable>
       ) : (
         <Pressable className="w-[70%] items-center justify-center">
@@ -76,4 +90,4 @@ const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
   );
 };
 
-export default TimeSlotList;
+export default OverviewTimeslotList;

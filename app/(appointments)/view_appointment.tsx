@@ -19,7 +19,7 @@ import NewAppointmentModal from "@/components/new_appointment_modal";
 
 const ViewAppointment = () => {
   const { selectedAppointment, cancelAppointment } = useAppointmentsStore();
-  const appointedPet = findPetById(selectedAppointment?.petID || "");
+  const appointedPet = findPetById(selectedAppointment?.petID._id || "");
   const colors = getAppointmentColors(selectedAppointment?.typeOfService);
   const formattedAppointmentDate = formatDate(
     selectedAppointment?.appointmentDate || ""

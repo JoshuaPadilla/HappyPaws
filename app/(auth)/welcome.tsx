@@ -9,7 +9,8 @@ import Spinner from "react-native-loading-spinner-overlay";
 const welcome = () => {
   const { isCheckingAuth, authUser } = useAuthStore();
 
-  if (authUser) return <Redirect href="/(tabs)/home" />;
+  if (authUser?.role === "user") return <Redirect href="/(tabs)/home" />;
+  if (authUser?.role === "admin") return <Redirect href="/(admin)/overview" />;
 
   return (
     <SafeAreaView className="flex flex-1 bg-background-100">

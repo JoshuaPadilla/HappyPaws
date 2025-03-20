@@ -2,11 +2,11 @@ import { Image, TextInputProps, TouchableOpacityProps } from "react-native";
 
 declare interface AppointmentForm {
   _id?: string;
-  userID: string;
-  petID: string;
+  userID: Partial<User>;
+  petID: Partial<Pet>;
   appointmentDate: string;
   appointmentTime: string;
-  typeOfService: string;
+  typeOfService: "Vaccination" | "Checkup" | "Grooming" | "Dental";
   appointmentNotes: string;
   status?: string;
 }
@@ -36,6 +36,7 @@ declare interface User {
   pets: any[];
   appointments: Appointment[];
   appointmentHistory: Appointment[];
+  role: string;
 }
 
 declare interface signupForm {

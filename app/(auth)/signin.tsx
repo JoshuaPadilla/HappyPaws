@@ -35,7 +35,8 @@ const SignIn = () => {
     signin(form);
   };
 
-  if (authUser) return <Redirect href="/(tabs)/home" />;
+  if (authUser?.role === "user") return <Redirect href="/(tabs)/home" />;
+  if (authUser?.role === "admin") return <Redirect href="/(admin)/overview" />;
 
   return (
     <SafeAreaView className="flex flex-1">

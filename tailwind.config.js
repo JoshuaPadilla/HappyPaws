@@ -59,6 +59,7 @@ module.exports = {
           diet: "#C77D3E",
           followup: "#8FB88F",
         },
+
         "base-medication": "#FFC0CB", // Light pink
         "base-wound": "#FFFACD", // Light yellow
         "base-diet": "#F4A460", // Sandy brown
@@ -75,6 +76,13 @@ module.exports = {
         "dark-groom": "#7FC987", // Dark mint
         "dark-dental": "#B3A8D8", // Dark purple
         "dark-checkup": "#D4A276", // Dark peach
+
+        insights: {
+          total: "#B8B5FF",
+          completed: "#C3FF93",
+          cancelled: "#FF6868",
+          most: "#FFA1F5",
+        },
       },
     },
   },

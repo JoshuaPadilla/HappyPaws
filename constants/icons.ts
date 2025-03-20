@@ -57,6 +57,16 @@ import pet_gender from "@/assets/icons/pet_details/pet_details_gender.png";
 import pet_specie from "@/assets/icons/pet_details/pet_details_specie.png";
 import pet_name from "@/assets/icons/pet_details/pet_details_name.png";
 
+import appointments_admin_icon from "@/assets/icons/admin_icons/appointments_icon.png";
+import cancelled_app_icon from "@/assets/icons/admin_icons/cancelled_app_icon.png";
+import clients_icon from "@/assets/icons/admin_icons/clients_icon.png";
+import completed_app_icon from "@/assets/icons/admin_icons/completed_app_icon.png";
+import insights_icon from "@/assets/icons/admin_icons/insights_icon.png";
+import most_booked_icon from "@/assets/icons/admin_icons/most_booked_icon.png";
+import overview_icon from "@/assets/icons/admin_icons/overview_icon.png";
+import total_app_icon from "@/assets/icons/admin_icons/total_app_icon.png";
+import refresh_icon from "@/assets/icons/admin_icons/refresh_icon.png";
+
 interface IconsProps {
   back_green: ImageSourcePropType;
   back_white: ImageSourcePropType;
@@ -128,6 +138,18 @@ interface PetDetailsIconsProps {
   pet_name: ImageSourcePropType;
 }
 
+interface AdminIconsProps {
+  appointments_admin_icon: ImageSourcePropType;
+  cancelled_app_icon: ImageSourcePropType;
+  clients_icon: ImageSourcePropType;
+  completed_app_icon: ImageSourcePropType;
+  insights_icon: ImageSourcePropType;
+  most_booked_icon: ImageSourcePropType;
+  overview_icon: ImageSourcePropType;
+  total_app_icon: ImageSourcePropType;
+  refresh_icon: ImageSourcePropType;
+}
+
 const icons: IconsProps = {
   back_green,
   back_white,
@@ -197,6 +219,18 @@ export const petDetailsIcons: PetDetailsIconsProps = {
   pet_gender,
   pet_specie,
   pet_name,
+};
+
+export const adminIcons: AdminIconsProps = {
+  appointments_admin_icon,
+  cancelled_app_icon,
+  clients_icon,
+  completed_app_icon,
+  insights_icon,
+  most_booked_icon,
+  overview_icon,
+  total_app_icon,
+  refresh_icon,
 };
 
 export default icons;
