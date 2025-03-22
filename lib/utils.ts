@@ -1,9 +1,10 @@
-import { signupForm } from "@/types/type";
+import { AppointmentForm, signupForm } from "@/types/type";
 import { parseSync } from "@babel/core";
 import { router, useRouter } from "expo-router";
 import moment from "moment";
 import * as ImageManipulator from "expo-image-manipulator";
 import { usePetStore } from "@/store/usePets";
+import UtilityScreensLayout from "@/app/(utility)/_layout";
 
 export const getAftercareBg = (type: string) => {
   switch (type.toLowerCase()) {
@@ -226,4 +227,42 @@ export const resizeImage = async (uri: string): Promise<string> => {
     { compress: 0.2, format: ImageManipulator.SaveFormat.JPEG } // Compress to 70% quality
   );
   return resizedImage.uri;
+};
+
+export const findMostBookedAppointments = (
+  appointments: AppointmentForm[]
+): { name: string; count: number } => {
+  const serviceType = [
+    { name: "Vaccination", count: 0 },
+    { name: "Grooming", count: 0 },
+    { name: "Checkup", count: 0 },
+    { name: "Dental", count: 0 },
+  ];
+
+  appointments.forEach((appointment) => {
+    switch (appointment.typeOfService) {
+      case "Grooming":
+        serviceType[1].count += 1;
+        return;
+      case "Checkup":
+        serviceType[2].count += 1;
+        return;
+      case "Dental":
+        serviceType[3].count += 1;
+        return;
+      default:
+        serviceType[0].count += 1;
+        return;
+    }
+  });
+
+  let maxObject: any;
+
+  for (let i = 0; i < serviceType.length - 1; i++) {
+    if (serviceType[i].count >= serviceType[i + 1].count) {
+      maxObject = serviceType[i];
+    }
+  }
+
+  return maxObject;
 };

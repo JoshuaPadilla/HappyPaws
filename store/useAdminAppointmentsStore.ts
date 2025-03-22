@@ -10,6 +10,7 @@ interface TimeSlot {
 
 interface AdminAppointmentStoreState {
   appointments: AppointmentForm[];
+  byDateAppointments: AppointmentForm[];
   bookedSlots: TimeSlot[];
   selectedAppointment: AppointmentForm | null;
   isLoading: boolean;
@@ -19,6 +20,7 @@ interface AdminAppointmentStoreState {
   isCancelling: boolean;
 
   fetchAllAppointments: () => Promise<void>;
+  fetchAppointmentByDate: (date: string, signal?: any) => Promise<void>;
   addAppointment: (appointment: AppointmentForm) => Promise<void>;
   updateAppointment: (appointment: AppointmentForm) => Promise<void>;
   getTimeSlots: (date: string) => Promise<any>;
@@ -29,6 +31,7 @@ interface AdminAppointmentStoreState {
 export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
   (set) => ({
     appointments: [],
+    byDateAppointments: [],
     bookedSlots: [],
     selectedAppointment: null,
     isLoading: false,
@@ -65,7 +68,35 @@ export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
       }
     },
 
-    getTimeSlots: async (date: string) => {
+    fetchAppointmentByDate: async (date) => {
+      try {
+        set({ isLoading: true });
+        const token = await AsyncStorage.getItem("token");
+
+        const res = await fetch(`${BASE_URL}/appointments/by-date/${date}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+
+        if (data.status === "success") {
+          set({ byDateAppointments: data.appointments });
+        } else {
+          Alert.alert("Failed to fetch appointments");
+        }
+      } catch (error) {
+        console.log(error);
+        set({ isLoading: false });
+        Alert.alert("Failed to fetch appointments");
+      } finally {
+        set({ isLoading: false });
+      }
+    },
+
+    getTimeSlots: async (date) => {
       try {
         set({ isLoading: true });
         const token = await AsyncStorage.getItem("token");
@@ -91,7 +122,7 @@ export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
       }
     },
 
-    addAppointment: async (appointment: AppointmentForm) => {
+    addAppointment: async (appointment) => {
       try {
         set({ isAdding: true });
         const token = await AsyncStorage.getItem("token");
@@ -125,7 +156,7 @@ export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
       }
     },
 
-    updateAppointment: async (appointment: AppointmentForm) => {
+    updateAppointment: async (appointment) => {
       try {
         set({ isUpdating: true });
         const token = await AsyncStorage.getItem("token");
@@ -157,7 +188,7 @@ export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
       }
     },
 
-    cancelAppointment: async (appointmentId: string) => {
+    cancelAppointment: async (appointmentId) => {
       try {
         set({ isCancelling: true });
         const token = await AsyncStorage.getItem("token");
@@ -188,7 +219,7 @@ export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
       }
     },
 
-    setSelectedAppointment: (appointment: AppointmentForm) => {
+    setSelectedAppointment: (appointment) => {
       set({ selectedAppointment: appointment });
     },
   })

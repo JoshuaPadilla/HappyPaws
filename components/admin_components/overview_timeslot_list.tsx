@@ -4,6 +4,8 @@ import { findPetById, getAppointmentColors } from "@/lib/utils";
 import { businessHours } from "@/constants";
 import { AppointmentForm } from "@/types/type";
 import { Image } from "expo-image";
+import { Image as ReactImage } from "react-native";
+import { profileIcons } from "@/constants/icons";
 
 interface TimeSlotProps {
   time: string;
@@ -23,7 +25,7 @@ const OverviewTimeslotList = ({ appointmentList }: TimeSlotListProps) => {
           </Text>
         </View>
       ) : (
-        <ScrollView contentContainerClassName="pb-[300px] pt-[50px] pr-8 gap-1">
+        <ScrollView contentContainerClassName="pb-[100px]  pr-8 gap-1">
           {businessHours.map((time) => {
             const appointment = appointmentList.find(
               (appointment) => appointment.appointmentTime === time
@@ -56,7 +58,7 @@ const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
           style={{ backgroundColor: colors?.colors.base }}
           className="flex-row w-[70%] rounded-lg p-4 gap-2"
         >
-          <View className="w-full h-full">
+          <View className="h-full">
             <Image
               source={appointment.userID.profilePicture}
               style={{
@@ -79,6 +81,30 @@ const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
                 bottom: 0,
               }}
             />
+          </View>
+
+          <View className="w-full h-full">
+            <View className="mb-1">
+              <Text className="font-rubik-medium text-black-100 text-lg">
+                {appointment.userID.firstName}
+              </Text>
+              <Text className="font-rubik-medium text-black-100 text-lg">
+                {appointment.userID.lastName}
+              </Text>
+            </View>
+
+            <View>
+              <View className="flex-row gap-2 items-center">
+                <ReactImage
+                  source={profileIcons.profile_phone}
+                  className="size-4"
+                />
+
+                <Text className="font-rubik-medium text-sm text-black-200">
+                  {appointment.userID.phone}
+                </Text>
+              </View>
+            </View>
           </View>
         </Pressable>
       ) : (

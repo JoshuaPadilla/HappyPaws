@@ -113,7 +113,7 @@ const Appointments = () => {
 
           {/* Appointment List */}
           <ScrollView
-            contentContainerClassName="gap-2 pb-[200px]"
+            contentContainerClassName="gap-2 pb-[250px]"
             showsVerticalScrollIndicator={false}
           >
             {filteredAppointments.map(

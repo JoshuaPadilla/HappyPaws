@@ -59,7 +59,7 @@ const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
 
       {appointment ? (
         <Pressable
-          style={bgColor && { backgroundColor: bgColor }}
+          style={{ backgroundColor: bgColor }}
           className="w-[70%] rounded-lg p-4 gap-2"
         >
           <Text className="font-rubik-semibold text-xl">

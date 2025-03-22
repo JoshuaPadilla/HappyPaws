@@ -27,6 +27,7 @@ import appointment_date from "@/assets/icons/appointment_date.png";
 import appointment_notes from "@/assets/icons/appointment_notes.png";
 import appointment_time from "@/assets/icons/appointment_time.png";
 import appointment_type from "@/assets/icons/appointment_type.png";
+import options_icon from "@/assets/icons/options_icon.png";
 
 import profile_address from "@/assets/icons/profile_icons/profile_address.png";
 import profile_appointments from "@/assets/icons/profile_icons/profile_appointments.png";
@@ -91,6 +92,7 @@ interface IconsProps {
   appointment_type: ImageSourcePropType;
   cancel: ImageSourcePropType;
   appointment_status: ImageSourcePropType;
+  options_icon: ImageSourcePropType;
 }
 
 interface PetCardsIconsProps {
@@ -174,6 +176,7 @@ const icons: IconsProps = {
   appointment_type,
   appointment_status,
   cancel,
+  options_icon,
 };
 
 export const petCardsIcon: PetCardsIconsProps = {
