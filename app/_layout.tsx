@@ -5,8 +5,7 @@ import "./globals.css";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { Image, StatusBar, View } from "react-native";
-import icons from "@/constants/icons";
-
+import Toast from "react-native-toast-message";
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
@@ -45,6 +44,7 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar backgroundColor={"#f6f4f0"} barStyle={"dark-content"} />
+      <Toast />
     </View>
   );
 }

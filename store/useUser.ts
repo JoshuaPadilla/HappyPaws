@@ -3,7 +3,7 @@ import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 import { BASE_URL } from "@/constants";
-import { resizeImage } from "@/lib/utils";
+import { resizeImage, showToast } from "@/lib/utils";
 
 interface UserStoreState {
   user: User | null;
@@ -76,7 +76,7 @@ export const useUserStore = create<UserStoreState>((set) => ({
         set({ user: data.user });
       }
 
-      Alert.alert("Details Updated");
+      showToast("success", "Details Updated ✅");
     } catch (error) {
       console.log(error);
     } finally {

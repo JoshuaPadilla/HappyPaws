@@ -25,6 +25,7 @@ import NewAppointmentModal from "@/components/new_appointment_modal";
 import { usePetStore } from "@/store/usePets";
 import { SERVICE_TYPES_CATEGORY } from "@/constants";
 import { goToViewAppointment } from "@/lib/routerFunctions";
+
 const Appointments = () => {
   const { appointments, setSelectedAppointment } = useAppointmentsStore();
   // after getting all the appointment from the backend, filter the appointment for today

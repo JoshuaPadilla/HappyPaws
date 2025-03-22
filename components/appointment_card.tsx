@@ -12,7 +12,7 @@ interface AppointmentCardProps {
 
 const AppointmentCard = ({ appointment, onPress }: AppointmentCardProps) => {
   const colors = getAppointmentColors(appointment.typeOfService);
-  const pet = findPetById(appointment.petID);
+  const pet = appointment.petID;
 
   return (
     <Pressable

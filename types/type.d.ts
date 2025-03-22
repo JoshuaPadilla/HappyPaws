@@ -18,9 +18,9 @@ declare interface Reminders {
 }
 
 declare interface userBirthday {
-  date: string;
-  month: string;
-  year: string;
+  date?: string;
+  month?: string;
+  year?: string;
 }
 
 declare interface User {

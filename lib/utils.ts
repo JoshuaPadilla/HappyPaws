@@ -1,10 +1,11 @@
-import { AppointmentForm, signupForm } from "@/types/type";
+import { AppointmentForm, signupForm, User } from "@/types/type";
 import { parseSync } from "@babel/core";
 import { router, useRouter } from "expo-router";
 import moment from "moment";
 import * as ImageManipulator from "expo-image-manipulator";
 import { usePetStore } from "@/store/usePets";
 import UtilityScreensLayout from "@/app/(utility)/_layout";
+import Toast from "react-native-toast-message";
 
 export const getAftercareBg = (type: string) => {
   switch (type.toLowerCase()) {
@@ -265,4 +266,45 @@ export const findMostBookedAppointments = (
   }
 
   return maxObject;
+};
+
+export const textShortener = (originalWord: string, maxNumOfLetter: number) => {
+  if (!originalWord) {
+    return ""; // Handle null or empty input
+  }
+
+  if (originalWord.length <= maxNumOfLetter) {
+    return originalWord; // Return original if short enough
+  }
+
+  return originalWord.substring(0, maxNumOfLetter) + "...";
+};
+
+export const showToast = (
+  type: "error" | "info" | "success",
+  text1?: string,
+  text2?: string
+) => {
+  Toast.show({
+    type: type,
+    text1: text1,
+    text2: text2,
+  });
+};
+
+export const isUserFormValid = (form: Partial<User>): boolean => {
+  if (
+    !form.firstName ||
+    !form.lastName ||
+    !form.address ||
+    !form.phone ||
+    !form.gender ||
+    !form.birthday!.date ||
+    !form.birthday!.month ||
+    !form.birthday!.year
+  ) {
+    return false; // At least one basic field is empty
+  }
+
+  return true; // All fields are filled
 };

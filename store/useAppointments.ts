@@ -1,4 +1,5 @@
 import { BASE_URL } from "@/constants";
+import { showToast } from "@/lib/utils";
 import { AppointmentForm } from "@/types/type";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
@@ -114,11 +115,11 @@ export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
         }
       });
       if (data.status === "success") {
-        Alert.alert("Appointment added successfully");
+        showToast("success", "Appointment Added");
       }
     } catch (error) {
       console.log(error);
-      Alert.alert("Failed to add appointment");
+      showToast("error", "Failed to add appointment");
     } finally {
       set({ isAdding: false });
     }

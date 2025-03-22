@@ -18,9 +18,11 @@ import { useAftercareStore } from "@/store/useAftercare";
 import moment from "moment";
 import { Reminders } from "@/types/type";
 import { isBetweenDates } from "@/lib/utils";
+import Spinner from "react-native-loading-spinner-overlay";
 export default function Home() {
   const { pets, setSelectedPet } = usePetStore();
   const { user } = useUserStore();
+
   const [modalVisible, setModalVisible] = useState(false);
   const reminders = getReminders();
 

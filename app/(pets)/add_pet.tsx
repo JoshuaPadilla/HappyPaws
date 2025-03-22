@@ -4,6 +4,8 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Alert,
+  Keyboard,
+  Pressable,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -103,20 +105,22 @@ const AddPet = () => {
           onPress={() => router.back()}
         />
       </View>
-      {/* Form*/}
-      <View className="px-8 justify-center items-center">
-        <View className="mt-4 mb-8">
-          <ImageAvatar imageUrl={form?.petImage?.uri} size="40" />
 
-          {/* Edit image profile button */}
-          <CustomButton
-            iconLeft={profileIcons.profile_edit}
-            btnClassname="absolute bottom-0 right-[-12]"
-            onPress={selectImage}
-          />
+      {/* Form*/}
+
+      <Pressable className="gap-4 pb-4" onPress={Keyboard.dismiss}>
+        <View className="px-8 justify-center items-center">
+          <View className="mt-4 mb-8">
+            <ImageAvatar imageUrl={form?.petImage?.uri} size="40" />
+
+            {/* Edit image profile button */}
+            <CustomButton
+              iconLeft={profileIcons.profile_edit}
+              btnClassname="absolute bottom-0 right-[-12]"
+              onPress={selectImage}
+            />
+          </View>
         </View>
-      </View>
-      <KeyboardAvoidingView className="flex-1 gap-4 pb-4">
         {/* pet name */}
 
         <View className="flex ] gap-1">
@@ -199,8 +203,8 @@ const AddPet = () => {
                 data={AGE_FORMAT}
                 onSelect={(value) => {
                   setForm({ ...form, petAge: `${ageInNum} ${value}` });
+                  Keyboard.dismiss();
                 }}
-                defaultSelected="Years"
               />
             </View>
           )}
@@ -215,7 +219,6 @@ const AddPet = () => {
             <TabSelect
               data={gender}
               onSelect={(item) => setForm({ ...form, petGender: item })}
-              defaultSelected="Male"
             />
           </View>
         </View>
@@ -227,7 +230,7 @@ const AddPet = () => {
           textClassname="font-poppins-medium text-lg text-white"
           onPress={handleAddPet}
         />
-      </KeyboardAvoidingView>
+      </Pressable>
     </SafeAreaView>
   );
 };

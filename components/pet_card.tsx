@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import icons, { petCardsIcon } from "@/constants/icons";
 import { Image } from "expo-image";
+import { textShortener } from "@/lib/utils";
 
 interface Props {
   onPress: () => void;
@@ -38,7 +39,7 @@ const PetCard = ({
       <View className="w-full h-fit flex-row justify-between items-center">
         <View className="flex-col">
           <Text className="font-rubik-bold text-2xl tracking-widest text-black-100">
-            {petName}
+            {textShortener(petName, 8)}
           </Text>
           <Text className="font-rubik-regular text-m text-primary-100">
             {petBreed}

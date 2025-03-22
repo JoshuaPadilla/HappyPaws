@@ -19,27 +19,35 @@ import { useRouter } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import { useUserStore } from "@/store/useUser";
 import { ImageAvatar } from "@/components/image_avatar";
+import Toast from "react-native-toast-message";
+import { isUserFormValid, showToast } from "@/lib/utils";
+import { User } from "@/types/type";
 
 const EditProfile = () => {
   const router = useRouter();
 
   const { user, updateUser } = useUserStore();
 
-  const [form, setForm] = useState({
-    firstName: user?.firstName,
-    lastName: user?.lastName,
-    address: user?.address,
-    phone: user?.phone,
-    gender: user?.gender,
+  const [form, setForm] = useState<Partial<User>>({
+    firstName: user!.firstName,
+    lastName: user!.lastName,
+    address: user!.address,
+    phone: user!.phone,
+    gender: user!.gender,
     birthday: {
-      date: user?.birthday.date,
-      month: user?.birthday.month,
-      year: user?.birthday.year,
+      date: user!.birthday.date,
+      month: user!.birthday.month,
+      year: user!.birthday.year,
     },
     profilePicture: user?.profilePicture,
   });
 
   const handleUpdate = () => {
+    if (!isUserFormValid(form)) {
+      showToast("error", "all fields should be filled");
+      return;
+    }
+
     updateUser(form);
 
     router.dismiss();
@@ -218,7 +226,7 @@ const EditProfile = () => {
               </Text>
               <Dropdown
                 data={months}
-                onSelect={(selectedItem) =>
+                onSelect={(selectedItem: string) =>
                   setForm({
                     ...form,
                     birthday: {
@@ -230,7 +238,7 @@ const EditProfile = () => {
                 title="month"
                 iconLeft={icons.dropdown}
                 height={250}
-                defaultValue={form.birthday.month}
+                defaultValue={form.birthday!.month}
               />
             </View>
 
@@ -241,7 +249,7 @@ const EditProfile = () => {
               </Text>
               <Dropdown
                 data={days}
-                onSelect={(selectedItem) =>
+                onSelect={(selectedItem: string) =>
                   setForm({
                     ...form,
                     birthday: {
@@ -253,7 +261,7 @@ const EditProfile = () => {
                 title="day"
                 iconLeft={icons.dropdown}
                 height={250}
-                defaultValue={form.birthday.date}
+                defaultValue={form.birthday!.date}
               />
             </View>
 
@@ -264,7 +272,7 @@ const EditProfile = () => {
               </Text>
               <Dropdown
                 data={years}
-                onSelect={(selectedItem) =>
+                onSelect={(selectedItem: string) =>
                   setForm({
                     ...form,
                     birthday: {
@@ -276,7 +284,7 @@ const EditProfile = () => {
                 title="year"
                 iconLeft={icons.dropdown}
                 height={250}
-                defaultValue={form.birthday.year}
+                defaultValue={form.birthday!.year}
               />
             </View>
           </View>

@@ -6,6 +6,7 @@ import { Image } from "react-native";
 import icons, { profileIcons } from "@/constants/icons";
 import { gender } from "@/constants";
 import CustomButton from "../custom_button";
+import { textShortener } from "@/lib/utils";
 
 interface ClientCardProps {
   client: User;
@@ -14,7 +15,7 @@ interface ClientCardProps {
 const ClientCard = ({ client }: ClientCardProps) => {
   return (
     <Pressable className="flex-row w-full h-[120px] bg-white rounded-lg px-4 py-4 shadow gap-4 items-start justify-between">
-      <View className="flex-row gap-4 max-w-[50%]">
+      <View className="flex-row gap-4 max-w-[70%]">
         <ExpoImage
           source={
             client.profilePicture
@@ -26,11 +27,9 @@ const ClientCard = ({ client }: ClientCardProps) => {
 
         <View className="flex-col justify-around h-full">
           <Text className="font-rubik-medium text-xl text-black-100">
-            {client.firstName}
+            {textShortener(`${client.firstName} ${client.lastName}`, 20)}
           </Text>
-          <Text className="font-rubik-medium text-xl text-black-100">
-            {client.lastName}
-          </Text>
+
           <View className="flex-row gap-2 items-center">
             <Image
               source={profileIcons.profile_address}
@@ -39,7 +38,7 @@ const ClientCard = ({ client }: ClientCardProps) => {
             />
 
             <Text className="font-rubik-regular text-m text-black-200">
-              {client.address}
+              {textShortener(client.address, 20)}
             </Text>
           </View>
 

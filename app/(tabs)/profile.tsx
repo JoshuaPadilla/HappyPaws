@@ -10,6 +10,7 @@ import { useUserStore } from "@/store/useUser";
 import { ImageAvatar } from "@/components/image_avatar";
 import { goToAppointmentHistory, goToEditProfile } from "@/lib/routerFunctions";
 import ConfirmationModal from "@/components/confirmationModal";
+import { textShortener } from "@/lib/utils";
 const Profile = () => {
   const router = useRouter();
   const { user, isUpdating } = useUserStore();
@@ -118,7 +119,7 @@ const Profile = () => {
         <SettingsItem
           iconLeft={profileIcons.profile_address}
           titleLeft="Address"
-          titleRight={user?.address || "Sinidman"}
+          titleRight={textShortener(user?.address || "", 10) || "Sinidman"}
         />
 
         <SettingsItem
@@ -130,7 +131,7 @@ const Profile = () => {
         <SettingsItem
           iconLeft={profileIcons.profile_gender}
           titleLeft="Gender"
-          titleRight={user?.phone || "Male"}
+          titleRight={user?.gender || "Male"}
         />
 
         <SettingsItem

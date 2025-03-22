@@ -36,19 +36,24 @@ const Pets = () => {
         textStyle={{ color: "#FFF" }}
       />
       {/* Headings */}
-      <View className="flex-row justify-between mb-6">
+      <View className="flex-row justify-between items-center mb-6">
         <CustomButton
           iconLeft={icons.back_green}
           iconSize="size-8"
           onPress={goBack}
         />
 
-        <CustomButton iconLeft={icons.bell_icon} iconSize="size-8" />
+        <CustomButton
+          iconLeft={icons.plus_icon}
+          iconSize="size-6"
+          tintColor="#73c7c7"
+          onPress={goToAddPet}
+        />
       </View>
 
       {/* Main */}
 
-      <View className="items-center justify-center p-2">
+      <View className="items-center justify-center p-2 prima">
         <SearchBar
           queryValue={query}
           setQuery={setQuery}
@@ -82,16 +87,6 @@ const Pets = () => {
               onPress={() => handleSelecPet(pet)}
             />
           ))}
-
-        <CustomButton
-          iconLeft={icons.plus_icon}
-          tintColor="#1E1E1E"
-          title="Add Pet"
-          iconSize="size-10"
-          btnClassname="p-3 w-[48%] h-72 flex-col bg-white rounded-2xl gap-2 justify-center items-center"
-          textClassname="font-poppins-medium text-m text-black-100"
-          onPress={() => goToAddPet()}
-        />
       </ScrollView>
     </SafeAreaView>
   );

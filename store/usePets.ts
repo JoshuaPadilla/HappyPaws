@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AddPetForm, Pet, PetFormData } from "@/types/type";
 import * as ImagePicker from "expo-image-picker";
 import { BASE_URL } from "@/constants";
-import { resizeImage } from "@/lib/utils";
+import { resizeImage, showToast } from "@/lib/utils";
 
 interface PetStoreState {
   pets: Pet[];
@@ -66,9 +66,9 @@ export const usePetStore = create<PetStoreState>((set) => ({
         await usePetStore.getState().fetchPets();
         set({ selectedPet: null });
 
-        Alert.alert("pet Successfully Added");
+        showToast("success", "Pet added successfully 🥳");
       } else {
-        Alert.alert("Failed to add pet");
+        showToast("error", "Failed to add pet 😥");
       }
     } catch (error) {
       console.log(error);
@@ -119,7 +119,7 @@ export const usePetStore = create<PetStoreState>((set) => ({
       if (data.status === "success") {
         await usePetStore.getState().fetchPets();
         set({ selectedPet: data.pet });
-        Alert.alert("Pet updated successfully");
+        showToast("success", "Pet details updated ✅");
       } else {
         Alert.alert("Failed to update pet");
       }
@@ -149,7 +149,7 @@ export const usePetStore = create<PetStoreState>((set) => ({
         throw new Error("Failed to delete pet");
       }
 
-      Alert.alert("Pet deleted successfully");
+      showToast("success", "Pet deleted successfully 👍");
       await usePetStore.getState().fetchPets();
     } catch (error) {
       console.log(error);
