@@ -5,7 +5,7 @@ import { businessHours } from "@/constants";
 import { AppointmentForm } from "@/types/type";
 import { Image } from "expo-image";
 import { Image as ReactImage } from "react-native";
-import { profileIcons } from "@/constants/icons";
+import { petCardsIcon, profileIcons } from "@/constants/icons";
 
 interface TimeSlotProps {
   time: string;
@@ -45,6 +45,9 @@ const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
     ? getAppointmentColors(appointment.typeOfService)
     : null;
 
+  const thisUser = appointment?.userID;
+  const thisPet = appointment?.petID;
+
   return (
     <View className="flex-row justify-between h-[100px]">
       <View className="flex-row justify-end items-center w-[30%] mr-6">
@@ -59,37 +62,61 @@ const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
           className="flex-row w-[70%] rounded-lg p-4 gap-2"
         >
           <View className="h-full">
-            <Image
-              source={appointment.userID.profilePicture}
-              style={{
-                borderColor: colors?.colors.base,
-                width: 70,
-                height: 70,
-                borderRadius: 9999,
-              }}
-            />
+            {thisUser?.profilePicture ? (
+              <Image
+                source={thisUser.profilePicture}
+                style={{
+                  borderColor: colors?.colors.base,
+                  width: 70,
+                  height: 70,
+                  borderRadius: 9999,
+                }}
+              />
+            ) : (
+              <View className="size-[70px] bg-slate-50 rounded-full items-center justify-center">
+                <Text className="font-rubik-semibold text-black-200 text-3xl">
+                  {thisUser?.firstName?.at(0)}
+                  {thisUser?.lastName?.at(0)}
+                </Text>
+              </View>
+            )}
 
-            <Image
-              source={appointment.petID.petImage}
-              style={{
-                borderColor: colors?.colors.base,
-                width: 40,
-                height: 40,
-                borderWidth: 2,
-                borderRadius: 9999,
-                position: "absolute",
-                bottom: 0,
-              }}
-            />
+            {thisPet?.petImage ? (
+              <Image
+                source={thisPet.petImage}
+                style={{
+                  borderColor: colors?.colors.base,
+                  width: 40,
+                  height: 40,
+                  borderWidth: 2,
+                  borderRadius: 9999,
+                  position: "absolute",
+                  bottom: 0,
+                }}
+              />
+            ) : (
+              <Image
+                source={petCardsIcon.dog_male}
+                style={{
+                  borderColor: colors?.colors.base,
+                  width: 40,
+                  height: 40,
+                  borderWidth: 2,
+                  borderRadius: 9999,
+                  position: "absolute",
+                  bottom: 0,
+                }}
+              />
+            )}
           </View>
 
           <View className="w-full h-full">
             <View className="mb-1">
               <Text className="font-rubik-medium text-black-100 text-lg">
-                {appointment.userID.firstName}
+                {thisUser?.firstName}
               </Text>
               <Text className="font-rubik-medium text-black-100 text-lg">
-                {appointment.userID.lastName}
+                {thisUser?.lastName}
               </Text>
             </View>
 

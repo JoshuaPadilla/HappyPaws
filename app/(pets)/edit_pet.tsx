@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Alert,
+  Pressable,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,7 +18,9 @@ import TabSelect from "@/components/tab_select";
 import * as ImagePicker from "expo-image-picker";
 import Spinner from "react-native-loading-spinner-overlay";
 import { usePetStore } from "@/store/usePets";
-import { goBack } from "@/lib/routerFunctions";
+import { dismiss, goBack } from "@/lib/routerFunctions";
+import { Keyboard } from "react-native";
+import { showToast } from "@/lib/utils";
 
 const EditPet = () => {
   const { updatePet, isAdding, selectedPet, isUpdating } = usePetStore();
@@ -79,17 +82,17 @@ const EditPet = () => {
       !form.petAge ||
       !form.petGender
     ) {
-      Alert.alert("Please fill in all fields");
+      showToast("error", "Please fill in all fields");
       return;
     }
 
     if (!selectedPet?._id) {
-      Alert.alert("Error updating pet");
+      showToast("error", "Error updating pet");
       return;
     }
 
     updatePet(selectedPet._id, form);
-    !isUpdating && goBack();
+    !isUpdating && dismiss();
   };
 
   return (
@@ -124,7 +127,7 @@ const EditPet = () => {
           />
         </View>
       </View>
-      <KeyboardAvoidingView className="flex-1 gap-4 pb-4">
+      <Pressable className="flex-1 gap-4 pb-4" onPress={Keyboard.dismiss}>
         {/* pet name */}
 
         <View className="flex ] gap-1">
@@ -234,7 +237,7 @@ const EditPet = () => {
           textClassname="font-poppins-medium text-lg text-white"
           onPress={handleUpdatePet}
         />
-      </KeyboardAvoidingView>
+      </Pressable>
     </SafeAreaView>
   );
 };

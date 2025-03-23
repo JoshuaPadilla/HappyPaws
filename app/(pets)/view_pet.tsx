@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom_button";
 import icons, { viewPetIcons } from "@/constants/icons";
 import {
+  dismiss,
   goBack,
   goToAftercaresList,
   goToMedicalRecordListView,
@@ -58,13 +59,11 @@ const ViewPet = () => {
       />
 
       {/* Headings */}
-      <View className="flex-row">
-        <CustomButton
-          iconLeft={icons.back_green}
-          iconSize="size-8"
-          onPress={goBack}
-        />
-      </View>
+      <CustomButton
+        iconLeft={icons.back_green}
+        iconSize="size-8"
+        onPress={dismiss}
+      />
 
       <Spinner
         visible={isUpdating || isDeleting}

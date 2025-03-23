@@ -43,6 +43,10 @@ export const goBack = () => {
   router.back();
 };
 
+export const dismiss = () => {
+  router.dismiss();
+};
+
 // utilities
 export const goToEditProfile = () => {
   router.push("/(utility)/edit_profile");

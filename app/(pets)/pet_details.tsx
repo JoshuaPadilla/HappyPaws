@@ -5,20 +5,26 @@ import CustomButton from "@/components/custom_button";
 import icons, { petDetailsIcons, profileIcons } from "@/constants/icons";
 import { ImageAvatar } from "@/components/image_avatar";
 import { usePetStore } from "@/store/usePets";
-import { goBack, goToEditPet } from "@/lib/routerFunctions";
+import { dismiss, goBack, goToEditPet } from "@/lib/routerFunctions";
 import SettingsItem from "@/components/settingsItems";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const PetDetails = () => {
-  const { selectedPet } = usePetStore();
+  const { selectedPet, isUpdating } = usePetStore();
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
+      <Spinner
+        visible={isUpdating}
+        textContent={"Loading..."}
+        textStyle={{ color: "#FFF" }}
+      />
       {/* Headings */}
       <View className="flex-row justify-between items-center">
         <CustomButton
           iconLeft={icons.back_green}
           iconSize="size-8"
-          onPress={goBack}
+          onPress={dismiss}
         />
 
         <Text className="text-xl font-rubik-bold">Pet Details</Text>
@@ -32,11 +38,7 @@ const PetDetails = () => {
 
       {/* Image icon */}
       <View className="flex justify-center items-center p-8 border-b border-black-400 gap-4">
-        <ImageAvatar
-          imageUrl={selectedPet?.petImage}
-          placeholder={icons.pet_image_holder}
-          size="40"
-        />
+        <ImageAvatar imageUrl={selectedPet?.petImage} size="40" />
 
         <Text className="text-2xl font-rubik-semibold">
           {selectedPet?.petName}

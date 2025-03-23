@@ -115,7 +115,7 @@ export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
         }
       });
       if (data.status === "success") {
-        showToast("success", "Appointment Added");
+        showToast("success", "Appointment Added 🥳✅");
       }
     } catch (error) {
       console.log(error);
