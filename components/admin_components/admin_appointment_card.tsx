@@ -4,7 +4,7 @@ import { AppointmentForm } from "@/types/type";
 import { Image } from "expo-image";
 import { getAppointmentColors } from "@/lib/utils";
 import { Image as ReactImage } from "react-native";
-import { profileIcons } from "@/constants/icons";
+import { petCardsIcon, profileIcons } from "@/constants/icons";
 
 interface AdminAppointmentCardProps {
   appointment: AppointmentForm;
@@ -15,6 +15,9 @@ const AdminAppointmentCard = ({ appointment }: AdminAppointmentCardProps) => {
     ? getAppointmentColors(appointment.typeOfService)
     : null;
 
+  const thisPet = appointment.petID;
+  const thisUser = appointment.userID;
+
   return (
     <Pressable
       style={{ backgroundColor: colors?.colors.base }}
@@ -22,28 +25,52 @@ const AdminAppointmentCard = ({ appointment }: AdminAppointmentCardProps) => {
     >
       <View className="flex-row gap-4">
         <View className="h-full">
-          <Image
-            source={appointment.userID.profilePicture}
-            style={{
-              borderColor: colors?.colors.base,
-              width: 70,
-              height: 70,
-              borderRadius: 9999,
-            }}
-          />
+          {thisUser?.profilePicture ? (
+            <Image
+              source={thisUser.profilePicture}
+              style={{
+                borderColor: colors?.colors.base,
+                width: 70,
+                height: 70,
+                borderRadius: 9999,
+              }}
+            />
+          ) : (
+            <View className="size-[70px] bg-slate-50 rounded-full items-center justify-center">
+              <Text className="font-rubik-semibold text-black-200 text-3xl">
+                {thisUser?.firstName?.at(0)}
+                {thisUser?.lastName?.at(0)}
+              </Text>
+            </View>
+          )}
 
-          <Image
-            source={appointment.petID.petImage}
-            style={{
-              borderColor: colors?.colors.base,
-              width: 40,
-              height: 40,
-              borderWidth: 2,
-              borderRadius: 9999,
-              position: "absolute",
-              bottom: 0,
-            }}
-          />
+          {thisPet?.petImage ? (
+            <Image
+              source={thisPet.petImage}
+              style={{
+                borderColor: colors?.colors.base,
+                width: 40,
+                height: 40,
+                borderWidth: 2,
+                borderRadius: 9999,
+                position: "absolute",
+                bottom: 0,
+              }}
+            />
+          ) : (
+            <Image
+              source={petCardsIcon.dog_male}
+              style={{
+                borderColor: colors?.colors.base,
+                width: 40,
+                height: 40,
+                borderWidth: 2,
+                borderRadius: 9999,
+                position: "absolute",
+                bottom: 0,
+              }}
+            />
+          )}
         </View>
 
         <View className="h-full">

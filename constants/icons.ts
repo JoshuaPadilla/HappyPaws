@@ -67,6 +67,8 @@ import most_booked_icon from "@/assets/icons/admin_icons/most_booked_icon.png";
 import overview_icon from "@/assets/icons/admin_icons/overview_icon.png";
 import total_app_icon from "@/assets/icons/admin_icons/total_app_icon.png";
 import refresh_icon from "@/assets/icons/admin_icons/refresh_icon.png";
+import trend_down from "@/assets/icons/trend_down.png";
+import trend_up from "@/assets/icons/trend_up.png";
 
 interface IconsProps {
   back_green: ImageSourcePropType;
@@ -93,6 +95,8 @@ interface IconsProps {
   cancel: ImageSourcePropType;
   appointment_status: ImageSourcePropType;
   options_icon: ImageSourcePropType;
+  trend_down: ImageSourcePropType;
+  trend_up: ImageSourcePropType;
 }
 
 interface PetCardsIconsProps {
@@ -177,6 +181,8 @@ const icons: IconsProps = {
   appointment_status,
   cancel,
   options_icon,
+  trend_down,
+  trend_up,
 };
 
 export const petCardsIcon: PetCardsIconsProps = {

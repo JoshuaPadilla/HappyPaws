@@ -77,6 +77,13 @@ const AppointmentsAdmin = () => {
           <ActivityIndicator color={"#73C7C7"} className="p-16" />
         )}
       </ScrollView>
+
+      <CustomButton
+        iconLeft={icons.plus_icon}
+        tintColor="#F6F4F0"
+        iconSize="size-12"
+        btnClassname="absolute size-20 justify-center items-center rounded-full bottom-[100px] right-[30px] bg-primary-100"
+      />
     </SafeAreaView>
   );
 };

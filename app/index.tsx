@@ -6,7 +6,4 @@ const Page = () => {
   return <Redirect href="/(auth)/welcome" />;
 };
 
-
-
-
 export default Page;

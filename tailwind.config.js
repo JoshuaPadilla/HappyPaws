@@ -59,6 +59,10 @@ module.exports = {
           diet: "#C77D3E",
           followup: "#8FB88F",
         },
+        trend: {
+          up: "#2fdd92",
+          down: "#ff5757",
+        },
 
         "base-medication": "#FFC0CB", // Light pink
         "base-wound": "#FFFACD", // Light yellow
