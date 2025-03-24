@@ -6,7 +6,7 @@ import moment from "moment";
 
 const BarChartComponent = ({ data }: { data: any }) => {
   const screenWidth = Dimensions.get("window").width; // Get screen width
-  const sampleData = data.map((item: any) => ({
+  const mappedData = data.map((item: any) => ({
     value: item.count,
     label: item.date,
     frontColor: item.count >= 7 ? "#73C7C7" : "lightgray",
@@ -16,7 +16,7 @@ const BarChartComponent = ({ data }: { data: any }) => {
     <View className="primary">
       <Text>
         <BarChart
-          data={sampleData}
+          data={mappedData}
           width={screenWidth * 0.7}
           barWidth={(screenWidth * 0.7) / 7 - 21}
           isAnimated
@@ -31,7 +31,6 @@ const BarChartComponent = ({ data }: { data: any }) => {
           xAxisLabelTextStyle={{ textAlign: "center" }}
           dashGap={5}
         />
-        ;
       </Text>
     </View>
   );
