@@ -17,6 +17,7 @@ import InputField from "@/components/InputField";
 import CustomButton from "@/components/custom_button";
 import { useAuthStore } from "@/store/useAuth";
 import Spinner from "react-native-loading-spinner-overlay";
+import { dismiss, gotoSignUp } from "@/lib/routerFunctions";
 
 const SignIn = () => {
   const { signin, authUser, isSigningIn } = useAuthStore();
@@ -57,15 +58,17 @@ const SignIn = () => {
           {/* Headings */}
 
           <View className="w-full flex-row justify-between items-start h-[25%] p-8">
-            <Link href="/welcome">
-              <Image source={icons.back_white} className="size-8" />
-            </Link>
+            <CustomButton
+              iconLeft={icons.back_white}
+              iconSize="size-8"
+              onPress={dismiss}
+            />
 
-            <Link href="/signup">
-              <Text className="font-poppins-regular text-m text-background-100">
-                Register
-              </Text>
-            </Link>
+            <CustomButton
+              title="Login"
+              textClassname="font-poppins-regular text-m text-background-100"
+              onPress={gotoSignUp}
+            />
 
             <Image
               source={icons.signin_cat}

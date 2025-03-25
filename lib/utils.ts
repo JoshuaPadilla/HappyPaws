@@ -140,32 +140,65 @@ export const getAftercareCardBg = (type: string): any => {
   }
 };
 
-export const checkForm = (formData: signupForm): boolean => {
+export const basicDetailsIsValid = (formData: signupForm): boolean => {
   // Name validation
-  if (!formData.firstName.trim()) return false;
+  if (!formData.firstName.trim()) {
+    showToast("error", "first name is required");
 
-  if (!formData.lastName.trim()) return false;
+    return false;
+  }
+
+  if (!formData.lastName.trim()) {
+    showToast("error", "last name is required");
+    return false;
+  }
 
   // Address validation
-  if (!formData.address.trim()) return false;
+  if (!formData.address.trim()) {
+    showToast("error", "address is required");
+    return false;
+  }
 
+  // Phone validation
+  if (!formData.phone.trim()) {
+    showToast("error", "phone number is required");
+    return false;
+  }
+
+  // Gender validation
+  if (!formData.gender) {
+    showToast("error", "Please select a gender");
+    return false;
+  }
+
+  if (
+    !formData.birthday.date ||
+    !formData.birthday.month ||
+    !formData.birthday.year
+  ) {
+    showToast("error", "specify you birthday");
+    return false;
+  }
+
+  return true;
+};
+
+export const emailAndPassIsValid = (formData: signupForm): boolean => {
   // Email validation
   if (
     !formData.email.trim() ||
-    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
-  )
+    !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)
+  ) {
+    console.log("email is wrong");
+    showToast("error", "invalid email");
     return false;
-
-  // Phone validation
-  if (!formData.phone.trim()) return false;
-
-  // Gender validation
-  if (!formData.gender) return false;
-
-  if (!formData.birthday) return false;
+  }
 
   // Password validation
-  if (formData.password.length < 8) return false;
+  if (formData.password.length < 8) {
+    showToast("error", "password must be atleast 8 characters long");
+    return false;
+  }
 
   return true;
 };

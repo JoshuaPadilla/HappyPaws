@@ -61,3 +61,11 @@ export const goToMedicalRecordListView = () => {
 export const goToVaccineListView = () => {
   router.push("/(pets)/vaccine_list_view");
 };
+
+export const gotoSignIn = () => {
+  router.replace("/(auth)/signin");
+};
+
+export const gotoSignUp = () => {
+  router.replace("/(auth)/signup");
+};

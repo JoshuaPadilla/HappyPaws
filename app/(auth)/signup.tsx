@@ -17,13 +17,20 @@ import CustomButton from "@/components/custom_button";
 import Dropdown from "@/components/dropdown";
 import { days, genderDropdownData, months, years } from "@/constants";
 import { useAuthStore } from "@/store/useAuth";
-import { checkForm, checkSamePassword } from "@/lib/utils";
+import {
+  basicDetailsIsValid,
+  checkSamePassword,
+  emailAndPassIsValid,
+  showToast,
+} from "@/lib/utils";
 import Spinner from "react-native-loading-spinner-overlay";
+import { signinForm, signupForm } from "@/types/type";
+import { dismiss, gotoSignIn } from "@/lib/routerFunctions";
 
 const SignUp = () => {
   const { signup, isSigningUp, authUser } = useAuthStore();
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<signupForm>({
     firstName: "",
     lastName: "",
     address: "",
@@ -37,17 +44,24 @@ const SignUp = () => {
   const [step, setStep] = useState(1);
 
   const handleSignup = () => {
-    if (!checkForm(form)) {
-      console.log("all fields are required");
+    if (!emailAndPassIsValid(form)) {
       return;
     }
 
     if (!checkSamePassword(form.password, form.confirmPassword)) {
-      console.log("passwords are not the same");
+      showToast("error", "password are not the same");
       return;
     }
 
     signup(form);
+  };
+
+  const checkBasicDetails = () => {
+    if (!basicDetailsIsValid(form)) {
+      return;
+    }
+
+    setStep(2);
   };
 
   if (authUser?.role === "user") return <Redirect href="/(tabs)/home" />;
@@ -72,35 +86,19 @@ const SignUp = () => {
           {/* Headings */}
 
           <View className="w-full flex-row justify-between items-start h-[10%] p-8">
-            {step === 2 && (
-              <Pressable
-                onPress={() => {
-                  setStep((step) => (step -= 1));
-                }}
-              >
-                <Image
-                  source={icons.back_white}
-                  className="size-8"
-                  resizeMode="contain"
-                />
-              </Pressable>
-            )}
+            <CustomButton
+              iconLeft={icons.back_white}
+              iconSize="size-8"
+              onPress={() => {
+                step === 2 ? setStep(1) : dismiss();
+              }}
+            />
 
-            {step === 1 && (
-              <Link href="/welcome">
-                <Image
-                  source={icons.back_white}
-                  className="size-8"
-                  resizeMode="contain"
-                />
-              </Link>
-            )}
-
-            <Link href="/signin" asChild>
-              <Text className="font-poppins-regular text-m text-background-100">
-                Login
-              </Text>
-            </Link>
+            <CustomButton
+              title="Login"
+              textClassname="font-poppins-regular text-m text-background-100"
+              onPress={gotoSignIn}
+            />
           </View>
 
           {/* form */}
@@ -295,9 +293,7 @@ const SignUp = () => {
                     btnClassname="p-4 bg-primary-100 w-[150px] rounded-xl flex items-center"
                     title="next"
                     textClassname="font-rubik-semibold text-accent-100 text-lg"
-                    onPress={() => {
-                      setStep((step) => (step += 1));
-                    }}
+                    onPress={checkBasicDetails}
                   />
                 </View>
               </View>

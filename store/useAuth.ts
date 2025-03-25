@@ -9,6 +9,7 @@ import { BASE_URL } from "@/constants";
 import { useAppointmentsStore } from "./useAppointments";
 import { router } from "expo-router";
 import { useAftercareStore } from "./useAftercare";
+import { showToast } from "@/lib/utils";
 
 interface StoreState {
   authUser: User | null;
@@ -31,7 +32,6 @@ export const useAuthStore = create<StoreState>((set) => ({
   isUpdating: false,
 
   signup: async (form: signupForm) => {
-    // console.log(form);
     try {
       set({ isSigningUp: true });
       const res = await fetch(`${BASE_URL}/auth/signup`, {
@@ -44,8 +44,6 @@ export const useAuthStore = create<StoreState>((set) => ({
 
       const data = await res.json();
 
-      console.log(data);
-
       if (data.status === "success") {
         set({ authUser: data.user });
         await AsyncStorage.setItem("token", data.token);
@@ -54,8 +52,9 @@ export const useAuthStore = create<StoreState>((set) => ({
         addUser(data.user);
 
         router.push("/(tabs)/home");
+        showToast("success", `welcome ${data.user.firstName}`);
       } else {
-        Alert.alert("Registration Failed");
+        showToast("error", `Failed to register`);
       }
     } catch (error) {
       console.log(error);
