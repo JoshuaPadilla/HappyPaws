@@ -20,48 +20,54 @@ export default function Insights() {
     prevWeekInsights,
     getThisWeekInsights,
     getPrevWeekInsights,
+    thisMonthInsights,
+    prevMonthInsights,
+    getPrevMonthInsights,
+    getThisMonthInsights,
     isLoading,
   } = useInsightsStore();
 
-  // Extract data for clarity
-  const thisWeek = thisWeekInsights || {};
-  const prevWeek = prevWeekInsights || {};
-
-  // this weeks insights
-  const totalUsers = thisWeekInsights?.totalUsers;
-  const thisWeeksCountsByDay = thisWeekInsights?.weeklyCountsByDay;
-  const thisWeekAverageAppointmentsPerWeek =
-    thisWeekInsights?.averageAppointmentsPerWeek;
-  const thisWeeksNumberOfAppointments =
-    thisWeekInsights?.numberOfWeeklyAppointment;
-  const thisWeekServicepopularity = thisWeekInsights?.weeklyServicePopularity;
-  const thisWeekNewUserCount = thisWeekInsights?.newUserCount;
-  const thisWeekStatusCount = thisWeekInsights?.weeklyStatusCount;
-
-  // prev week insights for comparison
-  const prevWeeksCountsByDay = thisWeekInsights?.weeklyCountsByDay;
-  const prevWeekAverageAppointmentsPerWeek =
-    prevWeekInsights?.averageAppointmentsPerWeek;
-  const numberOfPrevWeekAppointments =
-    prevWeekInsights?.numberOfWeeklyAppointment;
-  const prevWeekServicepopularity = prevWeekInsights?.weeklyServicePopularity;
-  const prevWeekNewUserCount = prevWeekInsights?.newUserCount;
-  const prevWeekStatusCount = prevWeekInsights?.weeklyStatusCount;
+  const currTotalAppointments = weekly
+    ? thisWeekInsights?.numberOfWeeklyAppointment
+    : thisMonthInsights?.numberOfMonthlyAppointments;
+  const prevTotalAppointments = weekly
+    ? prevWeekInsights?.numberOfWeeklyAppointment
+    : prevMonthInsights?.numberOfMonthlyAppointments;
+  const currNewClients = weekly
+    ? thisWeekInsights?.newUserCount
+    : thisMonthInsights?.newUserCount;
+  const prevNewClients = weekly
+    ? prevWeekInsights?.newUserCount
+    : prevMonthInsights?.newUserCount;
+  const servicePopularity = weekly
+    ? thisWeekInsights?.weeklyServicePopularity
+    : thisMonthInsights?.monthlyServicePopularity;
+  const appointmentStatus = weekly
+    ? thisWeekInsights?.weeklyStatusCount
+    : thisMonthInsights?.monthlyStatusCount;
+  const average = weekly
+    ? thisWeekInsights?.averageAppointmentsPerWeek
+    : thisMonthInsights?.averageAppointmentsPerMonth;
+  const prevAverage = weekly
+    ? prevWeekInsights?.averageAppointmentsPerWeek
+    : prevMonthInsights?.averageAppointmentsPerMonth;
 
   // percentages
-  const totaAppointmentPercentage = getTotalPercentage(
-    thisWeeksNumberOfAppointments!,
-    numberOfPrevWeekAppointments!
+  const totalAppointmentPercentage = getTotalPercentage(
+    currTotalAppointments || 0,
+    prevTotalAppointments || 0
   );
 
   const newClientPercentage = getTotalPercentage(
-    thisWeekNewUserCount!,
-    prevWeekNewUserCount!
+    currNewClients || 0,
+    prevNewClients || 0
   );
 
   useEffect(() => {
     getThisWeekInsights();
     getPrevWeekInsights();
+    getThisMonthInsights();
+    getPrevMonthInsights();
   }, []);
 
   if (isLoading) {
@@ -82,51 +88,28 @@ export default function Insights() {
 
         <Toggle
           falseValue="Monthly"
-          trueValue="Weekly"
+          trueValue={"Weekly"}
           onPress={() => setWeekly((prev) => !prev)}
         />
       </View>
 
-      {/* Bar chart */}
-      <View className="px-6">
-        {/* heading */}
-        <View className="flex-row justify-between mb-4">
-          <View className=" gap-2">
-            <Text className="font-rubik-semibold text-xl">
-              Weekly Appointments
-            </Text>
-
-            <View className="gap-1">
-              <Text className="font-rubik-medium text-black-300 text-m">
-                daily average
-              </Text>
-
-              <View className="flex-row gap-6">
-                <Text className="font-rubik-semibold text-3xl text-black-100">
-                  {Math.ceil(thisWeekAverageAppointmentsPerWeek || 0)}
-                </Text>
-
-                <View className="flex-row items-center gap-1">
-                  <Text className="font-rubik-medium text-trend-up">0.15%</Text>
-                  <Image source={icons.trend_up} className="size-4" />
-                </View>
-              </View>
-            </View>
-          </View>
-
-          <CustomButton
-            title="Details"
-            textClassname="font-rubik-regular text-accent-100 px-4 py-1 bg-primary-100 rounded-lg"
-          />
-        </View>
-
-        {thisWeeksCountsByDay && (
-          <BarChartComponent data={thisWeeksCountsByDay} />
-        )}
-
-        {thisWeeksCountsByDay && (
-          <LineChartComponent lineChartData={thisWeeksCountsByDay} />
-        )}
+      {/* Bar chart or line chart*/}
+      <View className="mb-4">
+        {weekly
+          ? thisWeekInsights && (
+              <BarChartComponent
+                barChartData={thisWeekInsights?.weeklyCountsByDay}
+                average={average}
+                prevAverage={prevAverage}
+              />
+            )
+          : thisMonthInsights && (
+              <LineChartComponent
+                lineChartData={thisMonthInsights?.monthlyCountsByDay}
+                average={average}
+                prevAverage={prevAverage}
+              />
+            )}
       </View>
 
       <ScrollView
@@ -146,28 +129,32 @@ export default function Insights() {
             </Text>
             <View className="flex-row gap-2 items-center">
               <Text className="font-rubik-semibold text-black-100 text-3xl">
-                {thisWeeksNumberOfAppointments}
+                {currTotalAppointments || 0}
               </Text>
 
               <View className="flex-row gap-2">
                 <Text
                   className={`font-rubik-semibold ${
-                    totaAppointmentPercentage > 0
+                    totalAppointmentPercentage > 0
                       ? "text-trend-up"
                       : "text-trend-down"
                   } text-xl`}
                 >
-                  {Math.abs(totaAppointmentPercentage).toFixed()}%
+                  {totalAppointmentPercentage
+                    ? `${Math.abs(totalAppointmentPercentage).toFixed()}%`
+                    : ""}
                 </Text>
 
-                <Image
-                  source={
-                    totaAppointmentPercentage > 0
-                      ? icons.trend_up
-                      : icons.trend_up
-                  }
-                  className="size-6"
-                />
+                {totalAppointmentPercentage ? (
+                  <Image
+                    source={
+                      totalAppointmentPercentage > 0
+                        ? icons.trend_up
+                        : icons.trend_up
+                    }
+                    className="size-6"
+                  />
+                ) : null}
               </View>
 
               <View></View>
@@ -181,7 +168,7 @@ export default function Insights() {
             </Text>
             <View className="flex-row gap-2 items-center">
               <Text className="font-rubik-semibold text-black-100 text-3xl">
-                {thisWeekNewUserCount}
+                {currNewClients || 0}
               </Text>
 
               <View className="flex-row gap-2">
@@ -209,7 +196,7 @@ export default function Insights() {
             </View>
           </View>
 
-          {/* Total clients */}
+          {/* Total Clients */}
           <View className="p-4 bg-white rounded-lg shadow gap-2">
             <Text className="font-rubik-medium text-md text-black-200">
               Total Clients
@@ -217,7 +204,7 @@ export default function Insights() {
 
             <View className="flex-row gap-4 items-center">
               <Text className="font-rubik-semibold text-black-100 text-3xl">
-                {totalUsers}
+                {thisWeekInsights?.totalUsers || 0}
               </Text>
             </View>
           </View>
@@ -269,9 +256,7 @@ export default function Insights() {
                 </View>
               </View>
 
-              {thisWeekServicepopularity && (
-                <PieChartService data={thisWeekServicepopularity} />
-              )}
+              <PieChartService data={servicePopularity} />
             </View>
           </View>
         </View>
@@ -322,9 +307,7 @@ export default function Insights() {
                 </View>
               </View>
 
-              {thisWeekServicepopularity && (
-                <PieChartStatus data={thisWeekStatusCount} />
-              )}
+              <PieChartStatus data={appointmentStatus} />
             </View>
           </View>
         </View>

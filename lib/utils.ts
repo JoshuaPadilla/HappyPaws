@@ -342,11 +342,11 @@ export const isUserFormValid = (form: Partial<User>): boolean => {
   return true; // All fields are filled
 };
 
-export const getTotalPercentage = (
-  thisWeekNumber: number,
-  prevWeekNumber: number
-) => {
-  return ((thisWeekNumber - prevWeekNumber) / prevWeekNumber) * 100;
+export const getTotalPercentage = (currNumber: number, prevNumber: number) => {
+  if (currNumber === 0) return 0;
+  if (prevNumber === 0) return 100;
+
+  return ((currNumber - prevNumber) / prevNumber) * 100;
 };
 
 export const percentageFormatter = (num: number) => {};
