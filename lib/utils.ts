@@ -105,7 +105,7 @@ export const getAppointmentColors = (type: string | undefined) => {
 
 // reminders card bg
 export const getRemindersCardBg = (type: string): any => {
-  switch (type.toLowerCase()) {
+  switch (type && type.toLowerCase()) {
     case "medication":
       return "card_medication";
     case "wound care":
@@ -341,3 +341,12 @@ export const isUserFormValid = (form: Partial<User>): boolean => {
 
   return true; // All fields are filled
 };
+
+export const getTotalPercentage = (
+  thisWeekNumber: number,
+  prevWeekNumber: number
+) => {
+  return ((thisWeekNumber - prevWeekNumber) / prevWeekNumber) * 100;
+};
+
+export const percentageFormatter = (num: number) => {};

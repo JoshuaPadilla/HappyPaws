@@ -2,31 +2,66 @@ import { View, Text, Image, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useInsightsStore } from "@/store/useInsights";
-import { formatDate } from "@/lib/utils";
 import Spinner from "react-native-loading-spinner-overlay";
-import BarChart from "@/components/charts/bar_chart";
-import BarChartComponent from "@/components/charts/bar_chart";
-import TabSelect from "@/components/tab_select";
 import Toggle from "@/components/toggle";
 import icons from "@/constants/icons";
 import CustomButton from "@/components/custom_button";
-import { PieChart } from "react-native-gifted-charts";
-import PieChartComponent from "@/components/charts/pieChart";
+import PieChartService from "@/components/charts/pie_chart_service";
+import PieChartStatus from "@/components/charts/pie_chart_status";
+import LineChartComponent from "@/components/charts/lineChart";
+import { getTotalPercentage } from "@/lib/utils";
+import BarChartComponent from "@/components/charts/bar_chart";
 
 export default function Insights() {
   const [weekly, setWeekly] = useState(true);
 
-  const { thisWeekInsights, getWeeklyInsights, isLoading } = useInsightsStore();
-  const thisWeeksCountsByDay = thisWeekInsights?.thisWeeksCountsByDay;
-  const averageAppointmentsPerWeek =
-    thisWeekInsights?.averageAppointmentsPerWeek;
-  const numberOfWeeklyAppointment = thisWeekInsights?.numberOfWeeklyAppointment;
-  const thisWeekServicepopularity = thisWeekInsights?.thisWeekServicePopularity;
+  const {
+    thisWeekInsights,
+    prevWeekInsights,
+    getThisWeekInsights,
+    getPrevWeekInsights,
+    isLoading,
+  } = useInsightsStore();
+
+  // Extract data for clarity
+  const thisWeek = thisWeekInsights || {};
+  const prevWeek = prevWeekInsights || {};
+
+  // this weeks insights
   const totalUsers = thisWeekInsights?.totalUsers;
-  const newUserCount = thisWeekInsights?.newUserCount;
+  const thisWeeksCountsByDay = thisWeekInsights?.weeklyCountsByDay;
+  const thisWeekAverageAppointmentsPerWeek =
+    thisWeekInsights?.averageAppointmentsPerWeek;
+  const thisWeeksNumberOfAppointments =
+    thisWeekInsights?.numberOfWeeklyAppointment;
+  const thisWeekServicepopularity = thisWeekInsights?.weeklyServicePopularity;
+  const thisWeekNewUserCount = thisWeekInsights?.newUserCount;
+  const thisWeekStatusCount = thisWeekInsights?.weeklyStatusCount;
+
+  // prev week insights for comparison
+  const prevWeeksCountsByDay = thisWeekInsights?.weeklyCountsByDay;
+  const prevWeekAverageAppointmentsPerWeek =
+    prevWeekInsights?.averageAppointmentsPerWeek;
+  const numberOfPrevWeekAppointments =
+    prevWeekInsights?.numberOfWeeklyAppointment;
+  const prevWeekServicepopularity = prevWeekInsights?.weeklyServicePopularity;
+  const prevWeekNewUserCount = prevWeekInsights?.newUserCount;
+  const prevWeekStatusCount = prevWeekInsights?.weeklyStatusCount;
+
+  // percentages
+  const totaAppointmentPercentage = getTotalPercentage(
+    thisWeeksNumberOfAppointments!,
+    numberOfPrevWeekAppointments!
+  );
+
+  const newClientPercentage = getTotalPercentage(
+    thisWeekNewUserCount!,
+    prevWeekNewUserCount!
+  );
 
   useEffect(() => {
-    getWeeklyInsights();
+    getThisWeekInsights();
+    getPrevWeekInsights();
   }, []);
 
   if (isLoading) {
@@ -40,9 +75,9 @@ export default function Insights() {
   }
 
   return (
-    <SafeAreaView className="flex-1 flex-col bg-accent-100 px-6 py-8">
+    <SafeAreaView className="flex-1 flex-col bg-accent-100 py-8">
       {/* Headings */}
-      <View className=" flex-row justify-between mb-8">
+      <View className=" flex-row justify-between mb-8 px-6">
         <Text className="font-poppins-bold text-2xl">Insights</Text>
 
         <Toggle
@@ -53,7 +88,7 @@ export default function Insights() {
       </View>
 
       {/* Bar chart */}
-      <View>
+      <View className="px-6">
         {/* heading */}
         <View className="flex-row justify-between mb-4">
           <View className=" gap-2">
@@ -68,7 +103,7 @@ export default function Insights() {
 
               <View className="flex-row gap-6">
                 <Text className="font-rubik-semibold text-3xl text-black-100">
-                  {Math.ceil(averageAppointmentsPerWeek || 0)}
+                  {Math.ceil(thisWeekAverageAppointmentsPerWeek || 0)}
                 </Text>
 
                 <View className="flex-row items-center gap-1">
@@ -88,14 +123,19 @@ export default function Insights() {
         {thisWeeksCountsByDay && (
           <BarChartComponent data={thisWeeksCountsByDay} />
         )}
+
+        {thisWeeksCountsByDay && (
+          <LineChartComponent lineChartData={thisWeeksCountsByDay} />
+        )}
       </View>
 
       <ScrollView
-        contentContainerClassName="justify-between pb-[100px] gap-4 p-2"
+        contentContainerClassName="justify-between pb-[100px] gap-4 px-6"
         showsVerticalScrollIndicator={false}
       >
+        {/* Totals */}
         <ScrollView
-          contentContainerClassName="flex-row justify-between gap-4 p-2 pr[100px]"
+          contentContainerClassName="flex-row gap-2 pr[100px] p-2"
           horizontal
           showsHorizontalScrollIndicator={false}
         >
@@ -104,25 +144,72 @@ export default function Insights() {
             <Text className="font-rubik-medium text-md text-black-200">
               Total Appointments
             </Text>
-
             <View className="flex-row gap-2 items-center">
               <Text className="font-rubik-semibold text-black-100 text-3xl">
-                {numberOfWeeklyAppointment}
+                {thisWeeksNumberOfAppointments}
               </Text>
 
               <View className="flex-row gap-2">
-                <Text className="font-rubik-semibold text-trend-down text-xl">
-                  16.0%
+                <Text
+                  className={`font-rubik-semibold ${
+                    totaAppointmentPercentage > 0
+                      ? "text-trend-up"
+                      : "text-trend-down"
+                  } text-xl`}
+                >
+                  {Math.abs(totaAppointmentPercentage).toFixed()}%
                 </Text>
 
-                <Image source={icons.trend_down} className="size-6" />
+                <Image
+                  source={
+                    totaAppointmentPercentage > 0
+                      ? icons.trend_up
+                      : icons.trend_up
+                  }
+                  className="size-6"
+                />
               </View>
 
               <View></View>
             </View>
           </View>
 
-          {/* Total Users */}
+          {/* New clients */}
+          <View className="p-4 bg-white rounded-lg shadow gap-2">
+            <Text className="font-rubik-medium text-md text-black-200">
+              New Clients
+            </Text>
+            <View className="flex-row gap-2 items-center">
+              <Text className="font-rubik-semibold text-black-100 text-3xl">
+                {thisWeekNewUserCount}
+              </Text>
+
+              <View className="flex-row gap-2">
+                <Text
+                  className={`font-rubik-semibold ${
+                    newClientPercentage > 0
+                      ? "text-trend-up"
+                      : "text-trend-down"
+                  } text-xl`}
+                >
+                  {newClientPercentage
+                    ? `${Math.abs(newClientPercentage).toFixed()}%`
+                    : ""}
+                </Text>
+
+                {newClientPercentage ? (
+                  <Image
+                    source={
+                      newClientPercentage > 0 ? icons.trend_up : icons.trend_up
+                    }
+                    className="size-6"
+                  />
+                ) : null}
+              </View>
+            </View>
+          </View>
+
+          {/* Total clients */}
           <View className="p-4 bg-white rounded-lg shadow gap-2">
             <Text className="font-rubik-medium text-md text-black-200">
               Total Clients
@@ -132,91 +219,113 @@ export default function Insights() {
               <Text className="font-rubik-semibold text-black-100 text-3xl">
                 {totalUsers}
               </Text>
-
-              <View className="flex-row gap-2">
-                <Text className="font-rubik-semibold text-trend-up text-xl">
-                  4.0%
-                </Text>
-
-                <Image source={icons.trend_up} className="size-6" />
-              </View>
-
-              <View></View>
-            </View>
-          </View>
-
-          {/* New Users */}
-          <View className="p-4 bg-white rounded-lg shadow gap-2">
-            <Text className="font-rubik-medium text-md text-black-200">
-              New Users
-            </Text>
-
-            <View className="flex-row gap-4 items-center">
-              <Text className="font-rubik-semibold text-black-100 text-3xl">
-                {newUserCount}
-              </Text>
-
-              <View className="flex-row gap-2">
-                <Text className="font-rubik-semibold text-trend-up text-xl">
-                  68.0%
-                </Text>
-
-                <Image source={icons.trend_up} className="size-6" />
-              </View>
-
-              <View></View>
             </View>
           </View>
         </ScrollView>
 
-        {/* pie chart */}
-        <View className="p-4 bg-white rounded-lg shadow">
-          <View className="flex-row items-center justify-between">
-            <Text className="font-rubik-medium text-xl text-black-200">
-              Service Popularity
-            </Text>
+        {/* pie chart service*/}
+        <View className="">
+          <View className="p-4 bg-white rounded-lg shadow">
+            <View className="flex-row items-center justify-between">
+              <Text className="font-rubik-medium text-xl text-black-200">
+                Service Popularity
+              </Text>
 
-            <CustomButton
-              title="See Details"
-              textClassname="font-rubik-regular text-sm text-black-300"
-            />
-          </View>
-
-          <View className="flex-row gap-6 items-center p-4 justify-between">
-            {/* legends */}
-            <View className="gap-1">
-              <View className="flex-row items-center gap-2">
-                <View className="size-4 bg-base-vaccine rounded-full"></View>
-                <Text className="font-rubik-regular text-black-200 text-lg">
-                  Vaccine
-                </Text>
-              </View>
-
-              <View className="flex-row items-center gap-2">
-                <View className="size-4 bg-base-groom rounded-full"></View>
-                <Text className="font-rubik-regular text-black-200 text-lg">
-                  Grooming
-                </Text>
-              </View>
-
-              <View className="flex-row items-center gap-2">
-                <View className="size-4 bg-base-dental rounded-full"></View>
-                <Text className="font-rubik-regular text-black-200 text-lg">
-                  Dental
-                </Text>
-              </View>
-
-              <View className="flex-row items-center gap-2">
-                <View className="size-4 bg-base-checkup rounded-full"></View>
-                <Text className="font-rubik-regular text-black-200 text-lg">
-                  Checkup
-                </Text>
-              </View>
+              <CustomButton
+                title="See Details"
+                textClassname="font-rubik-regular text-sm text-black-300"
+              />
             </View>
 
-            {thisWeekServicepopularity && (
-              <PieChartComponent data={thisWeekServicepopularity} />
-            )}
+            <View className="flex-row gap-6 items-center p-4 justify-between">
+              {/* legends */}
+              <View className="gap-1">
+                <View className="flex-row items-center gap-2">
+                  <View className="size-4 bg-base-vaccine rounded-full"></View>
+                  <Text className="font-rubik-regular text-black-200 text-lg">
+                    Vaccine
+                  </Text>
+                </View>
+
+                <View className="flex-row items-center gap-2">
+                  <View className="size-4 bg-base-groom rounded-full"></View>
+                  <Text className="font-rubik-regular text-black-200 text-lg">
+                    Grooming
+                  </Text>
+                </View>
+
+                <View className="flex-row items-center gap-2">
+                  <View className="size-4 bg-base-dental rounded-full"></View>
+                  <Text className="font-rubik-regular text-black-200 text-lg">
+                    Dental
+                  </Text>
+                </View>
+
+                <View className="flex-row items-center gap-2">
+                  <View className="size-4 bg-base-checkup rounded-full"></View>
+                  <Text className="font-rubik-regular text-black-200 text-lg">
+                    Checkup
+                  </Text>
+                </View>
+              </View>
+
+              {thisWeekServicepopularity && (
+                <PieChartService data={thisWeekServicepopularity} />
+              )}
+            </View>
+          </View>
+        </View>
+
+        {/* pie chart status */}
+        <View className="">
+          <View className="p-4 bg-white rounded-lg shadow">
+            <View className="flex-row items-center justify-between">
+              <Text className="font-rubik-medium text-xl text-black-200">
+                Appointments by Status
+              </Text>
+
+              <CustomButton
+                title="See Details"
+                textClassname="font-rubik-regular text-sm text-black-300"
+              />
+            </View>
+
+            <View className="flex-row gap-6 items-center p-4 justify-between">
+              {/* legends */}
+              <View className="gap-1">
+                <View className="flex-row items-center gap-2">
+                  <View className="size-4 bg-insights-completed rounded-full"></View>
+                  <Text className="font-rubik-regular text-black-200 text-lg">
+                    Completed
+                  </Text>
+                </View>
+
+                <View className="flex-row items-center gap-2">
+                  <View className="size-4 bg-insights-cancelled rounded-full"></View>
+                  <Text className="font-rubik-regular text-black-200 text-lg">
+                    Cancelled
+                  </Text>
+                </View>
+
+                <View className="flex-row items-center gap-2">
+                  <View className="size-4 bg-insights-resched rounded-full"></View>
+                  <Text className="font-rubik-regular text-black-200 text-lg">
+                    Rescheduled
+                  </Text>
+                </View>
+
+                <View className="flex-row items-center gap-2">
+                  <View className="size-4 bg-insights-most rounded-full"></View>
+                  <Text className="font-rubik-regular text-black-200 text-lg">
+                    Confirmed
+                  </Text>
+                </View>
+              </View>
+
+              {thisWeekServicepopularity && (
+                <PieChartStatus data={thisWeekStatusCount} />
+              )}
+            </View>
           </View>
         </View>
       </ScrollView>

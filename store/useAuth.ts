@@ -95,6 +95,8 @@ export const useAuthStore = create<StoreState>((set) => ({
 
         await fetchPets();
         await fetchAppointments();
+
+        showToast("success", `Welcome Back ${data.user.firstName} 🎉😊`);
       } else {
         Alert.alert("Login Failed");
       }

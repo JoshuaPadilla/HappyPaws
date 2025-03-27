@@ -2,7 +2,7 @@ import { View, Text, ImageBackground } from "react-native";
 import React from "react";
 import { cards_bg } from "@/constants/images";
 import { Reminders } from "@/types/type";
-import { getRemindersCardBg } from "@/lib/utils";
+import { formatDate, getRemindersCardBg } from "@/lib/utils";
 
 const RemindersCard = ({ type, title, time }: Reminders) => {
   const cardBgKey: keyof typeof cards_bg = getRemindersCardBg(type);
@@ -25,7 +25,7 @@ const RemindersCard = ({ type, title, time }: Reminders) => {
           </Text>
 
           <Text className="font-rubik-medium text-sm text-black-300">
-            {time}
+            {formatDate(time)}
           </Text>
         </View>
       </ImageBackground>

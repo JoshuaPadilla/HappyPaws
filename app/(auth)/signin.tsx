@@ -18,6 +18,7 @@ import CustomButton from "@/components/custom_button";
 import { useAuthStore } from "@/store/useAuth";
 import Spinner from "react-native-loading-spinner-overlay";
 import { dismiss, gotoSignUp } from "@/lib/routerFunctions";
+import { showToast } from "@/lib/utils";
 
 const SignIn = () => {
   const { signin, authUser, isSigningIn } = useAuthStore();
@@ -29,7 +30,7 @@ const SignIn = () => {
 
   const handleSignin = () => {
     if (!form.email || !form.password) {
-      console.log("invalid credentials");
+      showToast("error", "fill in all fields");
       return;
     }
 

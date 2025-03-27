@@ -6,7 +6,6 @@ import icons from "@/constants/icons";
 import CustomButton from "@/components/custom_button";
 import RemindersCard from "@/components/reminders_card";
 import PetCard from "@/components/pet_card";
-import remindersDevData from "@/dev-data/reminders_data";
 import { usePetStore } from "@/store/usePets";
 import { useUserStore } from "@/store/useUser";
 import { Pet } from "@/types/type";
@@ -150,7 +149,7 @@ const getReminders = (): Reminders[] => {
       moment(appointment.appointmentDate).isSame(moment(), "day") &&
       appointment.status !== "Cancelled"
     ) {
-      const pet = pets.find((pet) => pet._id === appointment.petID);
+      const pet = appointment.petID;
 
       reminders.push({
         type: appointment.typeOfService,
@@ -162,7 +161,7 @@ const getReminders = (): Reminders[] => {
 
   allAftercares.forEach((aftercare) => {
     if (isBetweenDates(aftercare.startDate, aftercare.endDate)) {
-      const pet = pets.find((pet) => pet._id === aftercare.petID);
+      const pet = aftercare.petID;
 
       reminders.push({
         type: aftercare.type,

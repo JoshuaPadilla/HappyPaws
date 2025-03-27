@@ -110,16 +110,17 @@ export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
         if (data.status === "success") {
           return { appointments: [...state.appointments, data.appointment] };
         } else {
-          Alert.alert("Failed to add appointment");
+          showToast("error", "❌ Appointment adding fails", "Try again");
           return state;
         }
       });
       if (data.status === "success") {
         showToast("success", "Appointment Added 🥳✅");
+      } else {
       }
     } catch (error) {
       console.log(error);
-      showToast("error", "Failed to add appointment");
+      showToast("error", "error to add appointment");
     } finally {
       set({ isAdding: false });
     }
