@@ -9,45 +9,16 @@ interface LineChartComponentProps {
   lineChartData: any;
   average?: number;
   prevAverage?: number;
+  startDate?: string;
+  endDate?: string;
 }
-
-const devLineChartData = [
-  { date: "Apr 01", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 02", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 03", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 04", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 05", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 06", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 07", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 08", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 09", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 10", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 11", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 12", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 13", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 14", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 15", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 16", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 17", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 18", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 19", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 20", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 21", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 22", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 23", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 24", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 25", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 26", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 27", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 28", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 29", count: Math.floor(Math.random() * 9) },
-  { date: "Apr 30", count: Math.floor(Math.random() * 9) },
-];
 
 const LineChartComponent = ({
   lineChartData,
   average,
   prevAverage,
+  startDate,
+  endDate,
 }: LineChartComponentProps) => {
   const mappedData = lineChartData.map((item: any) => ({
     value: item.count,
@@ -66,8 +37,11 @@ const LineChartComponent = ({
           </Text>
 
           <View className="gap-1">
-            <Text className="font-rubik-medium text-black-300 text-m">
-              Daily average
+            <Text className="font-rubik-regular text-black-300 text-m">
+              Daily average{" "}
+              <Text className="font-rubik-medium text-primary-100 text-lg">
+                {startDate} - {endDate}
+              </Text>
             </Text>
 
             <View className="flex-row gap-6">
@@ -119,7 +93,6 @@ const LineChartComponent = ({
         stepHeight={50}
         areaChart
         hideDataPoints
-        hideRules
         yAxisColor={"#f5f5f5"}
         xAxisColor={"#f5f5f5"}
         color="#73C7C7"

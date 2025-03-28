@@ -6,6 +6,8 @@ declare interface WeeklyInsights {
   averageAppointmentsPerWeek: number;
   totalUsers: number;
   newUserCount: number;
+  startDate: string;
+  endDate: string;
 }
 
 declare interface MonthlyInsights {
@@ -16,6 +18,8 @@ declare interface MonthlyInsights {
   averageAppointmentsPerMonth: number;
   totalUsers: number;
   newUserCount: number;
+  startDate: string;
+  endDate: string;
 }
 
 declare interface CountsByDay {

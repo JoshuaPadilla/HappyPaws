@@ -51,6 +51,12 @@ export default function Insights() {
   const prevAverage = weekly
     ? prevWeekInsights?.averageAppointmentsPerWeek
     : prevMonthInsights?.averageAppointmentsPerMonth;
+  const startDate = weekly
+    ? thisWeekInsights?.startDate
+    : thisMonthInsights?.startDate;
+  const endDate = weekly
+    ? thisWeekInsights?.endDate
+    : thisMonthInsights?.endDate;
 
   // percentages
   const totalAppointmentPercentage = getTotalPercentage(
@@ -101,6 +107,8 @@ export default function Insights() {
                 barChartData={thisWeekInsights?.weeklyCountsByDay}
                 average={average}
                 prevAverage={prevAverage}
+                startDate={startDate}
+                endDate={endDate}
               />
             )
           : thisMonthInsights && (
@@ -108,6 +116,8 @@ export default function Insights() {
                 lineChartData={thisMonthInsights?.monthlyCountsByDay}
                 average={average}
                 prevAverage={prevAverage}
+                startDate={startDate}
+                endDate={endDate}
               />
             )}
       </View>
@@ -256,7 +266,9 @@ export default function Insights() {
                 </View>
               </View>
 
-              <PieChartService data={servicePopularity} />
+              {thisMonthInsights && thisWeekInsights && (
+                <PieChartService data={servicePopularity} />
+              )}
             </View>
           </View>
         </View>
@@ -307,7 +319,9 @@ export default function Insights() {
                 </View>
               </View>
 
-              <PieChartStatus data={appointmentStatus} />
+              {thisWeekInsights && thisMonthInsights && (
+                <PieChartStatus data={appointmentStatus} />
+              )}
             </View>
           </View>
         </View>

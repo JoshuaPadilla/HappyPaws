@@ -9,12 +9,16 @@ interface BarChartComponentProps {
   barChartData: any;
   average?: number;
   prevAverage?: number;
+  startDate?: string;
+  endDate?: string;
 }
 
 const BarChartComponent = ({
   barChartData,
   average,
   prevAverage,
+  startDate,
+  endDate,
 }: BarChartComponentProps) => {
   const screenWidth = Dimensions.get("window").width; // Get screen width
   const mappedData = barChartData.map((item: any) => ({
@@ -35,8 +39,11 @@ const BarChartComponent = ({
           </Text>
 
           <View className="gap-1">
-            <Text className="font-rubik-medium text-black-300 text-m">
-              Daily average
+            <Text className="font-rubik-regular text-black-300 text-m">
+              Daily average{" "}
+              <Text className="font-rubik-medium text-primary-100 text-lg">
+                {startDate} - {endDate}
+              </Text>
             </Text>
 
             <View className="flex-row gap-6">
@@ -75,17 +82,19 @@ const BarChartComponent = ({
       </View>
       <BarChart
         data={mappedData}
-        width={screenWidth * 0.7}
-        barWidth={(screenWidth * 0.7) / 7 - 21}
+        width={screenWidth}
+        barWidth={(screenWidth * 0.7) / 7 - 15}
         isAnimated
         height={150}
         barBorderRadius={5}
-        spacing={20}
         maxValue={8}
         noOfSections={8}
         xAxisLabelTextStyle={{ textAlign: "center" }}
         dashGap={5}
         stepValue={2}
+        hideRules
+        xAxisColor={"#f5f5f5"}
+        yAxisColor={"#f5f5f5"}
       />
     </View>
   );
