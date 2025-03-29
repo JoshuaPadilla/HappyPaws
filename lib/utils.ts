@@ -189,7 +189,6 @@ export const emailAndPassIsValid = (formData: signupForm): boolean => {
     !formData.email.trim() ||
     !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)
   ) {
-    console.log("email is wrong");
     showToast("error", "invalid email");
     return false;
   }

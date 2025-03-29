@@ -69,3 +69,8 @@ export const gotoSignIn = () => {
 export const gotoSignUp = () => {
   router.replace("/(auth)/signup");
 };
+
+// admin utility
+export const goToAddClient = () => {
+  router.push("/(admin_utility)/add_client");
+};

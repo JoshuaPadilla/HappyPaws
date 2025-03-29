@@ -20,6 +20,7 @@ import NewAppointmentTimeSlot from "./new_appointment_time_slot";
 import Dropdown from "./dropdown";
 import { appointmentTypes } from "@/constants";
 import AppointmentDetailsCard from "./appointment_details_card";
+import moment from "moment";
 
 interface newAppointmentModalProps {
   modalVisible: boolean;
@@ -60,8 +61,8 @@ const NewAppointmentModal = ({
   const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
   const [typeOfService, setTypeOfService] = useState<string>("");
 
-  // Get today's date in YYYY-MM-DD format
-  const today = new Date().toISOString().split("T")[0];
+  // Get today's date in YYYY-MM-DD formatZ
+  const today = moment().format("YYYY-MM-DD");
 
   const handleselectPetNext = () => {
     if (!selectedPet) {

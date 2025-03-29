@@ -153,7 +153,9 @@ const getReminders = (): Reminders[] => {
 
       reminders.push({
         type: appointment.typeOfService,
-        title: `${pet?.petName}'s \n${appointment.typeOfService}`,
+        title: `${
+          typeof pet === "object" && pet?.petName ? pet.petName : ""
+        }'s \n${appointment.typeOfService}`,
         time: appointment.appointmentDate,
       });
     }

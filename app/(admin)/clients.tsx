@@ -12,12 +12,11 @@ import icons, { adminIcons } from "@/constants/icons";
 import SearchBar from "@/components/search_bar";
 import { useClient } from "@/store/useClient";
 import ClientCard from "@/components/admin_components/client_card";
-import { goBack } from "@/lib/routerFunctions";
+import { goBack, goToAddClient } from "@/lib/routerFunctions";
 import { useAuthStore } from "@/store/useAuth";
 
 const Clients = () => {
   const { fetchClients, clients, isLoading } = useClient();
-  const { logout } = useAuthStore();
 
   const [query, setQuery] = useState("");
 
@@ -51,7 +50,7 @@ const Clients = () => {
           iconLeft={icons.plus_icon}
           iconSize="size-6"
           tintColor="#73C7C7"
-          onPress={logout}
+          onPress={goToAddClient}
         />
       </View>
 

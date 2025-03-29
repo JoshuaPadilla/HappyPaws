@@ -92,6 +92,7 @@ export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
   },
 
   addAppointment: async (appointment: AppointmentForm) => {
+    console.log("appointmentForm: ", appointment);
     try {
       set({ isAdding: true });
       const token = await AsyncStorage.getItem("token");
@@ -106,17 +107,18 @@ export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
       });
 
       const data = await res.json();
-      set((state) => {
-        if (data.status === "success") {
-          return { appointments: [...state.appointments, data.appointment] };
-        } else {
-          showToast("error", "❌ Appointment adding fails", "Try again");
-          return state;
-        }
-      });
+
+      if (data.status === "success") {
+        const { fetchAppointments } = useAppointmentsStore.getState();
+        fetchAppointments();
+      } else {
+        showToast("error", "❌ Appointment adding fails", "Try again");
+      }
+
       if (data.status === "success") {
         showToast("success", "Appointment Added 🥳✅");
       } else {
+        showToast("error", "Failed Adding appointment ❌");
       }
     } catch (error) {
       console.log(error);

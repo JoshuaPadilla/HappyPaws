@@ -2,11 +2,11 @@ import { Image, TextInputProps, TouchableOpacityProps } from "react-native";
 
 declare interface AppointmentForm {
   _id?: string;
-  userID: Partial<User>;
-  petID: Partial<Pet>;
+  userID: Partial<User> | string;
+  petID: Partial<Pet> | string;
   appointmentDate: string;
   appointmentTime: string;
-  typeOfService: "Vaccination" | "Checkup" | "Grooming" | "Dental";
+  typeOfService: "Vaccination" | "Checkup" | "Grooming" | "Dental" | string;
   appointmentNotes: string;
   status?: string;
 }

@@ -41,6 +41,7 @@ export default function RootLayout() {
         <Stack.Screen name="(pets)" options={{ headerShown: false }} />
         <Stack.Screen name="(appointments)" options={{ headerShown: false }} />
         <Stack.Screen name="(admin)" options={{ headerShown: false }} />
+        <Stack.Screen name="(admin_utility)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar backgroundColor={"#f6f4f0"} barStyle={"dark-content"} />

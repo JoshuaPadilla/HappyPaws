@@ -1,6 +1,9 @@
 import { BASE_URL } from "@/constants";
-import { User } from "@/types/type";
+import { dismiss } from "@/lib/routerFunctions";
+import { showToast } from "@/lib/utils";
+import { signupForm, User, userFormData } from "@/types/type";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 import { create } from "zustand";
 
 interface ClientStoreState {
@@ -12,7 +15,7 @@ interface ClientStoreState {
   isDeleting: boolean;
 
   fetchClients: () => Promise<void>;
-  // addClient: (client: Client) => Promise<void>;
+  addClient: (client: signupForm) => Promise<void>;
   // updateClient: (client: Client) => Promise<void>;
   // deleteClient: (clientId: string) => Promise<void>;
   // setSelectedClient: (client: Client) => void;
@@ -45,6 +48,34 @@ export const useClient = create<ClientStoreState>((set) => ({
       console.log(error);
     } finally {
       set({ isLoading: false });
+    }
+  },
+
+  addClient: async (client: signupForm) => {
+    try {
+      set({ isAdding: true });
+      const res = await fetch(`${BASE_URL}/auth/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Add this line
+        },
+        body: JSON.stringify(client),
+      });
+
+      const data = await res.json();
+
+      if (data.status === "success") {
+        set((state) => ({ clients: [...state.clients, data.user] }));
+        dismiss();
+        showToast("success", `new client added`);
+      } else {
+        showToast("error", `Failed to register`);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("adding error Error");
+    } finally {
+      set({ isAdding: false });
     }
   },
 }));
