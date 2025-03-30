@@ -84,7 +84,7 @@ const AddClient = () => {
               }}
             />
             <Text className="font-rubik-bold text-2xl text-black-100">
-              Create an account
+              Add new client
             </Text>
           </View>
 

@@ -4,7 +4,7 @@ import { AppointmentForm } from "@/types/type";
 import { Image } from "expo-image";
 import { getAppointmentColors } from "@/lib/utils";
 import { Image as ReactImage } from "react-native";
-import { petCardsIcon, profileIcons } from "@/constants/icons";
+import icons, { petCardsIcon, profileIcons } from "@/constants/icons";
 
 interface AdminAppointmentCardProps {
   appointment: AppointmentForm;
@@ -15,8 +15,8 @@ const AdminAppointmentCard = ({ appointment }: AdminAppointmentCardProps) => {
     ? getAppointmentColors(appointment.typeOfService)
     : null;
 
-  const thisPet = appointment.petID;
-  const thisUser = appointment.userID;
+  const thisPet = appointment.petID || null;
+  const thisUser = appointment.userID || null;
 
   return (
     <Pressable
@@ -25,26 +25,35 @@ const AdminAppointmentCard = ({ appointment }: AdminAppointmentCardProps) => {
     >
       <View className="flex-row gap-4">
         <View className="h-full">
-          {thisUser?.profilePicture ? (
-            <Image
-              source={thisUser.profilePicture}
-              style={{
-                borderColor: colors?.colors.base,
-                width: 70,
-                height: 70,
-                borderRadius: 9999,
-              }}
-            />
+          {thisUser ? (
+            thisUser.profilePicture ? (
+              <Image
+                source={thisUser.profilePicture}
+                style={{
+                  borderColor: colors?.colors.base,
+                  width: 70,
+                  height: 70,
+                  borderRadius: 9999,
+                }}
+              />
+            ) : (
+              <View className="size-[70px] bg-slate-50 rounded-full items-center justify-center">
+                <Text className="font-rubik-semibold text-black-200 text-3xl">
+                  {typeof thisUser === "object"
+                    ? thisUser.firstName?.at(0)
+                    : ""}
+                  {typeof thisUser === "object" && thisUser.lastName?.at(0)}
+                </Text>
+              </View>
+            )
           ) : (
-            <View className="size-[70px] bg-slate-50 rounded-full items-center justify-center">
-              <Text className="font-rubik-semibold text-black-200 text-3xl">
-                {thisUser?.firstName?.at(0)}
-                {thisUser?.lastName?.at(0)}
-              </Text>
-            </View>
+            <ReactImage
+              source={icons.pet_image_holder}
+              className="size-[70px] rounded-full border-primary-100"
+            />
           )}
 
-          {thisPet?.petImage ? (
+          {thisPet && thisPet.petImage !== null ? (
             <Image
               source={thisPet.petImage}
               style={{
@@ -76,10 +85,10 @@ const AdminAppointmentCard = ({ appointment }: AdminAppointmentCardProps) => {
         <View className="h-full">
           <View className="mb-1">
             <Text className="font-rubik-medium text-black-100 text-lg">
-              {appointment.userID.firstName}
+              {thisUser ? thisUser.firstName : ""}
             </Text>
             <Text className="font-rubik-medium text-black-100 text-lg">
-              {appointment.userID.lastName}
+              {thisUser ? thisUser.lastName : ""}
             </Text>
           </View>
 
@@ -91,7 +100,7 @@ const AdminAppointmentCard = ({ appointment }: AdminAppointmentCardProps) => {
               />
 
               <Text className="font-rubik-medium text-sm text-black-200">
-                {appointment.userID.phone}
+                {thisUser ? thisUser.phone : ""}
               </Text>
             </View>
           </View>
