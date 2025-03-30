@@ -65,7 +65,7 @@ const BarChartComponent = ({
                 {averagePercentage ? (
                   <Image
                     source={
-                      averagePercentage > 0 ? icons.trend_up : icons.trend_up
+                      averagePercentage > 0 ? icons.trend_up : icons.trend_down
                     }
                     className="size-6"
                   />

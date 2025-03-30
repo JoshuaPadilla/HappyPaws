@@ -164,7 +164,7 @@ export default function Insights() {
                     source={
                       totalAppointmentPercentage > 0
                         ? icons.trend_up
-                        : icons.trend_up
+                        : icons.trend_down
                     }
                     className="size-6"
                   />
