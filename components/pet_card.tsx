@@ -42,7 +42,7 @@ const PetCard = ({
             {textShortener(petName, 8)}
           </Text>
           <Text className="font-rubik-regular text-m text-primary-100">
-            {petBreed}
+            {textShortener(petBreed, 8)}
           </Text>
         </View>
 

@@ -16,6 +16,7 @@ interface ClientStoreState {
 
   fetchClients: () => Promise<void>;
   addClient: (client: signupForm) => Promise<void>;
+  fetchClient: (clientId: string) => Promise<void>;
   // updateClient: (client: Client) => Promise<void>;
   // deleteClient: (clientId: string) => Promise<void>;
   // setSelectedClient: (client: Client) => void;
@@ -76,6 +77,28 @@ export const useClient = create<ClientStoreState>((set) => ({
       Alert.alert("adding error Error");
     } finally {
       set({ isAdding: false });
+    }
+  },
+
+  fetchClient: async (clientId: string) => {
+    try {
+      set({ isLoading: true });
+
+      const token = await AsyncStorage.getItem("token");
+
+      const res = await fetch(`${BASE_URL}/users/${clientId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+
+      set({ selectedClient: data.user });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      set({ isLoading: false });
     }
   },
 }));

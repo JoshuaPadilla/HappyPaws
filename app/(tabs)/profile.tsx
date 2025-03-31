@@ -12,7 +12,6 @@ import { goToAppointmentHistory, goToEditProfile } from "@/lib/routerFunctions";
 import ConfirmationModal from "@/components/confirmationModal";
 import { textShortener } from "@/lib/utils";
 const Profile = () => {
-  const router = useRouter();
   const { user, isUpdating } = useUserStore();
   const { logout } = useAuthStore();
 

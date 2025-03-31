@@ -117,16 +117,18 @@ const Appointments = () => {
             contentContainerClassName="gap-2 pb-[250px]"
             showsVerticalScrollIndicator={false}
           >
-            {filteredAppointments.map(
-              (appointment: AppointmentForm) =>
-                appointment.status !== "Cancelled" && (
-                  <AppointmentCard
-                    appointment={appointment}
-                    key={appointment._id}
-                    onPress={() => handleViewAppointment(appointment)}
-                  />
-                )
-            )}
+            {filteredAppointments
+              .reverse()
+              .map(
+                (appointment: AppointmentForm) =>
+                  appointment.status !== "Cancelled" && (
+                    <AppointmentCard
+                      appointment={appointment}
+                      key={appointment._id}
+                      onPress={() => handleViewAppointment(appointment)}
+                    />
+                  )
+              )}
           </ScrollView>
         </View>
       )}

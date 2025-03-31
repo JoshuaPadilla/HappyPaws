@@ -74,3 +74,7 @@ export const gotoSignUp = () => {
 export const goToAddClient = () => {
   router.push("/(admin_utility)/add_client");
 };
+
+export const goToViewClient = () => {
+  router.push("/(admin_utility)/view_client");
+};

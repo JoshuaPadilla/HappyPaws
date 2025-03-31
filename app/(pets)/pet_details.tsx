@@ -8,6 +8,7 @@ import { usePetStore } from "@/store/usePets";
 import { dismiss, goBack, goToEditPet } from "@/lib/routerFunctions";
 import SettingsItem from "@/components/settingsItems";
 import Spinner from "react-native-loading-spinner-overlay";
+import { textShortener } from "@/lib/utils";
 
 const PetDetails = () => {
   const { selectedPet, isUpdating } = usePetStore();
@@ -41,7 +42,7 @@ const PetDetails = () => {
         <ImageAvatar imageUrl={selectedPet?.petImage} size="40" />
 
         <Text className="text-2xl font-rubik-semibold">
-          {selectedPet?.petName}
+          {textShortener(selectedPet?.petName || "", 8)}
         </Text>
       </View>
 
@@ -56,7 +57,7 @@ const PetDetails = () => {
         <SettingsItem
           iconLeft={petDetailsIcons.pet_breed}
           titleLeft="Pet Breed"
-          titleRight={selectedPet?.petBreed}
+          titleRight={textShortener(selectedPet?.petBreed || "", 8)}
           onPress={() => {}}
         />
         <SettingsItem

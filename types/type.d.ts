@@ -30,13 +30,13 @@ declare interface User {
   address: string;
   email: string;
   phone: string;
-  gender: "Male" | "Female" | "";
-  birthday: userBirthday;
-  profilePicture: any;
-  pets: any[];
-  appointments: Appointment[];
-  appointmentHistory: Appointment[];
-  role: string;
+  gender?: "Male" | "Female" | "";
+  birthday?: userBirthday;
+  profilePicture?: any;
+  pets?: any[];
+  appointments?: Appointment[];
+  appointmentHistory?: Appointment[];
+  role?: string;
 }
 
 declare interface signupForm {

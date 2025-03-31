@@ -42,12 +42,6 @@ const SignIn = () => {
 
   return (
     <SafeAreaView className="flex flex-1">
-      <StatusBar
-        backgroundColor="#73C7C7"
-        barStyle="dark-content"
-        translucent={true}
-      />
-
       <Spinner
         visible={isSigningIn}
         textContent={"Loading..."}

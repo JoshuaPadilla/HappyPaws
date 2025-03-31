@@ -7,12 +7,21 @@ import icons, { profileIcons } from "@/constants/icons";
 import { gender } from "@/constants";
 import CustomButton from "../custom_button";
 import { textShortener } from "@/lib/utils";
+import { useClient } from "@/store/useClient";
+import { goToViewClient } from "@/lib/routerFunctions";
 
 interface ClientCardProps {
   client: User;
 }
 
 const ClientCard = ({ client }: ClientCardProps) => {
+  const { fetchClient } = useClient();
+
+  const handleSelectClient = () => {
+    fetchClient(client._id);
+    goToViewClient();
+  };
+
   return (
     <Pressable className="flex-row w-full h-[120px] bg-white rounded-lg px-4 py-4 shadow gap-4 items-start justify-between">
       <View className="flex-row gap-4 max-w-[70%]">
@@ -59,7 +68,7 @@ const ClientCard = ({ client }: ClientCardProps) => {
       <CustomButton
         iconLeft={icons.options_icon}
         iconSize="size-10"
-        btnClassname=""
+        onPress={handleSelectClient}
       />
     </Pressable>
   );
