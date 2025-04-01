@@ -5,15 +5,21 @@ import CustomButton from "@/components/custom_button";
 import icons, { profileIcons } from "@/constants/icons";
 import { ImageAvatar } from "@/components/image_avatar";
 import { useClient } from "@/store/useClient";
-import { goBack } from "@/lib/routerFunctions";
+import { goBack, goToEditClient } from "@/lib/routerFunctions";
 import SettingsItem from "@/components/settingsItems";
-import { textShortener } from "@/lib/utils";
+import { formatDate, textShortener } from "@/lib/utils";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const ClientDetails = () => {
-  const { selectedClient } = useClient();
+  const { selectedClient, isUpdating } = useClient();
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
+      <Spinner
+        visible={isUpdating}
+        textContent={"Updating..."}
+        textStyle={{ color: "#FFF" }}
+      />
       {/* Headings */}
       <View className="flex-row justify-between items-center mb-4">
         <CustomButton
@@ -25,7 +31,7 @@ const ClientDetails = () => {
         <CustomButton
           iconLeft={profileIcons.profile_edit}
           iconSize="size-6"
-          onPress={() => {}}
+          onPress={goToEditClient}
         />
       </View>
 
@@ -82,6 +88,13 @@ const ClientDetails = () => {
               : "June 2, 2024"
           }
         />
+      </View>
+
+      <View className="flex-row gap-4 justify-between">
+        <Text className="font-rubik-regular text-lg">Joined At:</Text>
+        <Text className="font-rubik-semibold text-lg">
+          {formatDate(selectedClient?.joinedAt || "")}
+        </Text>
       </View>
     </SafeAreaView>
   );

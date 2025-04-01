@@ -37,6 +37,7 @@ declare interface User {
   appointments?: Appointment[];
   appointmentHistory?: Appointment[];
   role?: string;
+  joinedAt?: string;
 }
 
 declare interface signupForm {

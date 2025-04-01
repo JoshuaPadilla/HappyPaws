@@ -94,3 +94,7 @@ export const goToClientAppointmentHistory = () => {
 export const goToClientActiveAppointments = () => {
   router.push("/(admin_utility)/client_active_appointments");
 };
+
+export const goToEditClient = () => {
+  router.push("/(admin_utility)/edit_client");
+};

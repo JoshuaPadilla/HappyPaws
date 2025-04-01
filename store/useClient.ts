@@ -1,6 +1,6 @@
 import { BASE_URL } from "@/constants";
 import { dismiss } from "@/lib/routerFunctions";
-import { showToast } from "@/lib/utils";
+import { resizeImage, showToast } from "@/lib/utils";
 import { signupForm, User, userFormData } from "@/types/type";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
@@ -17,7 +17,7 @@ interface ClientStoreState {
   fetchClients: () => Promise<void>;
   addClient: (client: signupForm) => Promise<void>;
   fetchClient: (clientId: string) => Promise<void>;
-  // updateClient: (client: Client) => Promise<void>;
+  updateClient: (client: any) => Promise<void>;
   // deleteClient: (clientId: string) => Promise<void>;
   // setSelectedClient: (client: Client) => void;
 }
@@ -52,7 +52,7 @@ export const useClient = create<ClientStoreState>((set) => ({
     }
   },
 
-  addClient: async (client: signupForm) => {
+  addClient: async (client) => {
     try {
       set({ isAdding: true });
       const res = await fetch(`${BASE_URL}/auth/signup`, {
@@ -80,7 +80,7 @@ export const useClient = create<ClientStoreState>((set) => ({
     }
   },
 
-  fetchClient: async (clientId: string) => {
+  fetchClient: async (clientId) => {
     try {
       set({ isLoading: true });
 
@@ -99,6 +99,63 @@ export const useClient = create<ClientStoreState>((set) => ({
       console.log(error);
     } finally {
       set({ isLoading: false });
+    }
+  },
+
+  updateClient: async (updatedForm) => {
+    try {
+      set({ isUpdating: true });
+
+      const selectedClient = useClient.getState().selectedClient;
+      const formData = new FormData();
+
+      formData.append("firstName", updatedForm.firstName);
+      formData.append("lastName", updatedForm.lastName);
+      formData.append("address", updatedForm.address);
+      formData.append("phone", updatedForm.phone);
+      formData.append("birthday", JSON.stringify(updatedForm.birthday));
+
+      // Append the profile picture file
+      if (
+        updatedForm.profilePicture &&
+        updatedForm.profilePicture !== selectedClient?.profilePicture
+      ) {
+        const resizedUri = await resizeImage(updatedForm.profilePicture.uri);
+        formData.append("profilePicture", {
+          uri: resizedUri,
+          type: "image/jpeg",
+          name:
+            updatedForm.profilePicture.fileName || `profile-${Date.now()}.jpg`,
+        } as any);
+      }
+
+      const token = await AsyncStorage.getItem("token");
+
+      if (!token) {
+        console.log("No token found.");
+        return;
+      }
+
+      const res = await fetch(`${BASE_URL}/users/${selectedClient?._id}`, {
+        method: "PATCH",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (data.user) {
+        set({ selectedClient: data.user });
+      }
+
+      showToast("success", "Details Updated ✅");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      set({ isUpdating: false });
+      // console.log("Done updating user");
     }
   },
 }));

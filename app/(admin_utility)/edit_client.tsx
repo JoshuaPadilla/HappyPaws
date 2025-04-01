@@ -1,57 +1,40 @@
 import {
   View,
   Text,
-  Image,
+  Alert,
   KeyboardAvoidingView,
   TextInput,
-  Alert,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import icons, { profileIcons } from "@/constants/icons";
-import CustomButton from "@/components/custom_button";
-import InputField from "@/components/InputField";
-import Dropdown from "@/components/dropdown";
-import { days, genderDropdownData, years, months } from "@/constants";
-import { useAuthStore } from "@/store/useAuth";
-import Spinner from "react-native-loading-spinner-overlay";
-import { useRouter } from "expo-router";
-import * as ImagePicker from "expo-image-picker";
-import { useUserStore } from "@/store/useUser";
-import { ImageAvatar } from "@/components/image_avatar";
-import Toast from "react-native-toast-message";
-import { isUserFormValid, showToast } from "@/lib/utils";
 import { User } from "@/types/type";
-
-const EditProfile = () => {
-  const router = useRouter();
-
-  const { user, updateUser } = useUserStore();
+import { useClient } from "@/store/useClient";
+import * as ImagePicker from "expo-image-picker";
+import { SafeAreaView } from "react-native-safe-area-context";
+import CustomButton from "@/components/custom_button";
+import icons, { profileIcons } from "@/constants/icons";
+import { goBack } from "@/lib/routerFunctions";
+import { ImageAvatar } from "@/components/image_avatar";
+import Dropdown from "@/components/dropdown";
+import { days, genderDropdownData, months, years } from "@/constants";
+import { isUserFormValid, showToast } from "@/lib/utils";
+import { dismiss } from "@/lib/routerFunctions";
+const EditClient = () => {
+  const { selectedClient, updateClient } = useClient();
 
   const [form, setForm] = useState<Partial<User>>({
-    firstName: user!.firstName,
-    lastName: user!.lastName,
-    address: user!.address,
-    phone: user!.phone,
-    gender: user!.gender,
+    firstName: selectedClient!.firstName,
+    lastName: selectedClient!.lastName,
+    address: selectedClient!.address,
+    phone: selectedClient!.phone,
+    gender: selectedClient!.gender,
     birthday: {
-      date: user?.birthday?.date || "",
-      month: user?.birthday?.month || "",
-      year: user?.birthday?.year || "",
+      date: selectedClient?.birthday?.date || "",
+      month: selectedClient?.birthday?.month || "",
+      year: selectedClient?.birthday?.year || "",
     },
-    profilePicture: user?.profilePicture,
+    profilePicture: selectedClient?.profilePicture,
   });
-
-  const handleUpdate = () => {
-    if (!isUserFormValid(form)) {
-      showToast("error", "all fields should be filled");
-      return;
-    }
-
-    updateUser(form);
-
-    router.dismiss();
-  };
 
   const selectImage = async () => {
     try {
@@ -89,19 +72,33 @@ const EditProfile = () => {
     }
   };
 
+  const handleUpdate = () => {
+    if (!isUserFormValid(form)) {
+      showToast("error", "all fields should be filled");
+      return;
+    }
+
+    updateClient(form);
+
+    dismiss();
+  };
+
   return (
-    <SafeAreaView className="flex-1 p-8">
+    <SafeAreaView className="flex-1 py-8 px-6">
       {/* Headings */}
-
       <View className="flex-row justify-between items-end mb-4">
-        <Text className="font-poppins-bold text-2xl">Edit Profile</Text>
-
+        <View className="flex-row gap-4 items-center">
+          <CustomButton
+            iconLeft={icons.back_green}
+            iconSize="size-8"
+            onPress={goBack}
+          />
+          <Text className="font-poppins-bold text-xl">Edit Details</Text>
+        </View>
         <CustomButton
           iconLeft={icons.edit_check}
           iconSize="size-8"
-          onPress={() => {
-            handleUpdate();
-          }}
+          onPress={handleUpdate}
         />
       </View>
 
@@ -297,4 +294,4 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default EditClient;
