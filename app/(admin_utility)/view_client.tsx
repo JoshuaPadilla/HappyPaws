@@ -4,8 +4,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useClient } from "@/store/useClient";
 import Spinner from "react-native-loading-spinner-overlay";
 import CustomButton from "@/components/custom_button";
-import icons, { profileIcons } from "@/constants/icons";
-import { goBack } from "@/lib/routerFunctions";
+import icons, { clientIcons, profileIcons } from "@/constants/icons";
+import {
+  goBack,
+  goToClientActiveAppointments,
+  goToClientAppointmentHistory,
+  goToClientDetails,
+  goToClientPets,
+} from "@/lib/routerFunctions";
 import { ImageAvatar } from "@/components/image_avatar";
 import SettingsItem from "@/components/settingsItems";
 import { textShortener } from "@/lib/utils";
@@ -39,7 +45,7 @@ const ViewClient = () => {
       {!isLoading && thisUser && (
         // Profile Header
         <>
-          <View className="flex items-center pb-4 border-b border-black-400">
+          <View className="flex items-center pb-4 border-b border-black-400 mb-8">
             <View className="mt-4">
               <ImageAvatar imageUrl={thisUser.profilePicture} size="32" />
             </View>
@@ -54,13 +60,33 @@ const ViewClient = () => {
           </View>
 
           {/* // Details */}
-          <View className="py-4 gap-4 mb-6">
+          <View className="py-4 px-6 gap-6 mb-6">
             <SettingsItem
-              iconLeft={profileIcons.profile_address}
-              titleLeft="Address"
-              titleRight={
-                textShortener(thisUser.address || "", 10) || "Sinidman"
-              }
+              iconLeft={clientIcons.client_details}
+              titleLeft="Details"
+              iconRight={icons.caret_right}
+              onPress={goToClientDetails}
+            />
+
+            <SettingsItem
+              iconLeft={clientIcons.client_pets}
+              titleLeft="Pets"
+              iconRight={icons.caret_right}
+              onPress={goToClientPets}
+            />
+
+            <SettingsItem
+              iconLeft={clientIcons.client_active_appointments}
+              titleLeft="Active Appointments"
+              iconRight={icons.caret_right}
+              onPress={goToClientActiveAppointments}
+            />
+
+            <SettingsItem
+              iconLeft={clientIcons.client_appointment_history}
+              titleLeft="Appointment History"
+              iconRight={icons.caret_right}
+              onPress={goToClientAppointmentHistory}
             />
           </View>
         </>

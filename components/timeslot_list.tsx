@@ -28,11 +28,15 @@ const TimeSlotList = ({ appointmentList }: TimeSlotListProps) => {
           </Text>
         </View>
       ) : (
-        <ScrollView contentContainerClassName="pb-[300px] pt-[50px] pr-8 gap-1">
+        <ScrollView
+          contentContainerClassName="pb-[300px] pt-[50px] pr-8 gap-1"
+          showsVerticalScrollIndicator={false}
+        >
           {businessHours.map((time) => {
             const appointment = appointmentList.find(
               (appointment) => appointment.appointmentTime === time
             );
+
             return (
               <TimeSlot time={time} appointment={appointment} key={time} />
             );
@@ -45,9 +49,8 @@ const TimeSlotList = ({ appointmentList }: TimeSlotListProps) => {
 
 const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
   const bgColor = getAppointmentBg(appointment?.typeOfService || "");
-  const appointedPet = appointment
-    ? findPetById(appointment.petID._id || "")
-    : null;
+
+  const thisPet = appointment ? appointment.petID : null;
 
   return (
     <View className="flex-row justify-between h-[100px]">
@@ -65,7 +68,7 @@ const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
           <Text className="font-rubik-semibold text-xl">
             {appointment.typeOfService}
           </Text>
-          <Text>{appointedPet?.petName}</Text>
+          <Text>{thisPet?.petName || ""}</Text>
         </Pressable>
       ) : (
         <Pressable className="w-[70%] items-center justify-center">

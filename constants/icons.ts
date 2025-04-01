@@ -70,6 +70,11 @@ import refresh_icon from "@/assets/icons/admin_icons/refresh_icon.png";
 import trend_down from "@/assets/icons/trend_down.png";
 import trend_up from "@/assets/icons/trend_up.png";
 
+import client_active_appointments from "@/assets/icons/client_icons/client_active_appointments.png";
+import client_appointment_history from "@/assets/icons/client_icons/client_appointment_history.png";
+import client_details from "@/assets/icons/client_icons/client_details.png";
+import client_pets from "@/assets/icons/client_icons/client_pets.png";
+
 interface IconsProps {
   back_green: ImageSourcePropType;
   back_white: ImageSourcePropType;
@@ -156,6 +161,13 @@ interface AdminIconsProps {
   refresh_icon: ImageSourcePropType;
 }
 
+interface ClientIconsProps {
+  client_active_appointments: ImageSourcePropType;
+  client_appointment_history: ImageSourcePropType;
+  client_details: ImageSourcePropType;
+  client_pets: ImageSourcePropType;
+}
+
 const icons: IconsProps = {
   back_green,
   back_white,
@@ -240,6 +252,13 @@ export const adminIcons: AdminIconsProps = {
   overview_icon,
   total_app_icon,
   refresh_icon,
+};
+
+export const clientIcons: ClientIconsProps = {
+  client_active_appointments,
+  client_appointment_history,
+  client_details,
+  client_pets,
 };
 
 export default icons;

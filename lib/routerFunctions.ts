@@ -78,3 +78,19 @@ export const goToAddClient = () => {
 export const goToViewClient = () => {
   router.push("/(admin_utility)/view_client");
 };
+
+export const goToClientDetails = () => {
+  router.push("/(admin_utility)/client_details");
+};
+
+export const goToClientPets = () => {
+  router.push("/(admin_utility)/client_pets");
+};
+
+export const goToClientAppointmentHistory = () => {
+  router.push("/(admin_utility)/client_appointment_history");
+};
+
+export const goToClientActiveAppointments = () => {
+  router.push("/(admin_utility)/client_active_appointments");
+};
