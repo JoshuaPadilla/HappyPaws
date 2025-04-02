@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom_button";
 import icons, { petDetailsIcons, profileIcons } from "@/constants/icons";
@@ -9,9 +9,13 @@ import { dismiss, goBack, goToEditPet } from "@/lib/routerFunctions";
 import SettingsItem from "@/components/settingsItems";
 import Spinner from "react-native-loading-spinner-overlay";
 import { textShortener } from "@/lib/utils";
+import { useAdminPets } from "@/store/useAdminPets";
 
 const PetDetails = () => {
-  const { selectedPet, isUpdating } = usePetStore();
+  const { selectedPet, isUpdating, deletePet } = usePetStore();
+  const { selectedPet: selectedPetAdmin } = useAdminPets();
+
+  const thisPet = selectedPet || selectedPetAdmin;
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
@@ -39,10 +43,10 @@ const PetDetails = () => {
 
       {/* Image icon */}
       <View className="flex justify-center items-center p-8 border-b border-black-400 gap-4">
-        <ImageAvatar imageUrl={selectedPet?.petImage} size="40" />
+        <ImageAvatar imageUrl={thisPet?.petImage} size="40" />
 
         <Text className="text-2xl font-rubik-semibold">
-          {textShortener(selectedPet?.petName || "", 8)}
+          {thisPet?.petName || ""}
         </Text>
       </View>
 
@@ -51,26 +55,23 @@ const PetDetails = () => {
         <SettingsItem
           iconLeft={petDetailsIcons.pet_specie}
           titleLeft="Pet Specie"
-          titleRight={selectedPet?.petSpecie}
+          titleRight={thisPet?.petSpecie}
           onPress={() => {}}
         />
         <SettingsItem
           iconLeft={petDetailsIcons.pet_breed}
           titleLeft="Pet Breed"
-          titleRight={textShortener(selectedPet?.petBreed || "", 8)}
-          onPress={() => {}}
+          titleRight={textShortener(thisPet?.petBreed || "", 8)}
         />
         <SettingsItem
           iconLeft={petDetailsIcons.pet_age}
           titleLeft="Pet Age"
-          titleRight={selectedPet?.petAge.toString()}
-          onPress={() => {}}
+          titleRight={thisPet?.petAge.toString()}
         />
         <SettingsItem
           iconLeft={petDetailsIcons.pet_gender}
           titleLeft="Pet Gender"
-          titleRight={selectedPet?.petGender}
-          onPress={() => {}}
+          titleRight={thisPet?.petGender}
         />
       </View>
     </SafeAreaView>

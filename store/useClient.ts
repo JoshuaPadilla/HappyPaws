@@ -19,7 +19,7 @@ interface ClientStoreState {
   fetchClient: (clientId: string) => Promise<void>;
   updateClient: (client: any) => Promise<void>;
   fetchSelectedClientPets: () => Promise<void>;
-  // deleteClient: (clientId: string) => Promise<void>;
+  deleteClient: () => Promise<void>;
   // setSelectedClient: (client: Client) => void;
 }
 
@@ -187,6 +187,41 @@ export const useClient = create<ClientStoreState>((set) => ({
       console.log(error);
     } finally {
       set({ isLoading: false });
+    }
+  },
+
+  deleteClient: async () => {
+    try {
+      set({ isDeleting: true });
+
+      const token = await AsyncStorage.getItem("token");
+      const { selectedClient } = useClient.getState();
+
+      const res = await fetch(`${BASE_URL}/users/${selectedClient?._id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+
+      if (data.status === "success") {
+        set((state) => ({
+          clients: state.clients.filter(
+            (client) => client._id !== selectedClient?._id
+          ),
+          selectedClient: null,
+        }));
+
+        dismiss();
+        showToast("success", "Client deleted successfully");
+      } else {
+        showToast("error", "Failed to delete client");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      set({ isDeleting: false });
     }
   },
 }));

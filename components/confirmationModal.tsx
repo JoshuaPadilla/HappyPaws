@@ -8,6 +8,7 @@ interface ConfirmationModalProps {
   icon?: any;
   title: string;
   message: string;
+  message2?: string;
   onCancelBtnClassname?: string;
   onConfirmBtnClassname?: string;
 }
@@ -20,6 +21,7 @@ const ConfirmationModal = ({
   icon,
   title,
   message,
+  message2,
   onCancelBtnClassname,
   onConfirmBtnClassname,
 }: ConfirmationModalProps) => {
@@ -38,13 +40,19 @@ const ConfirmationModal = ({
 
           {/* TItle and message */}
           <View>
-            <Text className="font-rubik-semibold text-xl text-black-100 self-center">
+            <Text className="font-rubik-semibold text-xl text-black-100 self-center mb-2">
               {title}
             </Text>
 
-            <Text className="font-rubik-regular text-lg text-black-100 mb-6 self-center">
-              {message}
-            </Text>
+            <View className="mb-6">
+              <Text className="font-rubik-regular text-lg text-black-100 self-center">
+                {message}
+              </Text>
+
+              <Text className="font-rubik-regular text-md text-black-300 self-center">
+                {message2}
+              </Text>
+            </View>
           </View>
 
           {/* Buttons */}

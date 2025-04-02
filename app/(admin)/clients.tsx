@@ -14,9 +14,10 @@ import { useClient } from "@/store/useClient";
 import ClientCard from "@/components/admin_components/client_card";
 import { goBack, goToAddClient } from "@/lib/routerFunctions";
 import { useAuthStore } from "@/store/useAuth";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const Clients = () => {
-  const { fetchClients, clients, isLoading } = useClient();
+  const { fetchClients, clients, isLoading, isDeleting } = useClient();
 
   const [query, setQuery] = useState("");
 
@@ -38,6 +39,12 @@ const Clients = () => {
 
   return (
     <SafeAreaView className="flex-1 flex-col bg-accent-100 px-6 py-8">
+      <Spinner
+        visible={isDeleting}
+        textContent={"Deleting..."}
+        textStyle={{ color: "#FFF" }}
+      />
+
       {/* Headings */}
       <View className="flex-row justify-between mb-6">
         <CustomButton

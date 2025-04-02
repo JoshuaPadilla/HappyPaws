@@ -18,21 +18,26 @@ import SettingsItem from "@/components/settingsItems";
 import { useAftercareStore } from "@/store/useAftercare";
 import ConfirmationModal from "@/components/confirmationModal";
 import Spinner from "react-native-loading-spinner-overlay";
+import { useAdminPets } from "@/store/useAdminPets";
 
 const ViewPet = () => {
   const { selectedPet, deletePet, isUpdating, isDeleting } = usePetStore();
+  const { selectedPet: adminSelectedPet } = useAdminPets();
+
+  const thisPet = selectedPet || adminSelectedPet;
+
   const { fecthPetAftercare } = useAftercareStore();
 
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
   const handleDeletePet = () => {
-    deletePet(selectedPet?._id || "");
+    deletePet(thisPet?._id || "");
     setDeleteModalVisible(false);
     goBack();
   };
 
   const handleViewAftercares = () => {
-    fecthPetAftercare(selectedPet?._id || "");
+    fecthPetAftercare(thisPet?._id || "");
     goToAftercaresList();
   };
 
@@ -73,8 +78,8 @@ const ViewPet = () => {
 
       {/* Pet Image and name*/}
       <View className="flex items-center justify-center gap-4 p-8 border-b border-black-400">
-        <ImageAvatar imageUrl={selectedPet?.petImage} size="40" />
-        <Text className="text-2xl font-bold">{selectedPet?.petName}</Text>
+        <ImageAvatar imageUrl={thisPet?.petImage} size="40" />
+        <Text className="text-2xl font-bold">{thisPet?.petName}</Text>
       </View>
 
       {/* pet Details */}

@@ -8,11 +8,15 @@ import { useAftercareStore } from "@/store/useAftercare";
 import { usePetStore } from "@/store/usePets";
 import AfterCareCard from "@/components/aftercare_card";
 import { Aftercare } from "@/types/type";
+import { useAdminPets } from "@/store/useAdminPets";
 
 const AftercareListView = () => {
   const { petAftercares, isLoading, setSelectedAftercare } =
     useAftercareStore();
   const { selectedPet } = usePetStore();
+  const { selectedPet: adminSelectedPet } = useAdminPets();
+
+  const thisPet = selectedPet || adminSelectedPet;
 
   const handleAftercarePress = (aftercare: Aftercare) => {
     setSelectedAftercare(aftercare);
@@ -33,30 +37,30 @@ const AftercareListView = () => {
       {/* pet profile */}
       <View className="flex-row gap-4 p-4 bg-white rounded-lg">
         <Image
-          source={{ uri: selectedPet?.petImage }}
+          source={{ uri: thisPet?.petImage }}
           className="size-32 rounded-lg"
         />
 
         <View className="gap-2 justify-over rounded-lg">
           <Text className="font-rubik-semibold text-3xl text-primary-100">
-            {selectedPet?.petName}
+            {thisPet?.petName}
           </Text>
           <Text className="font-rubik-semibold text-xl text-black-200">
-            {selectedPet?.petBreed}
+            {thisPet?.petBreed}
           </Text>
 
           <View className="flex-row justify-between gap-4">
             <View className="flex-row items-center gap-2">
               <Image source={petDetailsIcons.pet_age} className="size-6" />
               <Text className="font-rubik-medium text-lg text-black-200">
-                {selectedPet?.petAge}
+                {thisPet?.petAge}
               </Text>
             </View>
 
             <View className="flex-row items-center gap-2">
               <Image source={petDetailsIcons.pet_gender} className="size-6" />
               <Text className="font-rubik-medium text-lg text-black-200">
-                {selectedPet?.petGender}
+                {thisPet?.petGender}
               </Text>
             </View>
           </View>

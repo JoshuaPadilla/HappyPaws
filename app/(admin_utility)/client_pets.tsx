@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom_button";
 import icons from "@/constants/icons";
-import { goBack } from "@/lib/routerFunctions";
+import { goBack, goToViewPet, goToViewPetAdmin } from "@/lib/routerFunctions";
 import { useClient } from "@/store/useClient";
 import SearchBar from "@/components/search_bar";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -28,13 +28,14 @@ const ClientPets = () => {
 
   const handleSelectPet = (pet: Pet) => {
     setSelectedPet(pet);
+    goToViewPet();
   };
 
   return (
     <SafeAreaView className="flex-1 px-6 py-8">
       <Spinner
         visible={isLoading}
-        textContent={"Adding..."}
+        textContent={"Loading..."}
         textStyle={{ color: "#FFF" }}
       />
 
@@ -64,7 +65,7 @@ const ClientPets = () => {
       {/* pet list */}
       <View className="flex-row justify-end w-full mt-8 mb-4">
         <Text className="font-poppins-medium text-m text-primary-100">
-          {pets.length} pets total
+          {filteredPets.length} pets total
         </Text>
       </View>
 
@@ -78,7 +79,7 @@ const ClientPets = () => {
               petSpecie={pet.petSpecie}
               petImage={pet.petImage}
               key={index}
-              onPress={() => {}}
+              onPress={() => handleSelectPet(pet)}
             />
           ))}
       </ScrollView>

@@ -21,21 +21,25 @@ import { usePetStore } from "@/store/usePets";
 import { dismiss, goBack } from "@/lib/routerFunctions";
 import { Keyboard } from "react-native";
 import { showToast } from "@/lib/utils";
+import { useAdminPets } from "@/store/useAdminPets";
 
 const EditPet = () => {
   const { updatePet, isAdding, selectedPet, isUpdating } = usePetStore();
+  const { selectedPet: selectedPetAdmin } = useAdminPets();
+
+  const thisPet = selectedPet || selectedPetAdmin;
 
   const [form, setForm] = useState({
-    petName: selectedPet?.petName || "",
-    petSpecie: selectedPet?.petSpecie || "",
-    petBreed: selectedPet?.petBreed || "",
-    petAge: selectedPet?.petAge || "",
-    petGender: selectedPet?.petGender || "",
-    petImage: selectedPet?.petImage || null,
+    petName: thisPet?.petName || "",
+    petSpecie: thisPet?.petSpecie || "",
+    petBreed: thisPet?.petBreed || "",
+    petAge: thisPet?.petAge || "",
+    petGender: thisPet?.petGender || "",
+    petImage: thisPet?.petImage || null,
   });
 
   const [ageInNum, setAgeInNum] = useState(
-    selectedPet?.petAge.toString().split(" ")[0]
+    thisPet?.petAge.toString().split(" ")[0]
   );
 
   const selectImage = async () => {
@@ -86,12 +90,12 @@ const EditPet = () => {
       return;
     }
 
-    if (!selectedPet?._id) {
+    if (!thisPet?._id) {
       showToast("error", "Error updating pet");
       return;
     }
 
-    updatePet(selectedPet._id, form);
+    updatePet(thisPet._id, form);
     !isUpdating && dismiss();
   };
 

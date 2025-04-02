@@ -9,7 +9,8 @@ import { findPetById, formatDate } from "@/lib/utils";
 
 const ViewAftercare = () => {
   const { selectedAftercare } = useAftercareStore();
-  const petAftercareSelected = findPetById(selectedAftercare?.petID || "");
+
+  const petName = selectedAftercare?.petID.petName || "";
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
@@ -33,7 +34,7 @@ const ViewAftercare = () => {
         {/* Title */}
 
         <Text className="font-poppins-semibold text-2xl text-primary-100 mb-2">
-          {`${petAftercareSelected?.petName}'s ${selectedAftercare?.type}`}
+          {`${petName}'s ${selectedAftercare?.type}`}
         </Text>
 
         {/* Medication */}

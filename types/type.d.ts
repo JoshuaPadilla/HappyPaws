@@ -96,7 +96,7 @@ declare interface Medication {
 
 declare interface Aftercare {
   _id: string;
-  petID: string;
+  petID: Pet;
   type: "Medication" | "Wound Care" | "Diet and Nutrition" | "Follow-up";
   medications: Medication[];
   followUpDate: string;

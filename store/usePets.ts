@@ -5,6 +5,7 @@ import { AddPetForm, Pet, PetFormData } from "@/types/type";
 import * as ImagePicker from "expo-image-picker";
 import { BASE_URL } from "@/constants";
 import { resizeImage, showToast } from "@/lib/utils";
+import { useAdminPets } from "./useAdminPets";
 
 interface PetStoreState {
   pets: Pet[];
@@ -83,6 +84,9 @@ export const usePetStore = create<PetStoreState>((set) => ({
       set({ isUpdating: true });
 
       const { selectedPet } = usePetStore.getState();
+      const { selectedPet: adminSelectedPet } = useAdminPets.getState();
+
+      const thisPet = selectedPet || adminSelectedPet;
 
       const formData = new FormData();
 
@@ -92,10 +96,7 @@ export const usePetStore = create<PetStoreState>((set) => ({
       formData.append("petGender", updatedForm.petGender);
       formData.append("petSpecie", updatedForm.petSpecie);
 
-      if (
-        updatedForm.petImage &&
-        updatedForm.petImage !== selectedPet?.petImage
-      ) {
+      if (updatedForm.petImage && updatedForm.petImage !== thisPet?.petImage) {
         const resizedUri = await resizeImage(updatedForm.petImage.uri);
         formData.append("petImage", {
           uri: resizedUri,
