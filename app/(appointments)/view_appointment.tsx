@@ -16,26 +16,33 @@ import icons, {
   viewPetIcons,
 } from "@/constants/icons";
 import NewAppointmentModal from "@/components/new_appointment_modal";
+import { useAdminAppointmentsStore } from "@/store/useAdminAppointmentsStore";
 
 const ViewAppointment = () => {
   const { selectedAppointment, cancelAppointment } = useAppointmentsStore();
-  const appointedPet = selectedAppointment?.petID;
+  const { selectedAppointment: adminSelectedAppointment } =
+    useAdminAppointmentsStore();
+
+  const thisAppointment = selectedAppointment || adminSelectedAppointment;
+  const caller = selectedAppointment ? "user" : "admin";
+
+  const appointedPet = thisAppointment?.petID;
   const colors = getAppointmentColors(selectedAppointment?.typeOfService);
   const formattedAppointmentDate = formatDate(
-    selectedAppointment?.appointmentDate || ""
+    thisAppointment?.appointmentDate || ""
   );
 
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleEditAppointment = () => {
-    if (selectedAppointment) {
+    if (thisAppointment) {
       setModalVisible(true);
     }
   };
 
   const handleCancelAppointment = () => {
-    if (selectedAppointment?._id) {
-      cancelAppointment(selectedAppointment._id);
+    if (thisAppointment?._id) {
+      cancelAppointment(thisAppointment._id);
     }
 
     goBack();
@@ -47,6 +54,7 @@ const ViewAppointment = () => {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         action="edit"
+        caller={caller}
       />
 
       {/* Headings */}
@@ -57,8 +65,8 @@ const ViewAppointment = () => {
           onPress={goBack}
         />
 
-        {selectedAppointment?.status !== "Cancelled" &&
-          selectedAppointment?.status !== "Completed" && (
+        {thisAppointment?.status !== "Cancelled" &&
+          thisAppointment?.status !== "Completed" && (
             <View className="flex-row gap-2">
               <CustomButton
                 iconLeft={icons.cancel}
@@ -137,14 +145,14 @@ const ViewAppointment = () => {
         <DetailsItem
           icon={icons.appointment_status}
           title="Appointment Status"
-          value={selectedAppointment?.status || "No status"}
-          tintColor={getStatusColor(selectedAppointment?.status || "")}
+          value={thisAppointment?.status || "No status"}
+          tintColor={getStatusColor(thisAppointment?.status || "")}
         />
 
         <DetailsItem
           icon={icons.appointment_type}
           title="Appointment Type"
-          value={selectedAppointment?.typeOfService || "No type"}
+          value={thisAppointment?.typeOfService || "No type"}
           valueClassname="s"
           valueColor={colors.colors.base}
         />
@@ -152,7 +160,7 @@ const ViewAppointment = () => {
         <DetailsItem
           icon={icons.appointment_time}
           title="Appointment Time"
-          value={selectedAppointment?.appointmentTime || "No time"}
+          value={thisAppointment?.appointmentTime || "No time"}
         />
         <DetailsItem
           icon={icons.appointment_date}
@@ -162,7 +170,7 @@ const ViewAppointment = () => {
         <DetailsItem
           icon={icons.appointment_notes}
           title="Appointment Notes"
-          value={selectedAppointment?.appointmentNotes || "No notes"}
+          value={thisAppointment?.appointmentNotes || "No notes"}
         />
       </View>
     </SafeAreaView>
@@ -184,14 +192,6 @@ const DetailsItem = ({
   valueColor?: string;
   tintColor?: string;
 }) => {
-  const { updateAppointment, selectedAppointment } = useAppointmentsStore();
-
-  const handleEditAppointment = () => {
-    if (selectedAppointment) {
-      updateAppointment(selectedAppointment);
-    }
-  };
-
   return (
     <View className="flex-row justify-between items-center">
       <View className="flex-row items-center justify-center gap-4">

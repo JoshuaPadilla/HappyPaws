@@ -2,17 +2,17 @@ import { View, Text, ScrollView, Pressable } from "react-native";
 import React from "react";
 import { findPetById, getAppointmentColors } from "@/lib/utils";
 import { businessHours } from "@/constants";
-import { AppointmentForm } from "@/types/type";
+import { Appointment, AppointmentForm } from "@/types/type";
 import { Image } from "expo-image";
 import { Image as ReactImage } from "react-native";
 import { petCardsIcon, profileIcons } from "@/constants/icons";
 
 interface TimeSlotProps {
   time: string;
-  appointment: AppointmentForm | undefined;
+  appointment: Appointment | undefined;
 }
 interface TimeSlotListProps {
-  appointmentList: AppointmentForm[];
+  appointmentList: Appointment[];
 }
 
 const OverviewTimeslotList = ({ appointmentList }: TimeSlotListProps) => {

@@ -1,5 +1,5 @@
 import { BASE_URL } from "@/constants";
-import { AppointmentForm } from "@/types/type";
+import { Appointment, AppointmentForm } from "@/types/type";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 import { create } from "zustand";
@@ -9,10 +9,10 @@ interface TimeSlot {
 }
 
 interface AdminAppointmentStoreState {
-  appointments: AppointmentForm[];
-  byDateAppointments: AppointmentForm[];
+  appointments: Appointment[];
+  byDateAppointments: Appointment[];
   bookedSlots: TimeSlot[];
-  selectedAppointment: AppointmentForm | null;
+  selectedAppointment: Appointment | null;
   isLoading: boolean;
   isAdding: boolean;
   isUpdating: boolean;
@@ -24,7 +24,7 @@ interface AdminAppointmentStoreState {
   addAppointment: (appointment: AppointmentForm) => Promise<void>;
   updateAppointment: (appointment: AppointmentForm) => Promise<void>;
   getTimeSlots: (date: string) => Promise<any>;
-  setSelectedAppointment: (appointment: AppointmentForm) => void;
+  setSelectedAppointment: (appointment: Appointment) => void;
   cancelAppointment: (appointmentId: string) => Promise<void>;
 }
 
@@ -161,20 +161,22 @@ export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
         set({ isUpdating: true });
         const token = await AsyncStorage.getItem("token");
 
-        const res = await fetch(`${BASE_URL}/appointments/${appointment._id}`, {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(appointment),
-        });
+        const res = await fetch(
+          `${BASE_URL}/appointments/admin/${appointment._id}`,
+          {
+            method: "PATCH",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(appointment),
+          }
+        );
 
         const data = await res.json();
 
         if (data.status === "success") {
           set({ selectedAppointment: data.updatedAppointment });
-          useAdminAppointmentsStore.getState().fetchAllAppointments();
 
           Alert.alert("Appointment updated successfully");
         } else {

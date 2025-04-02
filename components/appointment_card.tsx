@@ -1,12 +1,12 @@
 import { View, Text, Image, Pressable } from "react-native";
 import React from "react";
 import icons from "@/constants/icons";
-import { AppointmentForm } from "@/types/type";
+import { Appointment, AppointmentForm } from "@/types/type";
 import moment from "moment";
 import { findPetById, formatDate, getAppointmentColors } from "@/lib/utils";
 
 interface AppointmentCardProps {
-  appointment: AppointmentForm;
+  appointment: Appointment;
   onPress: () => void;
 }
 

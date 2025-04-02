@@ -6,6 +6,7 @@ import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { Image, StatusBar, View } from "react-native";
 import Toast from "react-native-toast-message";
+
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),

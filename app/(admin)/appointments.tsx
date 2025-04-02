@@ -12,8 +12,12 @@ import AdminAppointmentCard from "@/components/admin_components/admin_appointmen
 const AppointmentsAdmin = () => {
   const [currDate, setCurrDate] = useState(moment().format("YYYY-MM-DD"));
 
-  const { byDateAppointments, isLoading, fetchAppointmentByDate } =
-    useAdminAppointmentsStore();
+  const {
+    byDateAppointments,
+    isLoading,
+    fetchAppointmentByDate,
+    selectedAppointment,
+  } = useAdminAppointmentsStore();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -23,7 +27,7 @@ const AppointmentsAdmin = () => {
     return () => {
       controller.abort(); // Cancel the previous fetch on cleanup
     };
-  }, [currDate]);
+  }, [currDate, selectedAppointment]);
 
   const handleResetToday = () => {
     setCurrDate(moment().format("YYYY-MM-DD"));

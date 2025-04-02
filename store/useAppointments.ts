@@ -1,6 +1,6 @@
 import { BASE_URL } from "@/constants";
 import { showToast } from "@/lib/utils";
-import { AppointmentForm } from "@/types/type";
+import { Appointment, AppointmentForm } from "@/types/type";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 import { create } from "zustand";
@@ -10,20 +10,21 @@ interface TimeSlot {
 }
 
 interface AppointmentStoreState {
-  appointments: AppointmentForm[];
+  appointments: Appointment[];
   bookedSlots: TimeSlot[];
-  selectedAppointment: AppointmentForm | null;
+  selectedAppointment: Appointment | null;
   isLoading: boolean;
   isAdding: boolean;
   isUpdating: boolean;
   isDeleting: boolean;
   isCancelling: boolean;
 
-  fetchAppointments: () => Promise<void>;
+  fetchAppointments: (signal?: any) => Promise<void>;
+
   addAppointment: (appointment: AppointmentForm) => Promise<void>;
   updateAppointment: (appointment: AppointmentForm) => Promise<void>;
   getTimeSlots: (date: string) => Promise<any>;
-  setSelectedAppointment: (appointment: AppointmentForm) => void;
+  setSelectedAppointment: (appointment: Appointment) => void;
   cancelAppointment: (appointmentId: string) => Promise<void>;
 }
 
@@ -92,7 +93,6 @@ export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
   },
 
   addAppointment: async (appointment: AppointmentForm) => {
-    console.log("appointmentForm: ", appointment);
     try {
       set({ isAdding: true });
       const token = await AsyncStorage.getItem("token");
@@ -191,7 +191,7 @@ export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
     }
   },
 
-  setSelectedAppointment: (appointment: AppointmentForm) => {
+  setSelectedAppointment: (appointment) => {
     set({ selectedAppointment: appointment });
   },
 }));

@@ -62,9 +62,7 @@ const ClientDetails = () => {
         <SettingsItem
           iconLeft={profileIcons.profile_address}
           titleLeft="Address"
-          titleRight={
-            textShortener(selectedClient?.address || "", 10) || "Sinidman"
-          }
+          titleRight={selectedClient?.address}
         />
 
         <SettingsItem

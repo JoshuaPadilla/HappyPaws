@@ -21,11 +21,14 @@ import Dropdown from "./dropdown";
 import { appointmentTypes } from "@/constants";
 import AppointmentDetailsCard from "./appointment_details_card";
 import moment from "moment";
+import { useClient } from "@/store/useClient";
+import { useAdminAppointmentsStore } from "@/store/useAdminAppointmentsStore";
 
 interface newAppointmentModalProps {
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
   action: "add" | "edit";
+  caller?: "user" | "admin";
 }
 
 const steps = [
@@ -40,6 +43,7 @@ const NewAppointmentModal = ({
   modalVisible,
   setModalVisible,
   action,
+  caller,
 }: newAppointmentModalProps) => {
   const {
     getTimeSlots,
@@ -51,8 +55,23 @@ const NewAppointmentModal = ({
     updateAppointment,
     selectedAppointment,
   } = useAppointmentsStore();
+
+  const {
+    updateAppointment: updateAdminAppointment,
+    selectedAppointment: adminSelectedAppointment,
+  } = useAdminAppointmentsStore();
+
+  const thisUpdateAppointment =
+    caller === "admin" ? updateAdminAppointment : updateAppointment;
+
+  const { selectedClient } = useClient();
   const { pets } = usePetStore();
   const { user } = useUserStore();
+
+  const thisClient = caller === "admin" ? selectedClient : user;
+  const thisPets = caller === "admin" ? selectedClient?.pets || [] : pets;
+  const thisAppointment =
+    caller === "admin" ? adminSelectedAppointment : selectedAppointment;
 
   const [step, setStep] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<string>("");
@@ -98,7 +117,7 @@ const NewAppointmentModal = ({
   };
 
   const handleConfirmAppointment = () => {
-    if (!user) {
+    if (!thisClient) {
       Alert.alert("User not found");
       return;
     }
@@ -109,16 +128,16 @@ const NewAppointmentModal = ({
 
     action === "add"
       ? addAppointment({
-          userID: user._id,
+          userID: thisClient._id,
           petID: selectedPet._id,
           appointmentDate: selectedDate,
           appointmentTime: selectedTime,
           typeOfService: typeOfService,
           appointmentNotes: notes,
         })
-      : updateAppointment({
-          _id: selectedAppointment?._id,
-          userID: user._id,
+      : thisUpdateAppointment({
+          _id: thisAppointment?._id,
+          userID: thisClient._id,
           petID: selectedPet._id,
           appointmentDate: selectedDate,
           appointmentTime: selectedTime,
@@ -162,10 +181,10 @@ const NewAppointmentModal = ({
           {step === 0 && (
             <ScrollView
               contentContainerClassName={`flex-row flex-wrap gap-4 pb-[70px] w-full ${
-                pets.length % 3 === 0 ? "justify-between" : ""
+                thisPets.length % 3 === 0 ? "justify-between" : ""
               }`}
             >
-              {pets.map((pet) => (
+              {thisPets.map((pet) => (
                 <ModalPetCard
                   key={pet._id}
                   pet={pet}

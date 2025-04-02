@@ -1,16 +1,21 @@
 import { View, Text, Pressable } from "react-native";
 import React from "react";
-import { AppointmentForm } from "@/types/type";
+import { Appointment, AppointmentForm } from "@/types/type";
 import { Image } from "expo-image";
 import { getAppointmentColors } from "@/lib/utils";
 import { Image as ReactImage } from "react-native";
 import icons, { petCardsIcon, profileIcons } from "@/constants/icons";
+import { useAdminAppointmentsStore } from "@/store/useAdminAppointmentsStore";
+import { goToViewAppointment } from "@/lib/routerFunctions";
+import { useClient } from "@/store/useClient";
 
 interface AdminAppointmentCardProps {
-  appointment: AppointmentForm;
+  appointment: Appointment;
 }
 
 const AdminAppointmentCard = ({ appointment }: AdminAppointmentCardProps) => {
+  const { setSelectedAppointment } = useAdminAppointmentsStore();
+  const { fetchClient } = useClient();
   const colors = appointment
     ? getAppointmentColors(appointment.typeOfService)
     : null;
@@ -18,10 +23,17 @@ const AdminAppointmentCard = ({ appointment }: AdminAppointmentCardProps) => {
   const thisPet = appointment.petID || null;
   const thisUser = appointment.userID || null;
 
+  const handleAppointmentPress = () => {
+    setSelectedAppointment(appointment);
+    fetchClient(appointment.userID._id);
+    goToViewAppointment();
+  };
+
   return (
     <Pressable
       style={{ backgroundColor: colors?.colors.base }}
       className="flex-row w-full rounded-lg p-4 gap-2 justify-between"
+      onPress={handleAppointmentPress}
     >
       <View className="flex-row gap-4">
         <View className="h-full">

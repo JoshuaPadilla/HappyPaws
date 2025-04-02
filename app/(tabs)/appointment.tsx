@@ -7,8 +7,9 @@ import {
   TouchableOpacity,
   Button,
   Alert,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import icons from "@/constants/icons";
 import moment from "moment";
@@ -18,7 +19,7 @@ import CustomButton from "@/components/custom_button";
 import TimeSlotList from "@/components/timeslot_list";
 import TabbedFilter from "@/components/tabbed_filter";
 import AppointmentCard from "@/components/appointment_card";
-import { AppointmentForm } from "@/types/type";
+import { Appointment, AppointmentForm } from "@/types/type";
 import { router } from "expo-router";
 import { useAppointmentsStore } from "@/store/useAppointments";
 import NewAppointmentModal from "@/components/new_appointment_modal";
@@ -27,7 +28,8 @@ import { SERVICE_TYPES_CATEGORY } from "@/constants";
 import { goToViewAppointment } from "@/lib/routerFunctions";
 
 const Appointments = () => {
-  const { appointments, setSelectedAppointment } = useAppointmentsStore();
+  const { appointments, setSelectedAppointment, fetchAppointments, isLoading } =
+    useAppointmentsStore();
   // after getting all the appointment from the backend, filter the appointment for today
 
   const { pets } = usePetStore();
@@ -35,6 +37,16 @@ const Appointments = () => {
   const [all, setAll] = useState(false);
   const [currFilter, setCurrFilter] = useState("All");
   const [appointmentModalVisible, setAppointmentModalVisible] = useState(false);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    fetchAppointments(signal);
+
+    return () => {
+      controller.abort(); // Cancel the previous fetch on cleanup
+    };
+  }, [all]);
 
   //  filter the todays appointment
   const todayAppointments = appointments.filter(
@@ -60,7 +72,7 @@ const Appointments = () => {
     setAppointmentModalVisible(true);
   };
 
-  const handleViewAppointment = (appointment: AppointmentForm) => {
+  const handleViewAppointment = (appointment: Appointment) => {
     setSelectedAppointment(appointment);
     goToViewAppointment();
   };
@@ -117,18 +129,22 @@ const Appointments = () => {
             contentContainerClassName="gap-2 pb-[250px]"
             showsVerticalScrollIndicator={false}
           >
-            {filteredAppointments
-              .reverse()
-              .map(
-                (appointment: AppointmentForm) =>
-                  appointment.status !== "Cancelled" && (
-                    <AppointmentCard
-                      appointment={appointment}
-                      key={appointment._id}
-                      onPress={() => handleViewAppointment(appointment)}
-                    />
-                  )
-              )}
+            {isLoading ? (
+              <ActivityIndicator color={"#73C7C7"} className="p-16" />
+            ) : (
+              filteredAppointments
+                .reverse()
+                .map(
+                  (appointment: Appointment) =>
+                    appointment.status !== "Cancelled" && (
+                      <AppointmentCard
+                        appointment={appointment}
+                        key={appointment._id}
+                        onPress={() => handleViewAppointment(appointment)}
+                      />
+                    )
+                )
+            )}
           </ScrollView>
         </View>
       )}
@@ -159,8 +175,11 @@ const Appointments = () => {
           </View>
 
           {/* List */}
-
-          <TimeSlotList appointmentList={todayAppointments} />
+          {isLoading ? (
+            <ActivityIndicator color={"#73C7C7"} className="p-16" />
+          ) : (
+            <TimeSlotList appointmentList={todayAppointments} />
+          )}
         </View>
       )}
     </SafeAreaView>

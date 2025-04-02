@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AddPetForm, Pet, PetFormData } from "@/types/type";
-import * as ImagePicker from "expo-image-picker";
 import { BASE_URL } from "@/constants";
 import { resizeImage, showToast } from "@/lib/utils";
 import { useAdminPets } from "./useAdminPets";

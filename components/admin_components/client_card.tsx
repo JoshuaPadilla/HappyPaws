@@ -66,9 +66,10 @@ const ClientCard = ({ client }: ClientCardProps) => {
       </View>
 
       <CustomButton
-        iconLeft={icons.options_icon}
+        title="view"
         iconSize="size-10"
         onPress={handleSelectClient}
+        textClassname="font-rubik-medium text-m text-primary-100 p-2"
       />
     </Pressable>
   );

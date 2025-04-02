@@ -6,16 +6,16 @@ import {
   getAppointmentColors,
 } from "@/lib/utils";
 import { businessHours } from "@/constants";
-import { AppointmentForm } from "@/types/type";
+import { Appointment, AppointmentForm } from "@/types/type";
 import icons from "@/constants/icons";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 interface TimeSlotProps {
   time: string;
-  appointment: AppointmentForm | undefined;
+  appointment: Appointment | undefined;
 }
 interface TimeSlotListProps {
-  appointmentList: AppointmentForm[];
+  appointmentList: Appointment[];
 }
 
 const TimeSlotList = ({ appointmentList }: TimeSlotListProps) => {

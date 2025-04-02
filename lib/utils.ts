@@ -1,4 +1,4 @@
-import { AppointmentForm, signupForm, User } from "@/types/type";
+import { Appointment, AppointmentForm, signupForm, User } from "@/types/type";
 import { parseSync } from "@babel/core";
 import { router, useRouter } from "expo-router";
 import moment from "moment";
@@ -263,7 +263,7 @@ export const resizeImage = async (uri: string): Promise<string> => {
 };
 
 export const findMostBookedAppointments = (
-  appointments: AppointmentForm[]
+  appointments: Appointment[]
 ): { name: string; count: number } => {
   const serviceType = [
     { name: "Vaccination", count: 0 },
