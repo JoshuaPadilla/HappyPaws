@@ -18,6 +18,7 @@ interface ClientStoreState {
   addClient: (client: signupForm) => Promise<void>;
   fetchClient: (clientId: string) => Promise<void>;
   updateClient: (client: any) => Promise<void>;
+  fetchSelectedClientPets: () => Promise<void>;
   // deleteClient: (clientId: string) => Promise<void>;
   // setSelectedClient: (client: Client) => void;
 }
@@ -156,6 +157,36 @@ export const useClient = create<ClientStoreState>((set) => ({
     } finally {
       set({ isUpdating: false });
       // console.log("Done updating user");
+    }
+  },
+
+  fetchSelectedClientPets: async () => {
+    try {
+      set({ isLoading: true });
+
+      const { selectedClient } = useClient.getState();
+      const token = await AsyncStorage.getItem("token");
+
+      const res = await fetch(`${BASE_URL}/pets/all/${selectedClient?._id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+
+      set((state) => ({
+        selectedClient: state.selectedClient
+          ? {
+              ...state.selectedClient,
+              pets: data.pets,
+            }
+          : null,
+      }));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      set({ isLoading: false });
     }
   },
 }));

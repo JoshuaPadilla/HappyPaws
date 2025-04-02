@@ -17,9 +17,14 @@ import SettingsItem from "@/components/settingsItems";
 import { textShortener } from "@/lib/utils";
 
 const ViewClient = () => {
-  const { isLoading, selectedClient } = useClient();
+  const { isLoading, selectedClient, fetchSelectedClientPets } = useClient();
 
   const thisUser = selectedClient;
+
+  const handleGoToClientPets = () => {
+    fetchSelectedClientPets();
+    goToClientPets();
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-background-100 px-4 pt-8">
