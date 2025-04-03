@@ -10,10 +10,6 @@ const AdminUtilityScreens = () => {
       <Stack.Screen name="client_pets" options={{ headerShown: false }} />
       <Stack.Screen name="edit_client" options={{ headerShown: false }} />
       <Stack.Screen
-        name="client_appointment_history"
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="client_active_appointments"
         options={{ headerShown: false }}
       />

@@ -21,7 +21,7 @@ interface AppointmentStoreState {
   isCancelling: boolean;
 
   fetchAppointments: (signal?: any) => Promise<void>;
-  fetchAppointmentHistory: (signal?: any) => Promise<void>;
+  fetchAppointmentHistory: (id?: string) => Promise<void>;
 
   addAppointment: (appointment: AppointmentForm) => Promise<void>;
   updateAppointment: (appointment: AppointmentForm) => Promise<void>;

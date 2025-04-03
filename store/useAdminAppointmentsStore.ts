@@ -10,6 +10,8 @@ interface TimeSlot {
 
 interface AdminAppointmentStoreState {
   appointments: Appointment[];
+  appointmentHistory: Appointment[];
+  activeAppointments: Appointment[];
   byDateAppointments: Appointment[];
   bookedSlots: TimeSlot[];
   selectedAppointment: Appointment | null;
@@ -23,14 +25,17 @@ interface AdminAppointmentStoreState {
   fetchAppointmentByDate: (date: string, signal?: any) => Promise<void>;
   addAppointment: (appointment: AppointmentForm) => Promise<void>;
   updateAppointment: (appointment: AppointmentForm) => Promise<void>;
-  getTimeSlots: (date: string) => Promise<any>;
   setSelectedAppointment: (appointment: Appointment) => void;
   cancelAppointment: (appointmentId: string) => Promise<void>;
+  fetchAppointmentHistory: (clientID: string) => Promise<void>;
+  fetchActiveAppointment: (clientID: string) => Promise<void>;
 }
 
 export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
   (set) => ({
     appointments: [],
+    appointmentHistory: [],
+    activeAppointments: [],
     byDateAppointments: [],
     bookedSlots: [],
     selectedAppointment: null,
@@ -68,6 +73,65 @@ export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
       }
     },
 
+    fetchAppointmentHistory: async (clientID) => {
+      try {
+        set({ isLoading: true });
+        const token = await AsyncStorage.getItem("token");
+
+        const res = await fetch(
+          `${BASE_URL}/appointments/history/${clientID}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await res.json();
+
+        if (data.status === "success") {
+          set({ appointmentHistory: data.appointments });
+        } else {
+          Alert.alert("Failed to fetch appointments");
+        }
+      } catch (error) {
+        console.log(error);
+        set({ isLoading: false });
+        Alert.alert("Failed to fetch appointments");
+      } finally {
+        set({ isLoading: false });
+      }
+    },
+
+    fetchActiveAppointment: async (clientID) => {
+      try {
+        set({ isLoading: true });
+        const token = await AsyncStorage.getItem("token");
+
+        const res = await fetch(`${BASE_URL}/appointments/active/${clientID}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+
+        if (data.status === "success") {
+          set({ activeAppointments: data.appointments });
+        } else {
+          Alert.alert("Failed to fetch appointments");
+        }
+      } catch (error) {
+        console.log(error);
+        set({ isLoading: false });
+        Alert.alert("Failed to fetch appointments");
+      } finally {
+        set({ isLoading: false });
+      }
+    },
+
     fetchAppointmentByDate: async (date) => {
       try {
         set({ isLoading: true });
@@ -91,32 +155,6 @@ export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
         console.log(error);
         set({ isLoading: false });
         Alert.alert("Failed to fetch appointments");
-      } finally {
-        set({ isLoading: false });
-      }
-    },
-
-    getTimeSlots: async (date) => {
-      try {
-        set({ isLoading: true });
-        const token = await AsyncStorage.getItem("token");
-
-        const res = await fetch(`${BASE_URL}/appointments/times/${date}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await res.json();
-
-        if (data.status === "success") {
-          set({ bookedSlots: data.bookedTimes });
-        } else {
-          Alert.alert("Failed to get time slots");
-        }
-      } catch (error) {
-        console.log(error);
-        set({ isLoading: false });
-        Alert.alert("Failed to get time slots");
       } finally {
         set({ isLoading: false });
       }

@@ -6,6 +6,7 @@ import * as ImageManipulator from "expo-image-manipulator";
 import { usePetStore } from "@/store/usePets";
 import UtilityScreensLayout from "@/app/(utility)/_layout";
 import Toast from "react-native-toast-message";
+import { useAuthStore } from "@/store/useAuth";
 
 export const getAftercareBg = (type: string) => {
   switch (type.toLowerCase()) {
@@ -349,3 +350,9 @@ export const getTotalPercentage = (currNumber: number, prevNumber: number) => {
 };
 
 export const percentageFormatter = (num: number) => {};
+
+export const isAdmin = (): boolean => {
+  const { authUser } = useAuthStore();
+
+  return authUser?.role === "admin";
+};

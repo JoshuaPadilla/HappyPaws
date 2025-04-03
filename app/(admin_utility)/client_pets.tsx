@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom_button";
 import icons from "@/constants/icons";
-import { goBack, goToViewPet, goToViewPetAdmin } from "@/lib/routerFunctions";
+import { goBack, goToViewPet } from "@/lib/routerFunctions";
 import { useClient } from "@/store/useClient";
 import SearchBar from "@/components/search_bar";
 import Spinner from "react-native-loading-spinner-overlay";

@@ -8,9 +8,13 @@ import icons from "@/constants/icons";
 import { goBack } from "@/lib/routerFunctions";
 import { useAdminAppointmentsStore } from "@/store/useAdminAppointmentsStore";
 import AdminAppointmentCard from "@/components/admin_components/admin_appointment_card";
+import { TODAY } from "@/constants";
+import { Calendar, DateData } from "react-native-calendars";
+import DatePickerModal from "@/components/date_picker_modal";
 
 const AppointmentsAdmin = () => {
   const [currDate, setCurrDate] = useState(moment().format("YYYY-MM-DD"));
+  const [modalVisible, setModalVisible] = useState(false);
 
   const {
     byDateAppointments,
@@ -35,6 +39,12 @@ const AppointmentsAdmin = () => {
 
   return (
     <SafeAreaView className="flex-1 flex-col bg-accent-100 px-6 py-8">
+      <DatePickerModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        setDate={setCurrDate}
+      />
+
       {/* heading */}
       <View className="flex-row justify-between mb-10">
         <CustomButton
@@ -43,12 +53,21 @@ const AppointmentsAdmin = () => {
           iconSize="size-8"
         />
 
-        <CustomButton
-          title="Today"
-          textClassname="font-rubik-bold text-accent-100 text-xl"
-          btnClassname="bg-primary-100 px-6 py-2 rounded-xl"
-          onPress={handleResetToday}
-        />
+        <View className="flex-row gap-4">
+          <CustomButton
+            title="Today"
+            textClassname="font-rubik-medium text-accent-100 text-lg"
+            btnClassname="bg-primary-100 px-3 py-1 rounded-xl"
+            onPress={handleResetToday}
+          />
+
+          <CustomButton
+            iconLeft={icons.add_appointment}
+            textClassname="font-rubik-bold text-accent-100 text-xl"
+            btnClassname="bg-primary-100 px-6 py-1 rounded-xl"
+            onPress={() => setModalVisible(true)}
+          />
+        </View>
       </View>
 
       {/* Calendat */}

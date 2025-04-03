@@ -1,4 +1,6 @@
-export const BASE_URL = "http://192.168.101.3:3000/api/happy-paws";
+import moment from "moment";
+
+export const BASE_URL = "http://172.20.10.6:3000/api/happy-paws";
 
 // 192.168.101.18 Home
 // 172.20.10.13 hotspot
@@ -69,3 +71,5 @@ export const SERVICE_TYPES_CATEGORY = [
 ];
 
 export const AGE_FORMAT = ["Years", "Months"];
+
+export const TODAY = moment();

@@ -7,6 +7,7 @@ import CustomButton from "@/components/custom_button";
 import icons, { clientIcons, profileIcons } from "@/constants/icons";
 import {
   goBack,
+  goToAppointmentHistory,
   goToClientActiveAppointments,
   goToClientAppointmentHistory,
   goToClientDetails,
@@ -34,7 +35,7 @@ const ViewClient = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-accent-100 px-4 pt-8">
+    <SafeAreaView className="flex-1 bg-accent-100 px-6   pt-8">
       <ConfirmationModal
         modalVisible={deleteModalVisible}
         setModalVisible={setDeleteModalVisible}
@@ -118,7 +119,7 @@ const ViewClient = () => {
               iconLeft={clientIcons.client_appointment_history}
               titleLeft="Appointment History"
               iconRight={icons.caret_right}
-              onPress={goToClientAppointmentHistory}
+              onPress={goToAppointmentHistory}
             />
           </View>
         </>

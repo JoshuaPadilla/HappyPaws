@@ -10,33 +10,56 @@ import { goBack, goToViewAppointment } from "@/lib/routerFunctions";
 import { useAppointmentsStore } from "@/store/useAppointments";
 import { Appointment, AppointmentForm, Pet } from "@/types/type";
 import { usePetStore } from "@/store/usePets";
-import { formatDate } from "@/lib/utils";
+import { formatDate, isAdmin } from "@/lib/utils";
 import moment from "moment";
 import FilterModal from "@/components/filter_modal";
+import { useAdminAppointmentsStore } from "@/store/useAdminAppointmentsStore";
+import { useAuthStore } from "@/store/useAuth";
+import { useClient } from "@/store/useClient";
 const AppointmentHistory = () => {
+  const { selectedClient } = useClient();
   const {
     appointmentHistory,
     setSelectedAppointment,
     isLoading,
     fetchAppointmentHistory,
   } = useAppointmentsStore();
+
+  const {
+    appointmentHistory: adminAppointmentHistory,
+    setSelectedAppointment: adminSetSelectedAppointment,
+    isLoading: adminIsLoading,
+    fetchAppointmentHistory: adminFetchAppointmentHistory,
+  } = useAdminAppointmentsStore();
+
+  const thisAppointmentHistory = isAdmin()
+    ? adminAppointmentHistory
+    : appointmentHistory;
+  const thisSetSelectedAppointmentHistory = isAdmin()
+    ? adminSetSelectedAppointment
+    : setSelectedAppointment;
+  const thisIsLoading = isAdmin() ? adminIsLoading : isLoading;
+  const thisFetchAppointmentHistory = isAdmin()
+    ? adminFetchAppointmentHistory
+    : fetchAppointmentHistory;
+
   const [filterModalVisible, setFilterModalVisible] = useState(false);
 
   const handleViewAppointment = (appointment: Appointment) => {
-    setSelectedAppointment(appointment);
+    thisSetSelectedAppointmentHistory(appointment);
     goToViewAppointment();
   };
 
   useEffect(() => {
-    fetchAppointmentHistory();
+    thisFetchAppointmentHistory(selectedClient?._id || "");
   }, []);
 
   return (
     <SafeAreaView className="flex-1 px-4 py-8 bg-accent-100">
-      <FilterModal
+      {/* <FilterModal
         modalVisible={filterModalVisible}
         setModalVisible={setFilterModalVisible}
-      />
+      /> */}
 
       {/* Headings Button*/}
       <View className="flex-row justify-between items-center mb-6">
@@ -56,13 +79,13 @@ const AppointmentHistory = () => {
       {/* Main */}
 
       <View className="flex gap-2">
-        <Text className="font-rubik-bold text-xl text-black-100">
-          Appointment History
+        <Text className="font-rubik-bold text-xl text-black-100 mb-4">
+          {isAdmin() ? selectedClient?.firstName : "Appointment"} History
         </Text>
 
         <ScrollView contentContainerClassName="flex pb-[80px] gap-2">
-          {appointmentHistory &&
-            appointmentHistory.reverse().map((appointment, index) => {
+          {thisAppointmentHistory &&
+            thisAppointmentHistory.reverse().map((appointment, index) => {
               return (
                 <AppointmentHistoryItem
                   key={index}
@@ -75,7 +98,7 @@ const AppointmentHistory = () => {
                 />
               );
             })}
-          {isLoading && (
+          {thisIsLoading && (
             <ActivityIndicator color={"#73C7C7"} className="p-16" />
           )}
         </ScrollView>
