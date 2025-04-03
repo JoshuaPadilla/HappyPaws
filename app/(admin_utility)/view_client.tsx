@@ -34,7 +34,7 @@ const ViewClient = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-background-100 px-4 pt-8">
+    <SafeAreaView className="flex-1 bg-accent-100 px-4 pt-8">
       <ConfirmationModal
         modalVisible={deleteModalVisible}
         setModalVisible={setDeleteModalVisible}

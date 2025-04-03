@@ -32,7 +32,7 @@ const ClientPets = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 px-6 py-8">
+    <SafeAreaView className="flex-1 px-6 py-8 bg-accent-100">
       <Spinner
         visible={isLoading}
         textContent={"Loading..."}

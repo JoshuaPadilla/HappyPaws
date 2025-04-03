@@ -14,7 +14,7 @@ interface AftercareStoreState {
 
   setSelectedAftercare: (aftercare: Aftercare) => void;
   fecthPetAftercare: (petID: string) => Promise<void>;
-  fetchAllAftercare: () => Promise<void>;
+  fetchAllAftercare: (signal: any) => Promise<void>;
 }
 
 export const useAftercareStore = create<AftercareStoreState>((set) => ({

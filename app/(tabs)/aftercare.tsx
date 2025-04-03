@@ -8,13 +8,13 @@ import Toggle from "@/components/toggle";
 import { isActive } from "@/lib/utils";
 import { useAftercareStore } from "@/store/useAftercare";
 import AfterCareCard from "@/components/aftercare_card";
-import { goToViewAftercare } from "@/lib/routerFunctions";
+import { dismiss, goBack, goToViewAftercare } from "@/lib/routerFunctions";
 import { Aftercare } from "@/types/type";
 
 const AftercareTab = () => {
   const [active, setActive] = useState(true);
 
-  const { allAftercares, isLoading, setSelectedAftercare } =
+  const { allAftercares, isLoading, setSelectedAftercare, fetchAllAftercare } =
     useAftercareStore();
 
   const activeAftercares = allAftercares.filter((aftercare) =>
@@ -30,13 +30,23 @@ const AftercareTab = () => {
     goToViewAftercare();
   };
 
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    fetchAllAftercare(signal);
+
+    return () => {
+      controller.abort(); // Cancel the previous fetch on cleanup
+    };
+  }, [active]);
+
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
       {/* Headings */}
       <View className="flex-row w-full justify-between items-center mb-8">
         <CustomButton
           iconLeft={icons.back_green}
-          onPress={router.back}
+          onPress={goBack}
           iconSize="size-8"
         />
         <Toggle

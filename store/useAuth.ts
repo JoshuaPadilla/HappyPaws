@@ -155,7 +155,6 @@ export const useAuthStore = create<StoreState>((set) => ({
 
         await fetchPets();
         await fetchAppointments();
-        await fetchAllAftercare();
 
         addUser(data.user);
       }

@@ -84,7 +84,7 @@ const EditClient = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 py-8 px-6">
+    <SafeAreaView className="flex-1 py-8 px-6 bg-accent-100">
       {/* Headings */}
       <View className="flex-row justify-between items-end mb-4">
         <View className="flex-row gap-4 items-center">

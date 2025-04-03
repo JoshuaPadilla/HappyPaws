@@ -51,6 +51,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
+        key="home"
         name="home"
         options={{
           title: "Home",
@@ -61,6 +62,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        key="appointment"
         name="appointment"
         options={{
           title: "Appointment",
@@ -75,6 +77,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        key="aftercare"
         name="aftercare"
         options={{
           title: "Aftercare",
@@ -89,6 +92,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        key="pets"
         name="pets"
         options={{
           title: "Pets",
@@ -99,6 +103,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        key="profile"
         name="profile"
         options={{
           title: "Profile",

@@ -32,30 +32,39 @@ export default function Insights() {
   const currTotalAppointments = weekly
     ? thisWeekInsights?.numberOfWeeklyAppointment
     : thisMonthInsights?.numberOfMonthlyAppointments;
+
   const prevTotalAppointments = weekly
     ? prevWeekInsights?.numberOfWeeklyAppointment
     : prevMonthInsights?.numberOfMonthlyAppointments;
+
   const currNewClients = weekly
     ? thisWeekInsights?.newUserCount
     : thisMonthInsights?.newUserCount;
+
   const prevNewClients = weekly
     ? prevWeekInsights?.newUserCount
     : prevMonthInsights?.newUserCount;
+
   const servicePopularity = weekly
     ? thisWeekInsights?.weeklyServicePopularity
     : thisMonthInsights?.monthlyServicePopularity;
+
   const appointmentStatus = weekly
     ? thisWeekInsights?.weeklyStatusCount
     : thisMonthInsights?.monthlyStatusCount;
+
   const average = weekly
     ? thisWeekInsights?.averageAppointmentsPerWeek
     : thisMonthInsights?.averageAppointmentsPerMonth;
+
   const prevAverage = weekly
     ? prevWeekInsights?.averageAppointmentsPerWeek
     : prevMonthInsights?.averageAppointmentsPerMonth;
+
   const startDate = weekly
     ? thisWeekInsights?.startDate
     : thisMonthInsights?.startDate;
+
   const endDate = weekly
     ? thisWeekInsights?.endDate
     : thisMonthInsights?.endDate;
@@ -99,8 +108,6 @@ export default function Insights() {
           trueValue={"Weekly"}
           onPress={() => setWeekly((prev) => !prev)}
         />
-
-        <CustomButton title="logout" onPress={logout} />
       </View>
 
       {/* Bar chart or line chart*/}

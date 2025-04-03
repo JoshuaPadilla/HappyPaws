@@ -17,7 +17,6 @@ import { useAftercareStore } from "@/store/useAftercare";
 import moment from "moment";
 import { Reminders } from "@/types/type";
 import { isBetweenDates } from "@/lib/utils";
-import Spinner from "react-native-loading-spinner-overlay";
 export default function Home() {
   const { pets, setSelectedPet } = usePetStore();
   const { user } = useUserStore();
@@ -140,7 +139,6 @@ export default function Home() {
 const getReminders = (): Reminders[] => {
   const { appointments } = useAppointmentsStore();
   const { allAftercares } = useAftercareStore();
-  const { pets } = usePetStore();
 
   const reminders: Reminders[] = [];
 
@@ -163,8 +161,6 @@ const getReminders = (): Reminders[] => {
 
   allAftercares.forEach((aftercare) => {
     if (isBetweenDates(aftercare.startDate, aftercare.endDate)) {
-      const pet = aftercare.petID;
-
       reminders.push({
         type: aftercare.type,
         title: aftercare.notes,

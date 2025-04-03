@@ -4,6 +4,7 @@ import { BarChart } from "react-native-gifted-charts";
 import CustomButton from "../custom_button";
 import icons from "@/constants/icons";
 import { getTotalPercentage } from "@/lib/utils";
+import { useAuthStore } from "@/store/useAuth";
 
 interface BarChartComponentProps {
   barChartData: any;
@@ -24,10 +25,11 @@ const BarChartComponent = ({
   const mappedData = barChartData.map((item: any) => ({
     value: item.count,
     label: item.date,
-    frontColor: item.count >= 7 ? "#73C7C7" : "lightgray",
+    frontColor: "#73C7C7",
   }));
 
   const averagePercentage = getTotalPercentage(average || 0, prevAverage || 0);
+  const { logout } = useAuthStore();
 
   return (
     <View className="primary px-6">
@@ -78,6 +80,7 @@ const BarChartComponent = ({
         <CustomButton
           title="Details"
           textClassname="font-rubik-regular text-accent-100 px-4 py-1 bg-primary-100 rounded-lg"
+          onPress={logout}
         />
       </View>
       <BarChart

@@ -19,6 +19,7 @@ import { useAftercareStore } from "@/store/useAftercare";
 import ConfirmationModal from "@/components/confirmationModal";
 import Spinner from "react-native-loading-spinner-overlay";
 import { useAdminPets } from "@/store/useAdminPets";
+import { useRouter } from "expo-router";
 
 const ViewPet = () => {
   const { selectedPet, deletePet, isUpdating, isDeleting } = usePetStore();
@@ -68,12 +69,6 @@ const ViewPet = () => {
         iconLeft={icons.back_green}
         iconSize="size-8"
         onPress={dismiss}
-      />
-
-      <Spinner
-        visible={isUpdating || isDeleting}
-        textContent={"Updating..."}
-        textStyle={{ color: "#FFF" }}
       />
 
       {/* Pet Image and name*/}

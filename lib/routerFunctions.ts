@@ -98,7 +98,3 @@ export const goToClientActiveAppointments = () => {
 export const goToEditClient = () => {
   router.push("/(admin_utility)/edit_client");
 };
-
-export const goToViewPetAdmin = () => {
-  router.push("/(admin_utility)/view_pet_admin");
-};

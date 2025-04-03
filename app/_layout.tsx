@@ -35,6 +35,7 @@ export default function RootLayout() {
 
   return (
     <View className="flex-1">
+      <StatusBar backgroundColor={"#f6f4f0"} barStyle={"dark-content"} />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
@@ -45,7 +46,7 @@ export default function RootLayout() {
         <Stack.Screen name="(admin_utility)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
-      <StatusBar backgroundColor={"#f6f4f0"} barStyle={"dark-content"} />
+
       <Toast />
     </View>
   );

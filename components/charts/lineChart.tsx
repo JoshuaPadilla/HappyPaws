@@ -90,7 +90,6 @@ const LineChartComponent = ({
         scrollAnimation
         nestedScrollEnabled
         showScrollIndicator
-        stepHeight={50}
         areaChart
         hideDataPoints
         yAxisColor={"#f5f5f5"}

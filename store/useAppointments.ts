@@ -11,6 +11,7 @@ interface TimeSlot {
 
 interface AppointmentStoreState {
   appointments: Appointment[];
+  appointmentHistory: Appointment[];
   bookedSlots: TimeSlot[];
   selectedAppointment: Appointment | null;
   isLoading: boolean;
@@ -20,6 +21,7 @@ interface AppointmentStoreState {
   isCancelling: boolean;
 
   fetchAppointments: (signal?: any) => Promise<void>;
+  fetchAppointmentHistory: (signal?: any) => Promise<void>;
 
   addAppointment: (appointment: AppointmentForm) => Promise<void>;
   updateAppointment: (appointment: AppointmentForm) => Promise<void>;
@@ -30,6 +32,7 @@ interface AppointmentStoreState {
 
 export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
   appointments: [],
+  appointmentHistory: [],
   bookedSlots: [],
   selectedAppointment: null,
   isLoading: false,
@@ -54,6 +57,34 @@ export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
 
       if (data.status === "success") {
         set({ appointments: data.appointments });
+      } else {
+        Alert.alert("Failed to fetch appointments");
+      }
+    } catch (error) {
+      console.log(error);
+      set({ isLoading: false });
+      Alert.alert("Failed to fetch appointments");
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  fetchAppointmentHistory: async () => {
+    try {
+      set({ isLoading: true });
+      const token = await AsyncStorage.getItem("token");
+
+      const res = await fetch(`${BASE_URL}/appointments/history`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (data.status === "success") {
+        set({ appointmentHistory: data.appointments });
       } else {
         Alert.alert("Failed to fetch appointments");
       }

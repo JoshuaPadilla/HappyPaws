@@ -36,7 +36,7 @@ const ClientCard = ({ client }: ClientCardProps) => {
 
         <View className="flex-col justify-around h-full">
           <Text className="font-rubik-medium text-xl text-black-100">
-            {textShortener(`${client.firstName} ${client.lastName}`, 20)}
+            {textShortener(`${client.firstName} ${client.lastName}`, 15)}
           </Text>
 
           <View className="flex-row gap-2 items-center">
@@ -69,7 +69,7 @@ const ClientCard = ({ client }: ClientCardProps) => {
         title="view"
         iconSize="size-10"
         onPress={handleSelectClient}
-        textClassname="font-rubik-medium text-m text-primary-100 p-2"
+        textClassname="font-rubik-medium text-m text-primary-100 p-1"
       />
     </Pressable>
   );

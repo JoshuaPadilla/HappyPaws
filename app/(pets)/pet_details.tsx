@@ -29,7 +29,7 @@ const PetDetails = () => {
         <CustomButton
           iconLeft={icons.back_green}
           iconSize="size-8"
-          onPress={dismiss}
+          onPress={goBack}
         />
 
         <Text className="text-xl font-rubik-bold">Pet Details</Text>

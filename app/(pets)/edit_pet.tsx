@@ -96,7 +96,7 @@ const EditPet = () => {
     }
 
     updatePet(thisPet._id, form);
-    !isUpdating && dismiss();
+    goBack();
   };
 
   return (
@@ -115,7 +115,7 @@ const EditPet = () => {
         <CustomButton
           title="Cancel"
           textClassname="font-poppins-medium text-lg text-danger"
-          onPress={() => router.back()}
+          onPress={goBack}
         />
       </View>
       {/* Form*/}

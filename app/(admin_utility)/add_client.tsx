@@ -73,7 +73,7 @@ const AddClient = () => {
       />
 
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="flex h-full w-full bg-background-100 rounded-[20px] px-6 py-8 gap-4">
+        <View className="flex h-full w-full bg-accent-100 rounded-[20px] px-6 py-8 gap-4">
           {/* heading */}
           <View className="flex-row gap-4 mb-4">
             <CustomButton
