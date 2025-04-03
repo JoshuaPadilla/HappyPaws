@@ -3,7 +3,12 @@ import { Stack } from "expo-router";
 
 const PetScreens = () => {
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        presentation: "modal", // or "transparentModal" if you prefer
+      }}
+    >
       <Stack.Screen name="add_pet" options={{ headerShown: false }} />
       <Stack.Screen name="view_pet" options={{ headerShown: false }} />
       <Stack.Screen name="update_pet" options={{ headerShown: false }} />
@@ -19,6 +24,10 @@ const PetScreens = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="vaccine_list_view" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="view_medical_record"
+        options={{ headerShown: false }}
+      />
     </Stack>
   );
 };

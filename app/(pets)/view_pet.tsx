@@ -20,10 +20,12 @@ import ConfirmationModal from "@/components/confirmationModal";
 import Spinner from "react-native-loading-spinner-overlay";
 import { useAdminPets } from "@/store/useAdminPets";
 import { useRouter } from "expo-router";
+import { useMedicalRecordStore } from "@/store/useMedicalRecord";
 
 const ViewPet = () => {
   const { selectedPet, deletePet, isUpdating, isDeleting } = usePetStore();
   const { selectedPet: adminSelectedPet } = useAdminPets();
+  const { fetchMedicalRecord } = useMedicalRecordStore();
 
   const thisPet = selectedPet || adminSelectedPet;
 
@@ -43,6 +45,7 @@ const ViewPet = () => {
   };
 
   const handleViewMedicalRecords = () => {
+    fetchMedicalRecord(thisPet?._id || "");
     goToMedicalRecordListView();
   };
 

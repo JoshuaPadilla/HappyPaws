@@ -6,11 +6,12 @@ import CustomButton from "@/components/custom_button";
 import icons from "@/constants/icons";
 import { goBack } from "@/lib/routerFunctions";
 import { findPetById, formatDate } from "@/lib/utils";
+import { useMedicalRecordStore } from "@/store/useMedicalRecord";
 
-const ViewAftercare = () => {
-  const { selectedAftercare } = useAftercareStore();
+const ViewMedicalRecord = () => {
+  const { selectedMedicalRecord } = useMedicalRecordStore();
 
-  const petName = selectedAftercare?.petID.petName || "";
+  const petName = selectedMedicalRecord?.petID.petName || "";
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
@@ -22,20 +23,48 @@ const ViewAftercare = () => {
           iconSize="size-8"
         />
 
-        <Text className="font-poppins-semibold text-xl">Aftercare</Text>
+        <Text className="font-poppins-semibold text-xl">Medical Record</Text>
       </View>
 
       {/* main */}
 
       <ScrollView
         showsHorizontalScrollIndicator={false}
-        contentContainerClassName="pb-[150px] flex-1 gap-4"
+        contentContainerClassName="pb-[100px] gap-4"
       >
         {/* Title */}
 
-        <Text className="font-poppins-semibold text-2xl text-primary-100 mb-2">
-          {`${petName}'s ${selectedAftercare?.type}`}
+        <Text className="font-poppins-semibold text-xl text-primary-100 mb-2">
+          {`Record Date: ${selectedMedicalRecord?.date} `}
         </Text>
+
+        {/* Diagnosis */}
+        <View className="border-b-2 border-black-400">
+          <Text className="font-rubik-semibold text-xl text-black-100">
+            Diagnosis:
+          </Text>
+
+          <View className="flex-row gap-4 items-center p-4">
+            <Text className="font-rubik-medium text-3xl">*</Text>
+            <Text className="font-rubik-medium text-xl">
+              {selectedMedicalRecord?.diagnosis}
+            </Text>
+          </View>
+        </View>
+
+        {/* Treatment */}
+        <View className="border-b-2 border-black-400">
+          <Text className="font-rubik-semibold text-xl text-black-100">
+            Treatment:
+          </Text>
+
+          <View className="flex-row gap-4 items-center p-4">
+            <Text className="font-rubik-medium text-3xl">*</Text>
+            <Text className="font-rubik-medium text-xl">
+              {selectedMedicalRecord?.treatment}
+            </Text>
+          </View>
+        </View>
 
         {/* Medication */}
         <View className="gap-4">
@@ -43,80 +72,41 @@ const ViewAftercare = () => {
             Medications:
           </Text>
 
-          {selectedAftercare?.medications.map((medication, index) => (
-            <View
-              key={index}
-              className="px-4 py-4 border-b-2 border-black-400 gap-2"
-            >
-              <MedicationItem title="Name" value={medication.name} />
-              <MedicationItem title="Dosage" value={medication.dosage} />
-              <MedicationItem title="frequency" value={medication.frequency} />
-              <MedicationItem
-                title="start date"
-                value={formatDate(medication.startDate)}
-              />
-              <MedicationItem
-                title="end date"
-                value={formatDate(medication.endDate)}
-              />
-            </View>
-          ))}
+          {selectedMedicalRecord?.prescribedMedications.map(
+            (medication, index) => (
+              <View
+                key={index}
+                className="px-4 py-4 border-b-2 border-black-400 gap-2"
+              >
+                <MedicationItem title="Name" value={medication.name} />
+                <MedicationItem title="Dosage" value={medication.dosage} />
+                <MedicationItem
+                  title="frequency"
+                  value={medication.frequency}
+                />
+                <MedicationItem
+                  title="start date"
+                  value={formatDate(medication.startDate)}
+                />
+                <MedicationItem
+                  title="end date"
+                  value={formatDate(medication.endDate)}
+                />
+              </View>
+            )
+          )}
         </View>
 
-        {/* Instructions */}
-
+        {/* notes */}
         <View className="border-b-2 border-black-400">
           <Text className="font-rubik-semibold text-xl text-black-100">
-            Intructions:
+            Notes:
           </Text>
 
           <View className="flex-row gap-4 items-center p-4">
             <Text className="font-rubik-medium text-3xl">*</Text>
             <Text className="font-rubik-medium text-xl">
-              {selectedAftercare?.careInstructions}
-            </Text>
-          </View>
-        </View>
-
-        {/* Restriction */}
-
-        <View className="border-b-2 border-black-400">
-          <Text className="font-rubik-semibold text-xl text-black-100">
-            Restriction:
-          </Text>
-
-          <View className="flex-row gap-4 items-center p-4">
-            <Text className="font-rubik-medium text-3xl">*</Text>
-            <Text className="font-rubik-medium text-xl">
-              {selectedAftercare?.restrictions}
-            </Text>
-          </View>
-        </View>
-
-        {/* Notes */}
-        <View className="border-b-2 border-black-400">
-          <Text className="font-rubik-semibold text-xl text-black-100">
-            Note:
-          </Text>
-
-          <View className="flex-row gap-4 items-center p-4">
-            <Text className="font-rubik-medium text-3xl">*</Text>
-            <Text className="font-rubik-medium text-xl">
-              {selectedAftercare?.notes}
-            </Text>
-          </View>
-        </View>
-
-        {/* Next followup */}
-        <View className="border-b-2 border-black-400">
-          <Text className="font-rubik-semibold text-xl text-black-100">
-            Next Follow-up:
-          </Text>
-
-          <View className="flex-row gap-4 items-center p-4">
-            <Text className="font-rubik-medium text-3xl">*</Text>
-            <Text className="font-rubik-medium text-xl">
-              {formatDate(selectedAftercare?.followUpDate || "")}
+              {selectedMedicalRecord?.notes}
             </Text>
           </View>
         </View>
@@ -151,4 +141,4 @@ const InstructionsItem = ({ instruction }: { instruction: string }) => {
   );
 };
 
-export default ViewAftercare;
+export default ViewMedicalRecord;

@@ -134,16 +134,12 @@ declare interface ImageInfo {
   fileName: string;
 }
 
-// const [form, setForm] = useState({
-//   firstName: user?.firstName,
-//   lastName: user?.lastName,
-//   address: user?.address,
-//   phone: user?.phone,
-//   gender: user?.gender,
-//   birthday: {
-//     date: user?.birthday.date,
-//     month: user?.birthday.month,
-//     year: user?.birthday.year,
-//   },
-//   profilePicture: user?.profilePicture,
-// });
+declare interface MedicalRecord {
+  petID: Pet;
+  userID: User;
+  diagnosis: string;
+  treatment: string;
+  prescribedMedications: Medication[];
+  date: string;
+  notes: string;
+}

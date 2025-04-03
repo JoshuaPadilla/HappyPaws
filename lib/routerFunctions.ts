@@ -87,14 +87,14 @@ export const goToClientPets = () => {
   router.push("/(admin_utility)/client_pets");
 };
 
-export const goToClientAppointmentHistory = () => {
-  router.push("/(admin_utility)/client_appointment_history");
-};
-
 export const goToClientActiveAppointments = () => {
   router.push("/(admin_utility)/client_active_appointments");
 };
 
 export const goToEditClient = () => {
   router.push("/(admin_utility)/edit_client");
+};
+
+export const goToViewMedicalRecord = () => {
+  router.push("/(pets)/view_medical_record");
 };

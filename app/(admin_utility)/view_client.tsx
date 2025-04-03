@@ -9,7 +9,6 @@ import {
   goBack,
   goToAppointmentHistory,
   goToClientActiveAppointments,
-  goToClientAppointmentHistory,
   goToClientDetails,
   goToClientPets,
 } from "@/lib/routerFunctions";
@@ -26,7 +25,6 @@ const ViewClient = () => {
   const thisUser = selectedClient;
 
   const handleGoToClientPets = () => {
-    fetchSelectedClientPets();
     goToClientPets();
   };
 
