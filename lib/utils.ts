@@ -1,4 +1,11 @@
-import { Appointment, AppointmentForm, signupForm, User } from "@/types/type";
+import {
+  Appointment,
+  AppointmentForm,
+  Medication,
+  MedicationForm,
+  signupForm,
+  User,
+} from "@/types/type";
 import { parseSync } from "@babel/core";
 import { router, useRouter } from "expo-router";
 import moment from "moment";
@@ -355,4 +362,28 @@ export const isAdmin = (): boolean => {
   const { authUser } = useAuthStore();
 
   return authUser?.role === "admin";
+};
+
+export const isValidMedication = (medication: MedicationForm): boolean => {
+  if (medication.name.trim() === "") {
+    showToast("error", "Medication name is required");
+    return false;
+  }
+  if (medication.dosage.trim() === "") {
+    showToast("error", "Dosage is required");
+    return false;
+  }
+  if (medication.frequency.trim() === "") {
+    showToast("error", "Frequency is required");
+    return false;
+  }
+  if (medication.startDate.trim() === "") {
+    showToast("error", "Start date is required");
+    return false;
+  }
+  if (medication.endDate.trim() === "") {
+    showToast("error", "End date is required");
+    return false;
+  }
+  return true;
 };

@@ -105,6 +105,14 @@ declare interface Medication {
   endDate: string;
 }
 
+declare interface MedicationForm {
+  name: string;
+  dosage: string;
+  frequency: string;
+  startDate: string;
+  endDate: string;
+}
+
 declare interface Aftercare {
   _id: string;
   petID: Pet;

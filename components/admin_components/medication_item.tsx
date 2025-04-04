@@ -1,11 +1,11 @@
 import { View, Text } from "react-native";
 import React, { useState } from "react";
-import { Medication } from "@/types/type";
+import { Medication, MedicationForm } from "@/types/type";
 import CustomButton from "../custom_button";
 import { formatDate, textShortener } from "@/lib/utils";
 
 interface MedicationItemProps {
-  medication?: Medication;
+  medication?: MedicationForm;
 }
 
 const MedicationItem = ({ medication }: MedicationItemProps) => {

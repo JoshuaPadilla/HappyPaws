@@ -15,7 +15,6 @@ interface CalendarModalProps {
 export default function CalendarModal({
   modalVisible,
   setModalVisible,
-  minDate,
   maxDate,
   selectedDate,
   setSelectedDate,
