@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const BASE_URL = "http://192.168.101.8:3000/api/happy-paws";
+export const BASE_URL = "http://172.20.10.6:3000/api/happy-paws";
 
 // 192.168.101.18 Home
 // 172.20.10.13 hotspot
@@ -68,6 +68,13 @@ export const SERVICE_TYPES_CATEGORY = [
   "Dental",
   "Vaccination",
   "Grooming",
+];
+
+export const AFTERCARE_TYPES = [
+  "Medication",
+  "Wound Care",
+  "Diet and Nutrition",
+  "Follow-up",
 ];
 
 export const AGE_FORMAT = ["Years", "Months"];

@@ -29,7 +29,7 @@ const ViewAftercare = () => {
 
       <ScrollView
         showsHorizontalScrollIndicator={false}
-        contentContainerClassName="pb-[150px] flex-1 gap-4"
+        contentContainerClassName="pb-[100px] gap-4"
       >
         {/* Title */}
 
@@ -43,7 +43,7 @@ const ViewAftercare = () => {
             Medications:
           </Text>
 
-          {selectedAftercare?.medications.map((medication, index) => (
+          {(selectedAftercare?.medications ?? []).map((medication, index) => (
             <View
               key={index}
               className="px-4 py-4 border-b-2 border-black-400 gap-2"

@@ -208,7 +208,9 @@ export default function Insights() {
                 {newClientPercentage ? (
                   <Image
                     source={
-                      newClientPercentage > 0 ? icons.trend_up : icons.trend_up
+                      newClientPercentage > 0
+                        ? icons.trend_up
+                        : icons.trend_down
                     }
                     className="size-6"
                   />

@@ -109,7 +109,7 @@ declare interface Aftercare {
   _id: string;
   petID: Pet;
   type: "Medication" | "Wound Care" | "Diet and Nutrition" | "Follow-up";
-  medications: Medication[];
+  medications?: Medication[];
   followUpDate: string;
   restrictions: string[];
   careInstructions: string;
@@ -152,4 +152,15 @@ declare interface Vaccine {
   dueDate: string;
   administeredBy: string;
   notes: string;
+}
+
+declare interface AftercareForm {
+  type: "Medication" | "Wound Care" | "Diet and Nutrition" | "Follow-up";
+  medications?: Medication[];
+  followUpDate: string;
+  restrictions: string[];
+  careInstructions: string;
+  notes: string;
+  endDate: string;
+  startDate: string;
 }

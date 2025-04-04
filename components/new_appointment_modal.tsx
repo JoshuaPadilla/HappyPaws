@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   TextInput,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AppointmentForm, Pet } from "@/types/type";
 import icons from "@/constants/icons";
 import CustomButton from "./custom_button";

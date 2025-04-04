@@ -1,4 +1,4 @@
-import { Aftercare } from "@/types/type";
+import { Aftercare, AftercareForm } from "@/types/type";
 import { create } from "zustand";
 
 import { BASE_URL } from "@/constants/index";
@@ -15,6 +15,7 @@ interface AftercareStoreState {
   setSelectedAftercare: (aftercare: Aftercare) => void;
   fecthPetAftercare: (petID: string) => Promise<void>;
   fetchAllAftercare: (signal: any) => Promise<void>;
+  addAftercare: (aftercareData: AftercareForm) => Promise<void>;
 }
 
 export const useAftercareStore = create<AftercareStoreState>((set) => ({
@@ -68,4 +69,6 @@ export const useAftercareStore = create<AftercareStoreState>((set) => ({
   setSelectedAftercare: (aftercare: Aftercare) => {
     set({ selectedAftercare: aftercare });
   },
+
+  addAftercare: async (aftercareData) => {},
 }));

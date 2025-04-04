@@ -86,7 +86,10 @@ const Clients = () => {
         />
       </View>
 
-      <ScrollView contentContainerClassName="flex-col justify-between gap-2 pb-[70px] p-2 items-center w-full">
+      <ScrollView
+        contentContainerClassName="flex-col justify-between gap-2 pb-[70px] p-2 items-center w-full"
+        showsVerticalScrollIndicator={false}
+      >
         {isLoading ? (
           <ActivityIndicator color={"#73C7C7"} className="pt-8" />
         ) : filteredClients.length > 0 ? (

@@ -1,9 +1,13 @@
 import { View, Text, ScrollView, Image, ActivityIndicator } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom_button";
 import icons, { petDetailsIcons } from "@/constants/icons";
-import { goBack, goToViewAftercare } from "@/lib/routerFunctions";
+import {
+  goBack,
+  goToAddAftercare,
+  goToViewAftercare,
+} from "@/lib/routerFunctions";
 import { useAftercareStore } from "@/store/useAftercare";
 import { usePetStore } from "@/store/usePets";
 import AfterCareCard from "@/components/aftercare_card";
@@ -12,6 +16,9 @@ import { useAdminPets } from "@/store/useAdminPets";
 import { isAdmin } from "@/lib/utils";
 
 const AftercareListView = () => {
+  const [addAftercareModalVisible, setAddAftercareModalVisible] =
+    useState(false);
+
   const { petAftercares, isLoading, setSelectedAftercare } =
     useAftercareStore();
   const { selectedPet } = usePetStore();
@@ -22,6 +29,10 @@ const AftercareListView = () => {
   const handleAftercarePress = (aftercare: Aftercare) => {
     setSelectedAftercare(aftercare);
     goToViewAftercare();
+  };
+
+  const handleAddAftercarePress = () => {
+    goToAddAftercare();
   };
 
   return (
@@ -39,7 +50,7 @@ const AftercareListView = () => {
             iconLeft={icons.plus_icon}
             iconSize="size-6"
             tintColor="#73C7C7"
-            onPress={() => {}}
+            onPress={handleAddAftercarePress}
           />
         )}
       </View>

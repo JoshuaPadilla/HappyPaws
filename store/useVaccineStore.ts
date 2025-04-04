@@ -31,8 +31,6 @@ export const useVaccineStore = create<VaccineStoreProps>((set) => ({
       });
       const data = await response.json();
 
-      console.log(data);
-
       if (data.status === "success") {
         set({ vaccines: data.vaccineHistory });
       } else {

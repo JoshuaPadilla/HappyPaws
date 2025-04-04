@@ -102,3 +102,7 @@ export const goToViewMedicalRecord = () => {
 export const goToViewVaccine = () => {
   router.push("/(pets)/view_vaccine");
 };
+
+export const goToAddAftercare = () => {
+  router.push("/(admin_utility)/add_aftercare");
+};
