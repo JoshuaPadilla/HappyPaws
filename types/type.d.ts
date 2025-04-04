@@ -143,3 +143,13 @@ declare interface MedicalRecord {
   date: string;
   notes: string;
 }
+
+declare interface Vaccine {
+  _id: string;
+  petID: Pet;
+  vaccineName: string;
+  dateAdministered: string;
+  dueDate: string;
+  administeredBy: string;
+  notes: string;
+}

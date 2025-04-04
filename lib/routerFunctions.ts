@@ -98,3 +98,7 @@ export const goToEditClient = () => {
 export const goToViewMedicalRecord = () => {
   router.push("/(pets)/view_medical_record");
 };
+
+export const goToViewVaccine = () => {
+  router.push("/(pets)/view_vaccine");
+};

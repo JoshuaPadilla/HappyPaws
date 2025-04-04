@@ -21,8 +21,10 @@ import Spinner from "react-native-loading-spinner-overlay";
 import { useAdminPets } from "@/store/useAdminPets";
 import { useRouter } from "expo-router";
 import { useMedicalRecordStore } from "@/store/useMedicalRecord";
+import { useVaccineStore } from "@/store/useVaccineStore";
 
 const ViewPet = () => {
+  const { fetchVaccineHistory } = useVaccineStore();
   const { selectedPet, deletePet, isUpdating, isDeleting } = usePetStore();
   const { selectedPet: adminSelectedPet } = useAdminPets();
   const { fetchMedicalRecord } = useMedicalRecordStore();
@@ -50,6 +52,7 @@ const ViewPet = () => {
   };
 
   const handleViewVaccineHistory = () => {
+    fetchVaccineHistory(thisPet?._id || "");
     goToVaccineListView();
   };
 

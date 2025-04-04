@@ -11,8 +11,6 @@ import { useMedicalRecordStore } from "@/store/useMedicalRecord";
 const ViewMedicalRecord = () => {
   const { selectedMedicalRecord } = useMedicalRecordStore();
 
-  const petName = selectedMedicalRecord?.petID.petName || "";
-
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
       {/* Headings */}
@@ -123,19 +121,6 @@ const MedicationItem = ({ title, value }: { title: string; value: string }) => {
       </Text>
       <Text className="font-rubik-semibold text-black-100 text-lg">
         {value}
-      </Text>
-    </View>
-  );
-};
-
-const InstructionsItem = ({ instruction }: { instruction: string }) => {
-  return (
-    <View className="flex-row gap-4 items-center">
-      <Text className="font-rubik-medium text-black-200 text-lg w-40">
-        Instructions:{" "}
-      </Text>
-      <Text className="font-rubik-semibold text-black-100 text-lg">
-        {instruction}
       </Text>
     </View>
   );
