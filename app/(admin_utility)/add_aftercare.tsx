@@ -7,29 +7,36 @@ import { goBack } from "@/lib/routerFunctions";
 import Dropdown from "@/components/dropdown";
 import { AFTERCARE_TYPES } from "@/constants";
 import MedicationItem from "@/components/admin_components/medication_item";
-import { AftercareForm, Medication, MedicationForm } from "@/types/type";
+import { AftercareForm, Medication } from "@/types/type";
 import DatePickerModal from "@/components/date_picker_modal";
-import { formatDate } from "@/lib/utils";
+import { formatDate, isValidAftercare } from "@/lib/utils";
 import NewMedicationModal from "@/components/admin_components/new_medication_modal";
+import NewRestrictionModal from "@/components/admin_components/new_restriction_modal";
+import { useClient } from "@/store/useClient";
+import { useAdminPets } from "@/store/useAdminPets";
+import { useAftercareStore } from "@/store/useAftercare";
+import moment from "moment";
 
 const AddAftercare = () => {
+  const { selectedClient } = useClient();
+  const { selectedPet } = useAdminPets();
+  const { addAftercare } = useAftercareStore();
+
   const dateFor = useRef("start");
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
   const [newMedicationModalVisible, setNewMedicationModalVisible] =
     useState(false);
+  const [newRestrictionModalVisible, setNewRestrictionModalVisible] =
+    useState(false);
 
-  const [text, onChangeText] = React.useState("Useless Text");
-
-  const [type, setType] = useState<string>("");
+  const [type, setType] = useState<any>("Medication");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [followUpDate, setFollowUpDate] = useState<string>("");
   const [note, setNote] = useState<string>("");
   const [careInstructions, setCareInstructions] = useState<string>("");
-  const [aftercareType, setAftercareType] = useState<string[]>([]);
-  const [medications, setMedications] = useState<MedicationForm[]>([]);
-
-  console.log("medications", medications);
+  const [restrictions, setRestrictions] = useState<string[]>([]);
+  const [medications, setMedications] = useState<Medication[]>([]);
 
   const handleShowCalendar = (whatDate: String) => {
     if (whatDate === "start") {
@@ -55,6 +62,29 @@ const AddAftercare = () => {
     }
   };
 
+  const handleAddAftercare = () => {
+    const newAftercare: AftercareForm = {
+      type,
+      medications,
+      followUpDate,
+      restrictions,
+      careInstructions,
+      notes: note,
+      endDate,
+      startDate,
+    };
+
+    if (!isValidAftercare(newAftercare)) return;
+
+    addAftercare(
+      newAftercare,
+      selectedPet?._id || "",
+      selectedClient?._id || ""
+    );
+
+    goBack();
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8 gap-4">
       {/* Modals */}
@@ -63,7 +93,11 @@ const AddAftercare = () => {
           modalVisible={calendarModalVisible}
           setModalVisible={setCalendarModalVisible}
           setDate={setDate}
-          minDate={dateFor.current === "end" ? startDate : undefined}
+          minDate={
+            dateFor.current === "end"
+              ? startDate
+              : moment().format("YYYY-MM-DD")
+          }
         />
 
         <NewMedicationModal
@@ -71,6 +105,14 @@ const AddAftercare = () => {
           setModalVisible={setNewMedicationModalVisible}
           setMedications={(medication) =>
             setMedications((prev) => [...prev, medication])
+          }
+        />
+
+        <NewRestrictionModal
+          modalVisible={newRestrictionModalVisible}
+          setModalVisible={setNewRestrictionModalVisible}
+          setRestrictions={(restriction) =>
+            setRestrictions((prev) => [...prev, restriction])
           }
         />
       </>
@@ -89,7 +131,7 @@ const AddAftercare = () => {
         <CustomButton
           iconLeft={icons.edit_check}
           iconSize="size-8"
-          onPress={() => {}}
+          onPress={handleAddAftercare}
         />
       </View>
       <ScrollView
@@ -199,12 +241,14 @@ const AddAftercare = () => {
               iconLeft={icons.plus_icon}
               tintColor="#73C7C7"
               iconSize="size-6"
+              onPress={() => setNewRestrictionModalVisible(true)}
             />
           </View>
 
           <View>
-            <RestrictionItem />
-            <RestrictionItem />
+            {restrictions.map((restriction, index) => (
+              <RestrictionItem key={index} restriction={restriction} />
+            ))}
           </View>
         </View>
 

@@ -42,7 +42,6 @@ const ViewPet = () => {
   };
 
   const handleViewAftercares = () => {
-    fecthPetAftercare(thisPet?._id || "");
     goToAftercaresList();
   };
 

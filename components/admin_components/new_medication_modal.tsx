@@ -1,6 +1,6 @@
 import { View, Text, Modal, TextInput, ScrollView } from "react-native";
 import React, { useRef, useState } from "react";
-import { MedicationForm } from "@/types/type";
+import { Medication, MedicationForm } from "@/types/type";
 import { formatDate, isValidMedication, showToast } from "@/lib/utils";
 import CustomButton from "../custom_button";
 import icons from "@/constants/icons";
@@ -9,7 +9,7 @@ import DatePickerModal from "../date_picker_modal";
 interface NewMedicationModalProps {
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
-  setMedications: (medications: any) => void;
+  setMedications: (medications: Medication) => void;
 }
 
 const NewMedicationModal = ({
@@ -26,8 +26,10 @@ const NewMedicationModal = ({
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
+  const [error, setError] = useState<string>("");
+
   const handleAddMedication = () => {
-    const medication: MedicationForm = {
+    const medication: Medication = {
       name,
       dosage,
       frequency,
@@ -35,7 +37,10 @@ const NewMedicationModal = ({
       endDate,
     };
 
-    if (!isValidMedication(medication)) return;
+    if (!isValidMedication(medication)) {
+      setError("Please fill all fields");
+      return;
+    }
 
     setMedications(medication);
     setModalVisible(false);
@@ -58,6 +63,7 @@ const NewMedicationModal = ({
     setFrequency("");
     setStartDate("");
     setEndDate("");
+    setError("");
   };
 
   return (
@@ -77,9 +83,18 @@ const NewMedicationModal = ({
       />
       <View className="flex-1 justify-center items-center bg-black-100/70 p-6 overflow-hidden">
         <View className="bg-accent-100 w-full rounded-lg px-6 pt-6 pb-10 max-h-[70%] overflow-hidden">
-          <Text className="font-rubik-bold text-xl text-black-100 mb-6 self-start">
-            New Medication
-          </Text>
+          <View className="flex-row justify-between">
+            <Text className="font-rubik-bold text-xl text-black-100 mb-6 self-start">
+              New Medication
+            </Text>
+
+            <CustomButton
+              iconLeft={icons.cancel}
+              onPress={() => setModalVisible(false)}
+              iconSize="size-8"
+            />
+          </View>
+          {error && <Text className="py-4 text-danger">{error}</Text>}
 
           <ScrollView
             contentContainerClassName="pb-[50px] gap-4"

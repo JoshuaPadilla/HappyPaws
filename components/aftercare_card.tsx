@@ -1,7 +1,7 @@
 import { View, Text, Pressable, ActivityIndicator } from "react-native";
 import React from "react";
 import { Aftercare } from "@/types/type";
-import { findPetById, getAftercareBg } from "@/lib/utils";
+import { findPetById, formatDate, getAftercareBg } from "@/lib/utils";
 
 interface AfterCareCardProps {
   aftercare: Aftercare;
@@ -19,7 +19,7 @@ const AfterCareCard = ({ aftercare, onPress }: AfterCareCardProps) => {
       >
         <Text className="font-rubik-semibold text-lg">{aftercare.type}</Text>
         <Text className="font-rubik-semibold text-m text-black-200">
-          {aftercare.endDate}
+          {formatDate(aftercare.endDate)}
         </Text>
       </View>
 

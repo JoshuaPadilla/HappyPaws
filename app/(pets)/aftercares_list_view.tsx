@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, ActivityIndicator } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom_button";
 import icons, { petDetailsIcons } from "@/constants/icons";
@@ -16,8 +16,7 @@ import { useAdminPets } from "@/store/useAdminPets";
 import { isAdmin } from "@/lib/utils";
 
 const AftercareListView = () => {
-  const [addAftercareModalVisible, setAddAftercareModalVisible] =
-    useState(false);
+  const { fecthPetAftercare, isAdding } = useAftercareStore();
 
   const { petAftercares, isLoading, setSelectedAftercare } =
     useAftercareStore();
@@ -34,6 +33,10 @@ const AftercareListView = () => {
   const handleAddAftercarePress = () => {
     goToAddAftercare();
   };
+
+  useEffect(() => {
+    fecthPetAftercare(thisPet?._id || "");
+  }, [isAdding]);
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8 gap-4">
@@ -99,7 +102,10 @@ const AftercareListView = () => {
         {isLoading ? (
           <ActivityIndicator color={"#73C7C7"} className="p-16" />
         ) : (
-          <ScrollView contentContainerClassName="pb-[200px]">
+          <ScrollView
+            contentContainerClassName="pb-[250px]"
+            showsVerticalScrollIndicator={false}
+          >
             {petAftercares.length > 0 &&
               petAftercares.map((aftercare) => (
                 <AfterCareCard

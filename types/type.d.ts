@@ -97,7 +97,7 @@ declare interface AddPetForm {
 }
 
 declare interface Medication {
-  _id: string;
+  _id?: string;
   name: string;
   dosage: string;
   frequency: string;
@@ -172,3 +172,5 @@ declare interface AftercareForm {
   endDate: string;
   startDate: string;
 }
+
+declare interface AppointmentFormType {}

@@ -1,4 +1,5 @@
 import {
+  AftercareForm,
   Appointment,
   AppointmentForm,
   Medication,
@@ -329,6 +330,7 @@ export const showToast = (
     type: type,
     text1: text1,
     text2: text2,
+    topOffset: 50,
   });
 };
 
@@ -366,23 +368,40 @@ export const isAdmin = (): boolean => {
 
 export const isValidMedication = (medication: MedicationForm): boolean => {
   if (medication.name.trim() === "") {
-    showToast("error", "Medication name is required");
     return false;
   }
   if (medication.dosage.trim() === "") {
-    showToast("error", "Dosage is required");
     return false;
   }
   if (medication.frequency.trim() === "") {
-    showToast("error", "Frequency is required");
     return false;
   }
   if (medication.startDate.trim() === "") {
-    showToast("error", "Start date is required");
     return false;
   }
   if (medication.endDate.trim() === "") {
-    showToast("error", "End date is required");
+    return false;
+  }
+  return true;
+};
+
+export const isValidAftercare = (aftercare: AftercareForm): boolean => {
+  if (aftercare.type.trim() === "") {
+    return false;
+  }
+  if (aftercare.startDate.trim() === "") {
+    return false;
+  }
+  if (aftercare.endDate.trim() === "") {
+    return false;
+  }
+  if (aftercare.followUpDate.trim() === "") {
+    return false;
+  }
+  if (aftercare.notes.trim() === "") {
+    return false;
+  }
+  if (aftercare.careInstructions.trim() === "") {
     return false;
   }
   return true;
