@@ -27,11 +27,8 @@ const ViewPet = () => {
   const { fetchVaccineHistory } = useVaccineStore();
   const { selectedPet, deletePet, isUpdating, isDeleting } = usePetStore();
   const { selectedPet: adminSelectedPet } = useAdminPets();
-  const { fetchMedicalRecord } = useMedicalRecordStore();
 
   const thisPet = selectedPet || adminSelectedPet;
-
-  const { fecthPetAftercare } = useAftercareStore();
 
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
@@ -46,7 +43,6 @@ const ViewPet = () => {
   };
 
   const handleViewMedicalRecords = () => {
-    fetchMedicalRecord(thisPet?._id || "");
     goToMedicalRecordListView();
   };
 

@@ -152,6 +152,14 @@ declare interface MedicalRecord {
   notes: string;
 }
 
+declare interface MedicalRecordForm {
+  diagnosis: string;
+  treatment: string;
+  prescribedMedications: Medication[];
+  date: string;
+  notes: string;
+}
+
 declare interface Vaccine {
   _id: string;
   petID: Pet;

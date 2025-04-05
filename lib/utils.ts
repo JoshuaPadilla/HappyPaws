@@ -2,6 +2,7 @@ import {
   AftercareForm,
   Appointment,
   AppointmentForm,
+  MedicalRecordForm,
   Medication,
   MedicationForm,
   signupForm,
@@ -404,5 +405,23 @@ export const isValidAftercare = (aftercare: AftercareForm): boolean => {
   if (aftercare.careInstructions.trim() === "") {
     return false;
   }
+  return true;
+};
+
+export const isValidMedicalForm = (
+  medicalRecord: MedicalRecordForm
+): boolean => {
+  if (medicalRecord.diagnosis.trim() === "") {
+    return false;
+  }
+
+  if (medicalRecord.treatment.trim() === "") {
+    return false;
+  }
+
+  if (medicalRecord.date.trim() === "") {
+    return false;
+  }
+
   return true;
 };

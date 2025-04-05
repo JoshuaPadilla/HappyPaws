@@ -7,6 +7,10 @@ const AdminUtilityScreens = () => {
       <Stack.Screen name="add_client" options={{ headerShown: false }} />
       <Stack.Screen name="add_aftercare" options={{ headerShown: false }} />
       <Stack.Screen
+        name="add_medical_record"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="view_client"
         options={{ headerShown: false, presentation: "modal" }}
       />

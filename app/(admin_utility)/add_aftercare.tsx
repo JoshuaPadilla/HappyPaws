@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput } from "react-native";
+import { View, Text, ScrollView, TextInput, Pressable } from "react-native";
 import React, { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom_button";
@@ -9,7 +9,7 @@ import { AFTERCARE_TYPES } from "@/constants";
 import MedicationItem from "@/components/admin_components/medication_item";
 import { AftercareForm, Medication } from "@/types/type";
 import DatePickerModal from "@/components/date_picker_modal";
-import { formatDate, isValidAftercare } from "@/lib/utils";
+import { formatDate, isValidAftercare, showToast } from "@/lib/utils";
 import NewMedicationModal from "@/components/admin_components/new_medication_modal";
 import NewRestrictionModal from "@/components/admin_components/new_restriction_modal";
 import { useClient } from "@/store/useClient";
@@ -28,6 +28,8 @@ const AddAftercare = () => {
     useState(false);
   const [newRestrictionModalVisible, setNewRestrictionModalVisible] =
     useState(false);
+
+  const [error, setError] = useState("");
 
   const [type, setType] = useState<any>("Medication");
   const [startDate, setStartDate] = useState<string>("");
@@ -74,7 +76,10 @@ const AddAftercare = () => {
       startDate,
     };
 
-    if (!isValidAftercare(newAftercare)) return;
+    if (!isValidAftercare(newAftercare)) {
+      setError("*Please fill in all fields");
+      return;
+    }
 
     addAftercare(
       newAftercare,
@@ -134,6 +139,17 @@ const AddAftercare = () => {
           onPress={handleAddAftercare}
         />
       </View>
+
+      {error && (
+        <View className="flex-row gap-4">
+          <Text className="text-danger">{error}</Text>
+          <CustomButton
+            iconLeft={icons.cancel}
+            iconSize="size-4"
+            onPress={() => setError("")}
+          />
+        </View>
+      )}
       <ScrollView
         contentContainerClassName="p-4 gap-6 pb-[400px]"
         showsVerticalScrollIndicator={false}

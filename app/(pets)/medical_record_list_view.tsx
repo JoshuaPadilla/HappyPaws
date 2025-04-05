@@ -1,5 +1,5 @@
 import { View, Text, Image, ActivityIndicator, ScrollView } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAftercareStore } from "@/store/useAftercare";
 import { usePetStore } from "@/store/usePets";
@@ -9,14 +9,19 @@ import icons, { petDetailsIcons } from "@/constants/icons";
 import { isAdmin } from "@/lib/utils";
 import { useMedicalRecordStore } from "@/store/useMedicalRecord";
 import MedicalRecordCard from "@/components/medical_record_card";
-import { goBack } from "@/lib/routerFunctions";
+import { goBack, goToAddMedicalRecord } from "@/lib/routerFunctions";
 
 const MedicalRecordListView = () => {
-  const { medicalRecords, isLoading } = useMedicalRecordStore();
+  const { medicalRecords, isLoading, fetchMedicalRecord, isAdding } =
+    useMedicalRecordStore();
   const { selectedPet } = usePetStore();
   const { selectedPet: adminSelectedPet } = useAdminPets();
 
   const thisPet = selectedPet || adminSelectedPet;
+
+  useEffect(() => {
+    fetchMedicalRecord(thisPet?._id || "");
+  }, [isAdding]);
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8 gap-4">
@@ -33,7 +38,7 @@ const MedicalRecordListView = () => {
             iconLeft={icons.plus_icon}
             iconSize="size-6"
             tintColor="#73C7C7"
-            onPress={() => {}}
+            onPress={goToAddMedicalRecord}
           />
         )}
       </View>
@@ -71,7 +76,7 @@ const MedicalRecordListView = () => {
         </View>
       </View>
 
-      {/* aftercare list */}
+      {/* medical record list */}
       <View className="p-4 gap-4">
         <View className="flex-row justify-between">
           <Text className="font-rubik-semibold text-xl">Medical Records:</Text>

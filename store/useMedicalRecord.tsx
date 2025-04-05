@@ -2,15 +2,21 @@ import { create } from "zustand";
 
 import { BASE_URL } from "@/constants/index";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { MedicalRecord } from "@/types/type";
+import { MedicalRecord, MedicalRecordForm } from "@/types/type";
 import { showToast } from "@/lib/utils";
 
 interface MedicalRecordStoreProps {
   medicalRecords: MedicalRecord[];
   selectedMedicalRecord: MedicalRecord | null;
   isLoading: boolean;
+  isAdding: boolean;
 
   setSelectedMedicalRecord: (MedicalRecord: MedicalRecord) => void;
+  addMedicalRecord: (
+    form: MedicalRecordForm,
+    petID: string,
+    userID: string
+  ) => Promise<void>;
   fetchMedicalRecord: (petID: string) => Promise<void>;
 }
 
@@ -18,6 +24,7 @@ export const useMedicalRecordStore = create<MedicalRecordStoreProps>((set) => ({
   medicalRecords: [],
   selectedMedicalRecord: null,
   isLoading: false,
+  isAdding: false,
 
   fetchMedicalRecord: async (petID) => {
     try {
@@ -41,6 +48,39 @@ export const useMedicalRecordStore = create<MedicalRecordStoreProps>((set) => ({
       console.log("Fetch pet aftercare error", error);
     } finally {
       set({ isLoading: false });
+    }
+  },
+
+  addMedicalRecord: async (form, petID, userID) => {
+    try {
+      set({ isAdding: true });
+      const token = await AsyncStorage.getItem("token");
+
+      const res = await fetch(`${BASE_URL}/medical/${petID}/${userID}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (data.status === "success") {
+        showToast(
+          "success",
+          "✅ Aftercare added",
+          "Successfully added aftercare"
+        );
+      } else {
+        showToast("error", "❌ Aftercare adding fails", "Try again");
+      }
+    } catch (error) {
+      console.log(error);
+      showToast("error", "error to add appointment");
+    } finally {
+      set({ isAdding: false });
     }
   },
 
