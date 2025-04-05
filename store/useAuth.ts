@@ -9,7 +9,7 @@ import { BASE_URL } from "@/constants";
 import { useAppointmentsStore } from "./useAppointments";
 import { router } from "expo-router";
 import { useAftercareStore } from "./useAftercare";
-import { showToast } from "@/lib/utils";
+import { isAdmin, showToast } from "@/lib/utils";
 
 interface StoreState {
   authUser: User | null;
@@ -150,7 +150,6 @@ export const useAuthStore = create<StoreState>((set) => ({
         // to fetch pets after successful signin
 
         const { fetchPets } = usePetStore.getState();
-        const { fetchAllAftercare } = useAftercareStore.getState();
         const { fetchAppointments } = useAppointmentsStore.getState();
 
         await fetchPets();

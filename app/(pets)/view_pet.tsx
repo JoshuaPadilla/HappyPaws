@@ -47,7 +47,6 @@ const ViewPet = () => {
   };
 
   const handleViewVaccineHistory = () => {
-    fetchVaccineHistory(thisPet?._id || "");
     goToVaccineListView();
   };
 

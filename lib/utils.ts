@@ -7,6 +7,7 @@ import {
   MedicationForm,
   signupForm,
   User,
+  VaccineForm,
 } from "@/types/type";
 import { parseSync } from "@babel/core";
 import { router, useRouter } from "expo-router";
@@ -420,6 +421,22 @@ export const isValidMedicalForm = (
   }
 
   if (medicalRecord.date.trim() === "") {
+    return false;
+  }
+
+  return true;
+};
+
+export const isValidVaccineForm = (form: VaccineForm) => {
+  if (form.vaccineName.trim() === "") {
+    return false;
+  }
+
+  if (form.administeredBy.trim() === "") {
+    return false;
+  }
+
+  if (form.validity.trim() === "") {
     return false;
   }
 

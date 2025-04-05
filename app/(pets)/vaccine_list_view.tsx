@@ -1,24 +1,29 @@
 import { View, Text, Image, ScrollView, ActivityIndicator } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useMedicalRecordStore } from "@/store/useMedicalRecord";
 import { usePetStore } from "@/store/usePets";
 import { useAdminPets } from "@/store/useAdminPets";
 import CustomButton from "@/components/custom_button";
 import icons, { petDetailsIcons } from "@/constants/icons";
-import { goBack } from "@/lib/routerFunctions";
+import { goBack, goToAddVaccine } from "@/lib/routerFunctions";
 import { isAdmin } from "@/lib/utils";
 import MedicalRecordCard from "@/components/medical_record_card";
 import { useVaccineStore } from "@/store/useVaccineStore";
 import VaccineCard from "@/components/vaccineCard";
 
 const VaccineList = () => {
-  const { vaccines, isLoading } = useVaccineStore();
+  const { vaccines, isLoading, fetchVaccineHistory, isAdding } =
+    useVaccineStore();
 
   const { selectedPet } = usePetStore();
   const { selectedPet: adminSelectedPet } = useAdminPets();
 
   const thisPet = selectedPet || adminSelectedPet;
+
+  useEffect(() => {
+    fetchVaccineHistory(thisPet?._id || "");
+  }, [isAdding]);
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8 gap-4">
@@ -35,7 +40,7 @@ const VaccineList = () => {
             iconLeft={icons.plus_icon}
             iconSize="size-6"
             tintColor="#73C7C7"
-            onPress={() => {}}
+            onPress={goToAddVaccine}
           />
         )}
       </View>

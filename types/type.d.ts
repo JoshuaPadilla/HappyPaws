@@ -165,9 +165,18 @@ declare interface Vaccine {
   petID: Pet;
   vaccineName: string;
   dateAdministered: string;
+  validity: string;
   dueDate: string;
   administeredBy: string;
-  notes: string;
+  notes?: string;
+}
+
+declare interface VaccineForm {
+  vaccineName: string;
+  dateAdministered: string;
+  validity: string;
+  administeredBy: string;
+  notes?: string;
 }
 
 declare interface AftercareForm {

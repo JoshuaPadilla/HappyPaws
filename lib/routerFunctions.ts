@@ -110,3 +110,7 @@ export const goToAddAftercare = () => {
 export const goToAddMedicalRecord = () => {
   router.push("/(admin_utility)/add_medical_record");
 };
+
+export const goToAddVaccine = () => {
+  router.push("/(admin_utility)/add_vaccine");
+};

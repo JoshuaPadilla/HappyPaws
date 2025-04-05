@@ -19,7 +19,6 @@ import moment from "moment";
 import { useMedicalRecordStore } from "@/store/useMedicalRecord";
 
 const AddMedicalRecord = () => {
-  const { selectedClient } = useClient();
   const { selectedPet } = useAdminPets();
   const { addMedicalRecord } = useMedicalRecordStore();
 
@@ -34,18 +33,6 @@ const AddMedicalRecord = () => {
     Medication[]
   >([]);
 
-  //     switch (dateFor.current) {
-  //       case "start":
-  //         setStartDate(date);
-  //         break;
-  //       case "end":
-  //         setEndDate(date);
-  //         break;
-  //       default:
-  //         setFollowUpDate(date);
-  //     }
-  //   };
-
   const handleAddMedicalRecord = () => {
     const newMedicalRecord: MedicalRecordForm = {
       date,
@@ -57,11 +44,7 @@ const AddMedicalRecord = () => {
 
     if (!isValidAftercare) return;
 
-    addMedicalRecord(
-      newMedicalRecord,
-      selectedPet?._id || "",
-      selectedClient?._id || ""
-    );
+    addMedicalRecord(newMedicalRecord, selectedPet?._id || "");
 
     goBack();
   };

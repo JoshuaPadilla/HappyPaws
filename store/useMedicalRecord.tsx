@@ -12,11 +12,7 @@ interface MedicalRecordStoreProps {
   isAdding: boolean;
 
   setSelectedMedicalRecord: (MedicalRecord: MedicalRecord) => void;
-  addMedicalRecord: (
-    form: MedicalRecordForm,
-    petID: string,
-    userID: string
-  ) => Promise<void>;
+  addMedicalRecord: (form: MedicalRecordForm, petID: string) => Promise<void>;
   fetchMedicalRecord: (petID: string) => Promise<void>;
 }
 
@@ -51,12 +47,12 @@ export const useMedicalRecordStore = create<MedicalRecordStoreProps>((set) => ({
     }
   },
 
-  addMedicalRecord: async (form, petID, userID) => {
+  addMedicalRecord: async (form, petID) => {
     try {
       set({ isAdding: true });
       const token = await AsyncStorage.getItem("token");
 
-      const res = await fetch(`${BASE_URL}/medical/${petID}/${userID}`, {
+      const res = await fetch(`${BASE_URL}/medical/${petID}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
