@@ -12,9 +12,11 @@ import { goToViewClient } from "@/lib/routerFunctions";
 
 interface ClientCardProps {
   client: User;
+  displayOnly?: boolean;
+  onPress?: () => void;
 }
 
-const ClientCard = ({ client }: ClientCardProps) => {
+const ClientCard = ({ client, displayOnly, onPress }: ClientCardProps) => {
   const { fetchClient } = useClient();
 
   const handleSelectClient = () => {
@@ -23,7 +25,10 @@ const ClientCard = ({ client }: ClientCardProps) => {
   };
 
   return (
-    <Pressable className="flex-row w-full h-[120px] bg-white rounded-lg px-4 py-4 shadow gap-4 items-start justify-between">
+    <Pressable
+      className="flex-row w-full h-[120px] bg-white rounded-lg px-4 py-4 shadow gap-4 items-start justify-between"
+      onPress={onPress}
+    >
       <View className="flex-row gap-4 max-w-[70%]">
         <ExpoImage
           source={
@@ -65,12 +70,14 @@ const ClientCard = ({ client }: ClientCardProps) => {
         </View>
       </View>
 
-      <CustomButton
-        title="view"
-        iconSize="size-10"
-        onPress={handleSelectClient}
-        textClassname="font-rubik-medium text-m text-primary-100 p-1"
-      />
+      {!displayOnly && (
+        <CustomButton
+          title="view"
+          iconSize="size-10"
+          onPress={handleSelectClient}
+          textClassname="font-rubik-medium text-m text-primary-100 p-1"
+        />
+      )}
     </Pressable>
   );
 };

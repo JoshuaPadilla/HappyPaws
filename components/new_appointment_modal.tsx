@@ -64,11 +64,16 @@ const NewAppointmentModal = ({
   const thisUpdateAppointment =
     caller === "admin" ? updateAdminAppointment : updateAppointment;
 
-  const { selectedClient } = useClient();
+  const { selectedClient, selectedClientForAppointment } = useClient();
   const { pets } = usePetStore();
   const { user } = useUserStore();
 
-  const thisClient = caller === "admin" ? selectedClient : user;
+  const thisClient =
+    caller === "admin"
+      ? action === "add"
+        ? selectedClientForAppointment
+        : selectedClient
+      : user;
   const thisPets = caller === "admin" ? selectedClient?.pets || [] : pets;
   const thisAppointment =
     caller === "admin" ? adminSelectedAppointment : selectedAppointment;

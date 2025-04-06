@@ -11,10 +11,17 @@ import AdminAppointmentCard from "@/components/admin_components/admin_appointmen
 import { TODAY } from "@/constants";
 import { Calendar, DateData } from "react-native-calendars";
 import DatePickerModal from "@/components/date_picker_modal";
+import ClientListModal from "@/components/admin_components/client_list_modal";
+import { useClient } from "@/store/useClient";
+import NewAppointmentModal from "@/components/new_appointment_modal";
 
 const AppointmentsAdmin = () => {
   const [currDate, setCurrDate] = useState(moment().format("YYYY-MM-DD"));
-  const [modalVisible, setModalVisible] = useState(false);
+  const [dateModalVisible, setDateModalVisible] = useState(false);
+  const [selectClientModalVisible, setSelectClientModalVisible] =
+    useState(false);
+  const [newAppointmentModalVisible, setNewAppointmentModalVisible] =
+    useState(false);
 
   const {
     byDateAppointments,
@@ -39,12 +46,25 @@ const AppointmentsAdmin = () => {
 
   return (
     <SafeAreaView className="flex-1 flex-col bg-accent-100 px-6 py-8">
-      <DatePickerModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        setDate={setCurrDate}
-      />
+      <>
+        <NewAppointmentModal
+          modalVisible={newAppointmentModalVisible}
+          setModalVisible={setNewAppointmentModalVisible}
+          caller="admin"
+          action="add"
+        />
+        <ClientListModal
+          modalVisible={selectClientModalVisible}
+          setModalVisible={setSelectClientModalVisible}
+          onClose={() => setNewAppointmentModalVisible(true)}
+        />
 
+        <DatePickerModal
+          modalVisible={dateModalVisible}
+          setModalVisible={setDateModalVisible}
+          setDate={setCurrDate}
+        />
+      </>
       {/* heading */}
       <View className="flex-row justify-between mb-10">
         <CustomButton
@@ -65,7 +85,7 @@ const AppointmentsAdmin = () => {
             iconLeft={icons.add_appointment}
             textClassname="font-rubik-bold text-accent-100 text-xl"
             btnClassname="bg-primary-100 px-6 py-1 rounded-xl"
-            onPress={() => setModalVisible(true)}
+            onPress={() => setDateModalVisible(true)}
           />
         </View>
       </View>
@@ -100,6 +120,12 @@ const AppointmentsAdmin = () => {
           <ActivityIndicator color={"#73C7C7"} className="p-16" />
         )}
       </ScrollView>
+
+      <CustomButton
+        iconLeft={icons.plus_icon}
+        btnClassname="size-20 bg-primary-100 absolute items-center justify-center right-10 bottom-28 rounded-full"
+        onPress={() => setSelectClientModalVisible(true)}
+      />
     </SafeAreaView>
   );
 };

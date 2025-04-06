@@ -79,7 +79,7 @@ const VaccineList = () => {
       </View>
 
       {/* aftercare list */}
-      <View className="p-4 gap-4">
+      <View className="p-4 gap-4 pb-[100px]">
         <View className="flex-row justify-between">
           <Text className="font-rubik-semibold text-xl">
             Vaccination Records:
@@ -88,7 +88,10 @@ const VaccineList = () => {
           <CustomButton iconLeft={icons.filter} />
         </View>
 
-        <ScrollView contentContainerClassName="pb-[200px]">
+        <ScrollView
+          contentContainerClassName="pb-[200px]"
+          showsVerticalScrollIndicator={false}
+        >
           {isLoading && (
             <ActivityIndicator color={"#73C7C7"} className="p-16" />
           )}

@@ -20,8 +20,11 @@ const DatePickerModal = ({
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   const handleClose = () => {
+    if (selectedDate) {
+      setDate(selectedDate);
+    }
+
     setModalVisible(false);
-    setDate(selectedDate);
   };
 
   return (

@@ -8,6 +8,7 @@ import {
 import React from "react";
 import { Pet } from "@/types/type";
 import icons from "@/constants/icons";
+import { formatDate } from "@/lib/utils";
 
 interface AppointmentDetailsCardProps {
   pet: Pet | null;
@@ -65,7 +66,7 @@ const AppointmentDetailsCard = ({
         <AppointmentDetailItem
           icon={icons.appointment_date}
           title="Appointment Date"
-          value={date}
+          value={formatDate(date)}
         />
 
         <AppointmentDetailItem

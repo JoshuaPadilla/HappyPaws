@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable, StatusBar } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import React from "react";
 import { Link, Redirect } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,12 +14,6 @@ const welcome = () => {
 
   return (
     <SafeAreaView className="flex flex-1 bg-background-100">
-      <StatusBar
-        backgroundColor="#F6F4F0"
-        barStyle="dark-content"
-        translucent={true}
-      />
-
       <Spinner
         visible={isCheckingAuth}
         textContent={"Loading..."}

@@ -35,24 +35,17 @@ export default function RootLayout() {
 
   return (
     <View className="flex-1">
-      <StatusBar backgroundColor={"#f6f4f0"} barStyle={"dark-content"} />
+      <StatusBar backgroundColor={"#F6F4F0"} barStyle={"dark-content"} />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(utility)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="(pets)"
-          options={{ headerShown: false, presentation: "modal" }}
-        />
-        <Stack.Screen
-          name="(appointments)"
-          options={{ headerShown: false, presentation: "modal" }}
-        />
+        <Stack.Screen name="(pets)" options={{ headerShown: false }} />
+        <Stack.Screen name="(appointments)" options={{ headerShown: false }} />
         <Stack.Screen name="(admin)" options={{ headerShown: false }} />
         <Stack.Screen name="(admin_utility)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
-
       <Toast />
     </View>
   );

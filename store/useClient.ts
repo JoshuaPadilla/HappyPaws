@@ -9,6 +9,7 @@ import { create } from "zustand";
 interface ClientStoreState {
   clients: User[];
   selectedClient: User | null;
+  selectedClientForAppointment: User | null;
   isLoading: boolean;
   isAdding: boolean;
   isUpdating: boolean;
@@ -19,6 +20,7 @@ interface ClientStoreState {
   fetchClient: (clientId: string) => Promise<void>;
   updateClient: (client: any) => Promise<void>;
   fetchSelectedClientPets: () => Promise<void>;
+  fetchSelectedClientForAppointment: (userID: string) => Promise<void>;
   deleteClient: () => Promise<void>;
   // setSelectedClient: (client: Client) => void;
 }
@@ -30,6 +32,7 @@ export const useClient = create<ClientStoreState>((set) => ({
   isAdding: false,
   isUpdating: false,
   isDeleting: false,
+  selectedClientForAppointment: null,
 
   fetchClients: async () => {
     try {
@@ -183,6 +186,32 @@ export const useClient = create<ClientStoreState>((set) => ({
             }
           : null,
       }));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  fetchSelectedClientForAppointment: async (userID) => {
+    try {
+      set({ isLoading: true });
+
+      const token = await AsyncStorage.getItem("token");
+
+      const res = await fetch(`${BASE_URL}/users/${userID}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+
+      if (data.status === "success") {
+        set({ selectedClientForAppointment: data.user });
+      } else {
+        showToast("error", "Failed Fetching Client");
+      }
     } catch (error) {
       console.log(error);
     } finally {
