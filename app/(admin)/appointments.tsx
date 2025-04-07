@@ -45,8 +45,6 @@ const AppointmentsAdmin = () => {
   };
 
   const handleAddAppointment = () => {
-    console.log("here");
-    console.log(selectClientModalVisible);
     setSelectClientModalVisible(true);
   };
 
