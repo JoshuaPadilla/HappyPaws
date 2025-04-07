@@ -23,15 +23,18 @@ const SearchBar = ({
   setQuery,
   onSubmit,
 }: SearchBarProps) => {
+  const paddingStyle = {
+    padding: Platform.OS === "ios" ? 0 : 8, // Apply padding if applyPadding is true
+  };
+
   return (
     <KeyboardAvoidingView
-      className={`w-full flex-row px-4 shadow rounded-xl bg-white items-center justify-between ${
-        Platform.OS === "ios" ? "py-2" : ""
-      }`}
+      className={`w-full flex-row px-4 shadow rounded-xl bg-white items-center justify-between`}
     >
       <View className="flex-row gap-2 items-center">
         <Image source={icons.search_icon} className="size-6" />
         <TextInput
+          style={paddingStyle}
           className={`w-[77%] text-black-100 font-rubik-regular`}
           placeholder={placeholder}
           placeholderTextColor={Platform.OS === "ios" ? "#888A98" : "#666876"} // iOS-specific color
