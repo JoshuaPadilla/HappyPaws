@@ -6,7 +6,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useClient } from "@/store/useClient";
 import SearchBar from "../search_bar";
 import CustomButton from "../custom_button";
@@ -24,7 +24,12 @@ const ClientListModal = ({
   setModalVisible,
   onClose,
 }: ClientListModalProps) => {
-  const { clients, isLoading, fetchSelectedClientForAppointment } = useClient();
+  const {
+    clients,
+    isLoading,
+    fetchSelectedClientForAppointment,
+    fetchClients,
+  } = useClient();
 
   const [query, setQuery] = useState("");
 
@@ -37,10 +42,15 @@ const ClientListModal = ({
     : clients;
 
   const handleSelectClient = (id: string) => {
-    setModalVisible(false);
     fetchSelectedClientForAppointment(id);
+
+    setModalVisible(false);
     onClose && onClose();
   };
+
+  useEffect(() => {
+    fetchClients();
+  }, []);
 
   return (
     <Modal

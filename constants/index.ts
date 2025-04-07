@@ -1,6 +1,7 @@
 import moment from "moment";
 
-export const BASE_URL = "http://192.168.101.27:3000/api/happy-paws";
+export const BASE_URL =
+  "https://2ac4-103-224-94-66.ngrok-free.app/api/happy-paws";
 
 // 192.168.101.18 Home
 // 172.20.10.13 hotspot

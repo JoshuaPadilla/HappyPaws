@@ -29,6 +29,8 @@ interface newAppointmentModalProps {
   setModalVisible: (visible: boolean) => void;
   action: "add" | "edit";
   caller?: "user" | "admin";
+  onCancel?: () => void;
+  onConfirm?: () => void;
 }
 
 const steps = [
@@ -44,6 +46,8 @@ const NewAppointmentModal = ({
   setModalVisible,
   action,
   caller,
+  onCancel,
+  onConfirm,
 }: newAppointmentModalProps) => {
   const {
     getTimeSlots,
@@ -64,17 +68,19 @@ const NewAppointmentModal = ({
   const thisUpdateAppointment =
     caller === "admin" ? updateAdminAppointment : updateAppointment;
 
-  const { selectedClient, selectedClientForAppointment } = useClient();
+  const {
+    selectedClient,
+    selectedClientForAppointment,
+    isLoading: isFetchingClientForAppointment,
+  } = useClient();
   const { pets } = usePetStore();
   const { user } = useUserStore();
 
-  const thisClient =
-    caller === "admin"
-      ? action === "add"
-        ? selectedClientForAppointment
-        : selectedClient
-      : user;
-  const thisPets = caller === "admin" ? selectedClient?.pets || [] : pets;
+  const adminClient =
+    action === "add" ? selectedClientForAppointment : selectedClient;
+
+  const thisClient = caller === "admin" ? adminClient : user;
+  const thisPets = caller === "admin" ? adminClient?.pets || [] : pets;
   const thisAppointment =
     caller === "admin" ? adminSelectedAppointment : selectedAppointment;
 
@@ -151,8 +157,9 @@ const NewAppointmentModal = ({
         });
 
     resetForm();
+    onConfirm && onConfirm();
 
-    !isAdding && setModalVisible(false);
+    setModalVisible(false);
   };
 
   const resetForm = () => {
@@ -162,6 +169,13 @@ const NewAppointmentModal = ({
     setNotes("");
     setSelectedPet(null);
   };
+
+  const handleOnCancel = () => {
+    onCancel && onCancel();
+    step === 0 ? setModalVisible(false) : setStep(step - 1);
+  };
+
+  const hasPets = thisPets.length > 0;
 
   return (
     <Modal
@@ -173,11 +187,15 @@ const NewAppointmentModal = ({
       }}
     >
       <View className="flex-1 justify-center items-center bg-black-100/70 p-6 overflow-hidden">
-        {(isAdding || isUpdating) && (
+        {(isAdding || isUpdating || isFetchingClientForAppointment) && (
           <ActivityIndicator size="large" color="#73C7C7" />
         )}
 
-        <View className="bg-accent-100 w-full rounded-lg p-4 max-h-[70%] overflow-hidden">
+        <View
+          className={`${
+            hasPets ? "" : "items-center"
+          } bg-accent-100 w-full rounded-lg p-4 max-h-[70%] overflow-hidden`}
+        >
           <Text className="font-rubik-bold text-3xl text-black-100 mb-6 self-center">
             {steps[step]}
           </Text>
@@ -186,17 +204,23 @@ const NewAppointmentModal = ({
           {step === 0 && (
             <ScrollView
               contentContainerClassName={`flex-row flex-wrap gap-4 pb-[70px] w-full ${
-                thisPets.length % 3 === 0 ? "justify-between" : ""
-              }`}
+                thisPets.length % 3 === 0 ? "justify-between" : "s"
+              } `}
             >
-              {thisPets.map((pet) => (
-                <ModalPetCard
-                  key={pet._id}
-                  pet={pet}
-                  isSelected={selectedPet?._id === pet._id}
-                  setSelectedPet={setSelectedPet}
-                />
-              ))}
+              {hasPets ? (
+                thisPets.map((pet) => (
+                  <ModalPetCard
+                    key={pet._id}
+                    pet={pet}
+                    isSelected={selectedPet?._id === pet._id}
+                    setSelectedPet={setSelectedPet}
+                  />
+                ))
+              ) : (
+                <Text className="font-rubik-semibold">
+                  This Client Has no pets yet
+                </Text>
+              )}
             </ScrollView>
           )}
 
@@ -283,38 +307,50 @@ const NewAppointmentModal = ({
             />
           )}
 
-          <View className="flex-row justify-between items-center w-full mt-4">
+          <View
+            className={`flex-row justify-${
+              hasPets ? "between" : "center p-4"
+            } items-center w-full mt-4`}
+          >
             <CustomButton
-              title={step === 0 ? "Cancel" : "Back"}
-              onPress={() => {
-                step === 0 ? setModalVisible(false) : setStep(step - 1);
-              }}
-              btnClassname="bg-white rounded-lg p-4 w-[100px] items-center justify-center"
+              title={
+                step === 0
+                  ? hasPets
+                    ? "cancel"
+                    : "select another client"
+                  : "Back"
+              }
+              onPress={handleOnCancel}
+              btnClassname={`bg-white rounded-lg p-4 ${
+                hasPets ? "w-[100px]" : ""
+              } items-center justify-center`}
               textClassname="text-danger font-rubik-bold text-lg"
             />
 
-            <CustomButton
-              title={step === 4 ? "Confirm" : "Next"}
-              onPress={() => {
-                if (step === 0) {
-                  handleselectPetNext();
-                }
-                if (step === 1) {
-                  handleselectDateNext();
-                }
-                if (step === 2) {
-                  handleSelectTimeNext();
-                }
-                if (step === 3) {
-                  handleSelectNoteAndTypeNext();
-                }
-                if (step === 4) {
-                  handleConfirmAppointment();
-                }
-              }}
-              btnClassname="bg-white rounded-lg p-4 w-[100px] items-center justify-center"
-              textClassname="text-primary-100 font-rubik-bold text-lg"
-            />
+            {hasPets && (
+              <CustomButton
+                title={step === 4 ? "Confirm" : "Next"}
+                onPress={() => {
+                  if (step === 0) {
+                    handleselectPetNext();
+                  }
+                  if (step === 1) {
+                    handleselectDateNext();
+                  }
+                  if (step === 2) {
+                    handleSelectTimeNext();
+                  }
+                  if (step === 3) {
+                    handleSelectNoteAndTypeNext();
+                  }
+                  if (step === 4) {
+                    handleConfirmAppointment();
+                  }
+                }}
+                btnClassname="bg-white rounded-lg p-4 w-[100px] items-center justify-center"
+                textClassname="text-primary-100 font-rubik-bold text-lg"
+              />
+            )}
           </View>
         </View>
       </View>

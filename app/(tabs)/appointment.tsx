@@ -30,6 +30,7 @@ import { goToViewAppointment } from "@/lib/routerFunctions";
 const Appointments = () => {
   const { appointments, setSelectedAppointment, fetchAppointments, isLoading } =
     useAppointmentsStore();
+
   // after getting all the appointment from the backend, filter the appointment for today
 
   const { pets } = usePetStore();

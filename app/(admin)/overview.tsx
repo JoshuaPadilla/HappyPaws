@@ -30,10 +30,6 @@ const Overview = () => {
     };
   }, [currDate]);
 
-  const filteredAppointments = byDateAppointments.filter(
-    (appointment) => appointment.status !== "Cancelled"
-  );
-
   const totalAppointments = byDateAppointments.length;
   const cancelledAppointments = byDateAppointments.reduce(
     (accumulator, appointment) => {

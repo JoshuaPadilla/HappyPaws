@@ -44,6 +44,12 @@ const AppointmentsAdmin = () => {
     setCurrDate(moment().format("YYYY-MM-DD"));
   };
 
+  const handleAddAppointment = () => {
+    console.log("here");
+    console.log(selectClientModalVisible);
+    setSelectClientModalVisible(true);
+  };
+
   return (
     <SafeAreaView className="flex-1 flex-col bg-accent-100 px-6 py-8">
       <>
@@ -52,6 +58,8 @@ const AppointmentsAdmin = () => {
           setModalVisible={setNewAppointmentModalVisible}
           caller="admin"
           action="add"
+          onCancel={() => setSelectClientModalVisible(true)}
+          onConfirm={() => setSelectClientModalVisible(false)}
         />
         <ClientListModal
           modalVisible={selectClientModalVisible}
@@ -124,7 +132,7 @@ const AppointmentsAdmin = () => {
       <CustomButton
         iconLeft={icons.plus_icon}
         btnClassname="size-20 bg-primary-100 absolute items-center justify-center right-10 bottom-28 rounded-full"
-        onPress={() => setSelectClientModalVisible(true)}
+        onPress={handleAddAppointment}
       />
     </SafeAreaView>
   );
