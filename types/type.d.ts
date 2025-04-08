@@ -22,10 +22,14 @@ declare interface AppointmentForm {
   status?: string;
 }
 
-declare interface Reminders {
+// reminders type if appointment or aftercare
+declare interface Reminder {
+  id?: string;
+  remindersType: "Appointment" | "Aftercare";
   type: string;
   title: string;
-  time: string;
+  time?: string;
+  note?: string;
 }
 
 declare interface userBirthday {

@@ -1,13 +1,15 @@
 import { View, Text, ImageBackground } from "react-native";
 import React from "react";
 import { cards_bg } from "@/constants/images";
-import { Reminders } from "@/types/type";
+import { Reminder } from "@/types/type";
 import { formatDate, getRemindersCardBg } from "@/lib/utils";
 
-const RemindersCard = ({ type, title, time }: Reminders) => {
-  const cardBgKey: keyof typeof cards_bg = getRemindersCardBg(type);
-  // console.log(cardBgKey);
+interface RemindersCardProps {
+  reminder: Reminder;
+}
 
+const RemindersCard = ({ reminder }: RemindersCardProps) => {
+  const cardBgKey: keyof typeof cards_bg = getRemindersCardBg(reminder.type);
   return (
     <View className="shadow p-2">
       <ImageBackground
@@ -16,16 +18,18 @@ const RemindersCard = ({ type, title, time }: Reminders) => {
         resizeMode="cover"
       >
         <Text className="font-poppins-bold text-xl mb-6 text-black-100 max-w-32">
-          {type}
+          {reminder.type}
         </Text>
 
         <View className="flex gap-2 max-w-[150px]">
           <Text className="font-rubik-medium text-m text-black-200">
-            {title}
+            {reminder.title}
           </Text>
 
           <Text className="font-rubik-medium text-sm text-black-300">
-            {formatDate(time)}
+            {reminder.remindersType === "Appointment"
+              ? reminder.time
+              : reminder.note}
           </Text>
         </View>
       </ImageBackground>

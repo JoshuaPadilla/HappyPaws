@@ -46,7 +46,7 @@ const AdminCalendar = ({
   };
 
   return (
-    <View>
+    <View className="px-4 py-6 bg-white rounded-lg">
       {/* Buttons */}
       <View className="flex-row justify-between items-center mb-6 px-4">
         <View className="items-center">

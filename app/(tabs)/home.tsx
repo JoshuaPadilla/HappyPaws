@@ -1,5 +1,12 @@
 import { Link, router } from "expo-router";
-import { Alert, ScrollView, StatusBar, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  ScrollView,
+  StatusBar,
+  Text,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import icons from "@/constants/icons";
@@ -10,19 +17,20 @@ import { usePetStore } from "@/store/usePets";
 import { useUserStore } from "@/store/useUser";
 import { Pet } from "@/types/type";
 import { goToViewPet } from "@/lib/routerFunctions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NewAppointmentModal from "@/components/new_appointment_modal";
 import { useAppointmentsStore } from "@/store/useAppointments";
 import { useAftercareStore } from "@/store/useAftercare";
 import moment from "moment";
-import { Reminders } from "@/types/type";
+import { Reminder } from "@/types/type";
 import { isBetweenDates } from "@/lib/utils";
+import { userReminders } from "@/store/useReminders";
 export default function Home() {
   const { pets, setSelectedPet } = usePetStore();
   const { user } = useUserStore();
+  const { fetchReminders, reminders, isLoading } = userReminders();
 
   const [modalVisible, setModalVisible] = useState(false);
-  const reminders = getReminders();
 
   const handleSelecPet = (pet: Pet) => {
     setSelectedPet(pet);
@@ -36,6 +44,10 @@ export default function Home() {
     }
     setModalVisible(true);
   };
+
+  useEffect(() => {
+    fetchReminders();
+  }, []);
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-4 py-8">
@@ -77,14 +89,13 @@ export default function Home() {
             horizontal
             showsHorizontalScrollIndicator={false}
           >
-            {reminders.map((reminder, index) => (
-              <RemindersCard
-                time={reminder.time}
-                title={reminder.title}
-                type={reminder.type}
-                key={index}
-              />
-            ))}
+            {isLoading ? (
+              <ActivityIndicator color={"#73C7C7"} className="p-16" />
+            ) : (
+              reminders.map((reminder, index) => (
+                <RemindersCard reminder={reminder} key={index} />
+              ))
+            )}
           </ScrollView>
         ) : (
           <View className="h-[200px] justify-center items-center">
@@ -135,39 +146,3 @@ export default function Home() {
     </SafeAreaView>
   );
 }
-
-const getReminders = (): Reminders[] => {
-  const { appointments } = useAppointmentsStore();
-  const { allAftercares } = useAftercareStore();
-
-  const reminders: Reminders[] = [];
-
-  appointments.forEach((appointment) => {
-    if (
-      moment(appointment.appointmentDate).isSame(moment(), "day") &&
-      appointment.status !== "Cancelled"
-    ) {
-      const pet = appointment.petID;
-
-      reminders.push({
-        type: appointment.typeOfService,
-        title: `${
-          typeof pet === "object" && pet?.petName ? pet.petName : ""
-        }'s \n${appointment.typeOfService}`,
-        time: appointment.appointmentDate,
-      });
-    }
-  });
-
-  allAftercares.forEach((aftercare) => {
-    if (isBetweenDates(aftercare.startDate, aftercare.endDate)) {
-      reminders.push({
-        type: aftercare.type,
-        title: aftercare.notes,
-        time: aftercare.startDate,
-      });
-    }
-  });
-
-  return reminders;
-};

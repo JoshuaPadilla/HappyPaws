@@ -199,7 +199,7 @@ export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
       const res = await fetch(
         `${BASE_URL}/appointments/cancel/${appointmentId}`,
         {
-          method: "PATCH",
+          method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -207,6 +207,8 @@ export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
       );
 
       const data = await res.json();
+
+      console.log(data);
 
       if (data.status === "success") {
         useAppointmentsStore.getState().fetchAppointments();
