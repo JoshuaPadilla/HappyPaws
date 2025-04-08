@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, Image, ImageSourcePropType } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  ImageSourcePropType,
+  ActivityIndicator,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppointmentsStore } from "@/store/useAppointments";
 import {
@@ -20,7 +26,7 @@ import { useAdminAppointmentsStore } from "@/store/useAdminAppointmentsStore";
 
 const ViewAppointment = () => {
   const { selectedAppointment, cancelAppointment } = useAppointmentsStore();
-  const { selectedAppointment: adminSelectedAppointment } =
+  const { selectedAppointment: adminSelectedAppointment, isLoading } =
     useAdminAppointmentsStore();
 
   const thisAppointment = selectedAppointment || adminSelectedAppointment;
@@ -91,88 +97,93 @@ const ViewAppointment = () => {
           )}
       </View>
 
-      {/* Pet detials */}
+      {isLoading ? (
+        <ActivityIndicator color={"#73C7C7"} className="p-16" />
+      ) : (
+        <View>
+          {/* Pet detials */}
+          <View className="border-black-400 border-2 rounded-xl  p-4">
+            <View className="flex-row gap-2 ">
+              {appointedPet?.petImage ? (
+                <Image
+                  source={{ uri: appointedPet?.petImage }}
+                  className="size-32 rounded-lg"
+                />
+              ) : (
+                <Image
+                  source={icons.pet_image_holder}
+                  className="size-32 rounded-lg"
+                />
+              )}
 
-      <View className="border-black-400 border-2 rounded-xl  p-4">
-        <View className="flex-row gap-2 ">
-          {appointedPet?.petImage ? (
-            <Image
-              source={{ uri: appointedPet?.petImage }}
-              className="size-32 rounded-lg"
-            />
-          ) : (
-            <Image
-              source={icons.pet_image_holder}
-              className="size-32 rounded-lg"
-            />
-          )}
+              <View className="flex-1 px-4">
+                <DetailsItem
+                  icon={petDetailsIcons.pet_name}
+                  title="Name"
+                  value={appointedPet?.petName || "No name"}
+                />
 
-          <View className="flex-1 px-4">
+                <DetailsItem
+                  icon={petDetailsIcons.pet_specie}
+                  title="Specie"
+                  value={appointedPet?.petSpecie || "No specie"}
+                />
+
+                <DetailsItem
+                  icon={petDetailsIcons.pet_breed}
+                  title="Breed"
+                  value={appointedPet?.petBreed || "No breed"}
+                />
+
+                <DetailsItem
+                  icon={petDetailsIcons.pet_gender}
+                  title="Gender"
+                  value={appointedPet?.petGender || "No gender"}
+                />
+              </View>
+            </View>
+            <View></View>
+          </View>
+
+          {/* Appointment details */}
+          <View className="rounded-xl gap-6 p-4">
+            <Text className="font-rubik-medium text-xl text-black-100 mb-4">
+              Appointment Details:
+            </Text>
+
             <DetailsItem
-              icon={petDetailsIcons.pet_name}
-              title="Name"
-              value={appointedPet?.petName || "No name"}
+              icon={icons.appointment_status}
+              title="Appointment Status"
+              value={thisAppointment?.status || "No status"}
+              tintColor={getStatusColor(thisAppointment?.status || "")}
             />
 
             <DetailsItem
-              icon={petDetailsIcons.pet_specie}
-              title="Specie"
-              value={appointedPet?.petSpecie || "No specie"}
+              icon={icons.appointment_type}
+              title="Appointment Type"
+              value={thisAppointment?.typeOfService || "No type"}
+              valueClassname="s"
+              valueColor={colors.colors.base}
             />
 
             <DetailsItem
-              icon={petDetailsIcons.pet_breed}
-              title="Breed"
-              value={appointedPet?.petBreed || "No breed"}
+              icon={icons.appointment_time}
+              title="Appointment Time"
+              value={thisAppointment?.appointmentTime || "No time"}
             />
-
             <DetailsItem
-              icon={petDetailsIcons.pet_gender}
-              title="Gender"
-              value={appointedPet?.petGender || "No gender"}
+              icon={icons.appointment_date}
+              title="Appointment Date"
+              value={formattedAppointmentDate || "No date"}
+            />
+            <DetailsItem
+              icon={icons.appointment_notes}
+              title="Appointment Notes"
+              value={thisAppointment?.appointmentNotes || "No notes"}
             />
           </View>
         </View>
-        <View></View>
-      </View>
-
-      {/* Appointment details */}
-      <View className="rounded-xl gap-6 p-4">
-        <Text className="font-rubik-medium text-xl text-black-100 mb-4">
-          Appointment Details:
-        </Text>
-
-        <DetailsItem
-          icon={icons.appointment_status}
-          title="Appointment Status"
-          value={thisAppointment?.status || "No status"}
-          tintColor={getStatusColor(thisAppointment?.status || "")}
-        />
-
-        <DetailsItem
-          icon={icons.appointment_type}
-          title="Appointment Type"
-          value={thisAppointment?.typeOfService || "No type"}
-          valueClassname="s"
-          valueColor={colors.colors.base}
-        />
-
-        <DetailsItem
-          icon={icons.appointment_time}
-          title="Appointment Time"
-          value={thisAppointment?.appointmentTime || "No time"}
-        />
-        <DetailsItem
-          icon={icons.appointment_date}
-          title="Appointment Date"
-          value={formattedAppointmentDate || "No date"}
-        />
-        <DetailsItem
-          icon={icons.appointment_notes}
-          title="Appointment Notes"
-          value={thisAppointment?.appointmentNotes || "No notes"}
-        />
-      </View>
+      )}
     </SafeAreaView>
   );
 };

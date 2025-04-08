@@ -20,12 +20,12 @@ interface AppointmentStoreState {
   isDeleting: boolean;
   isCancelling: boolean;
 
-  fetchAppointments: (signal?: any) => Promise<void>;
-  fetchAppointmentHistory: (id?: string) => Promise<void>;
+  fetchAppointments: (signal?: any) => void;
+  fetchAppointmentHistory: (id?: string) => void;
 
-  addAppointment: (appointment: AppointmentForm) => Promise<void>;
-  updateAppointment: (appointment: AppointmentForm) => Promise<void>;
-  getTimeSlots: (date: string) => Promise<any>;
+  addAppointment: (appointment: AppointmentForm) => void;
+  updateAppointment: (appointment: AppointmentForm) => void;
+  getTimeSlots: (date: string) => any;
   setSelectedAppointment: (appointment: Appointment) => void;
   cancelAppointment: (appointmentId: string) => Promise<void>;
 }

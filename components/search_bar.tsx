@@ -24,7 +24,7 @@ const SearchBar = ({
   onSubmit,
 }: SearchBarProps) => {
   const paddingStyle = {
-    padding: Platform.OS === "ios" ? 0 : 8, // Apply padding if applyPadding is true
+    padding: 8, // Apply padding if applyPadding is true
   };
 
   return (

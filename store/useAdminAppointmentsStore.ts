@@ -22,6 +22,8 @@ interface AdminAppointmentStoreState {
   isCancelling: boolean;
 
   fetchAllAppointments: () => Promise<void>;
+  fetchAppointment: (appointmentId: string) => void;
+
   fetchAppointmentByDate: (date: string, signal?: any) => Promise<void>;
   addAppointment: (appointment: AppointmentForm) => Promise<void>;
   updateAppointment: (appointment: AppointmentForm) => Promise<void>;
@@ -256,6 +258,37 @@ export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
         Alert.alert("Failed to cancel appointment");
       } finally {
         set({ isCancelling: false });
+      }
+    },
+
+    fetchAppointment: async (appointmentId) => {
+      try {
+        set({ isLoading: true });
+        const token = await AsyncStorage.getItem("token");
+
+        const res = await fetch(
+          `${BASE_URL}/appointments/admin/${appointmentId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await res.json();
+        console.log(data);
+
+        if (data.status === "success") {
+          set({ selectedAppointment: data.appointment });
+        } else {
+          Alert.alert("Failed to fetch appointment");
+        }
+      } catch (error) {
+        console.log(error);
+        Alert.alert("Error fetching appointment");
+      } finally {
+        set({ isLoading: false });
       }
     },
 

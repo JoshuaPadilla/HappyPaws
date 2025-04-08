@@ -6,6 +6,8 @@ import { Appointment, AppointmentForm } from "@/types/type";
 import { Image } from "expo-image";
 import { Image as ReactImage } from "react-native";
 import { petCardsIcon, profileIcons } from "@/constants/icons";
+import { useAdminAppointmentsStore } from "@/store/useAdminAppointmentsStore";
+import { goToViewAppointment } from "@/lib/routerFunctions";
 
 interface TimeSlotProps {
   time: string;
@@ -41,6 +43,12 @@ const OverviewTimeslotList = ({ appointmentList }: TimeSlotListProps) => {
 };
 
 const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
+  const { fetchAppointment } = useAdminAppointmentsStore();
+
+  const handleSelectAppointment = (appointmentId: string) => {
+    fetchAppointment(appointmentId);
+    goToViewAppointment();
+  };
   const colors = appointment
     ? getAppointmentColors(appointment.typeOfService)
     : null;
@@ -60,6 +68,7 @@ const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
         <Pressable
           style={{ backgroundColor: colors?.colors.base }}
           className="flex-row w-[70%] rounded-lg p-4 gap-2"
+          onPress={() => handleSelectAppointment(appointment._id || "")}
         >
           <View className="h-full">
             {thisUser?.profilePicture ? (

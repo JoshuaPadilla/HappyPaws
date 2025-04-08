@@ -50,6 +50,7 @@ const AppointmentsAdmin = () => {
 
   return (
     <SafeAreaView className="flex-1 flex-col bg-accent-100 px-6 py-8">
+      {/* Modals */}
       <>
         <NewAppointmentModal
           modalVisible={newAppointmentModalVisible}
