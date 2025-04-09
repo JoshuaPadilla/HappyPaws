@@ -115,6 +115,12 @@ const AddAftercare = () => {
     );
   };
 
+  const handleDeleteRestrictions = (selectedRestriction: string) => {
+    setRestrictions((prev) =>
+      prev.filter((restriction) => restriction !== selectedRestriction)
+    );
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8 gap-4">
       {/* Modals */}
@@ -277,7 +283,6 @@ const AddAftercare = () => {
                     handleDeleteMedication(
                       medication?.indexID || medication._id || ""
                     );
-                    console.log(medication.indexID, medication._id);
                   }}
                 />
               </View>
@@ -302,7 +307,18 @@ const AddAftercare = () => {
 
           <View>
             {restrictions.map((restriction, index) => (
-              <RestrictionItem key={index} restriction={restriction} />
+              <View className="flex-row gap-2 items-center" key={index}>
+                <RestrictionItem key={index} restriction={restriction} />
+
+                <CustomButton
+                  iconLeft={icons.trash}
+                  tintColor="#F75555"
+                  iconSize="size-6"
+                  onPress={() => {
+                    handleDeleteRestrictions(restriction);
+                  }}
+                />
+              </View>
             ))}
           </View>
         </View>
@@ -345,11 +361,12 @@ const AddAftercare = () => {
 
 const RestrictionItem = ({ restriction }: { restriction?: string }) => {
   return (
-    <View className="flex-row p-2 justify-between items-center">
-      <View className="bg-primary-100 rounded-full size-3"></View>
-      <Text className="w-[92%] font-rubik-medium text-lg text-black-100">
-        {restriction || "Restriction name"}
-      </Text>
+    <View className="w-[92%]">
+      <View className="flex-row p-4 justify-between items-center border border-primary-100 rounded-lg w-[92%]">
+        <Text className=" font-rubik-medium text-lg text-black-100">
+          {restriction || "Restriction name"}
+        </Text>
+      </View>
     </View>
   );
 };
