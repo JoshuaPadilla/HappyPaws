@@ -20,7 +20,8 @@ import moment from "moment";
 const AddAftercare = () => {
   const { selectedClient } = useClient();
   const { selectedPet } = useAdminPets();
-  const { addAftercare } = useAftercareStore();
+  const { addAftercare, selectedAftercare, updateAftercare, action } =
+    useAftercareStore();
 
   const dateFor = useRef("start");
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
@@ -31,14 +32,28 @@ const AddAftercare = () => {
 
   const [error, setError] = useState("");
 
-  const [type, setType] = useState<any>("Medication");
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
-  const [followUpDate, setFollowUpDate] = useState<string>("");
-  const [note, setNote] = useState<string>("");
-  const [careInstructions, setCareInstructions] = useState<string>("");
-  const [restrictions, setRestrictions] = useState<string[]>([]);
-  const [medications, setMedications] = useState<Medication[]>([]);
+  const [type, setType] = useState<any>(
+    selectedAftercare?.type || "Medication"
+  );
+  const [startDate, setStartDate] = useState<string>(
+    selectedAftercare?.startDate || ""
+  );
+  const [endDate, setEndDate] = useState<string>(
+    selectedAftercare?.endDate || ""
+  );
+  const [followUpDate, setFollowUpDate] = useState<string>(
+    selectedAftercare?.followUpDate || ""
+  );
+  const [note, setNote] = useState<string>(selectedAftercare?.notes || "");
+  const [careInstructions, setCareInstructions] = useState<string>(
+    selectedAftercare?.careInstructions || ""
+  );
+  const [restrictions, setRestrictions] = useState<string[]>(
+    selectedAftercare?.restrictions || []
+  );
+  const [medications, setMedications] = useState<Medication[]>(
+    selectedAftercare?.medications || []
+  );
 
   const handleShowCalendar = (whatDate: String) => {
     if (whatDate === "start") {
@@ -64,7 +79,7 @@ const AddAftercare = () => {
     }
   };
 
-  const handleAddAftercare = () => {
+  const handleSubmit = () => {
     const newAftercare: AftercareForm = {
       type,
       medications,
@@ -81,13 +96,23 @@ const AddAftercare = () => {
       return;
     }
 
-    addAftercare(
-      newAftercare,
-      selectedPet?._id || "",
-      selectedClient?._id || ""
-    );
+    action === "add"
+      ? addAftercare(
+          newAftercare,
+          selectedPet?._id || "",
+          selectedClient?._id || ""
+        )
+      : updateAftercare(newAftercare, selectedAftercare?._id || "");
 
     goBack();
+  };
+
+  const handleDeleteMedication = (id: string) => {
+    setMedications((prev) =>
+      prev.filter(
+        (medication) => medication.indexID !== id && medication._id !== id
+      )
+    );
   };
 
   return (
@@ -136,7 +161,7 @@ const AddAftercare = () => {
         <CustomButton
           iconLeft={icons.edit_check}
           iconSize="size-8"
-          onPress={handleAddAftercare}
+          onPress={handleSubmit}
         />
       </View>
 
@@ -221,6 +246,7 @@ const AddAftercare = () => {
             title="Type of aftercare"
             iconLeft={icons.dropdown}
             height={250}
+            defaultValue={type ? type : ""}
           />
         </View>
 
@@ -241,7 +267,20 @@ const AddAftercare = () => {
 
           <View className="w-full gap-2">
             {medications.map((medication, index) => (
-              <MedicationItem key={index} medication={medication} />
+              <View className="flex-row gap-2 items-center" key={index}>
+                <MedicationItem medication={medication} />
+                <CustomButton
+                  iconLeft={icons.trash}
+                  tintColor="#F75555"
+                  iconSize="size-6"
+                  onPress={() => {
+                    handleDeleteMedication(
+                      medication?.indexID || medication._id || ""
+                    );
+                    console.log(medication.indexID, medication._id);
+                  }}
+                />
+              </View>
             ))}
           </View>
         </View>
@@ -283,7 +322,6 @@ const AddAftercare = () => {
         </View>
 
         {/* followupdate */}
-
         <View className="gap-2 ">
           <Text className="font-rubik-medium text-md text-black-200">
             Follow-up Date

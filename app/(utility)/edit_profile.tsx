@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  Image,
   KeyboardAvoidingView,
   TextInput,
   Alert,
@@ -10,16 +9,13 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import icons, { profileIcons } from "@/constants/icons";
 import CustomButton from "@/components/custom_button";
-import InputField from "@/components/InputField";
 import Dropdown from "@/components/dropdown";
 import { days, genderDropdownData, years, months } from "@/constants";
-import { useAuthStore } from "@/store/useAuth";
-import Spinner from "react-native-loading-spinner-overlay";
+
 import { useRouter } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import { useUserStore } from "@/store/useUser";
 import { ImageAvatar } from "@/components/image_avatar";
-import Toast from "react-native-toast-message";
 import { isUserFormValid, showToast } from "@/lib/utils";
 import { User } from "@/types/type";
 
@@ -92,7 +88,6 @@ const EditProfile = () => {
   return (
     <SafeAreaView className="flex-1 p-8">
       {/* Headings */}
-
       <View className="flex-row justify-between items-end mb-4">
         <Text className="font-poppins-bold text-2xl">Edit Profile</Text>
 

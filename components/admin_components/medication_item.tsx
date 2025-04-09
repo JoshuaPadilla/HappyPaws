@@ -13,8 +13,6 @@ const MedicationItem = ({ medication }: MedicationItemProps) => {
 
   return (
     <View className="flex-row items-start justify-between">
-      <View className="bg-primary-100 rounded-full size-3 mt-2"></View>
-
       <View className={`border border-primary-100 p-4 rounded-lg w-[92%]`}>
         <View className={`flex-row justify-between ${showDetails && "mb-4"}`}>
           <Text className="font-rubik-medium text-lg text-black-100">

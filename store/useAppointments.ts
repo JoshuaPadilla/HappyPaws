@@ -27,7 +27,7 @@ interface AppointmentStoreState {
   updateAppointment: (appointment: AppointmentForm) => void;
   getTimeSlots: (date: string) => any;
   setSelectedAppointment: (appointment: Appointment) => void;
-  cancelAppointment: (appointmentId: string) => Promise<void>;
+  cancelAppointment: (appointmentId: string) => void;
 }
 
 export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
@@ -199,7 +199,7 @@ export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
       const res = await fetch(
         `${BASE_URL}/appointments/cancel/${appointmentId}`,
         {
-          method: "DELETE",
+          method: "PATCH",
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -208,16 +208,14 @@ export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
 
       const data = await res.json();
 
-      console.log(data);
-
       if (data.status === "success") {
         useAppointmentsStore.getState().fetchAppointments();
-        Alert.alert("Appointment cancelled successfully");
+        showToast("success", "Appointment cancelled successfully");
       } else {
-        Alert.alert("Failed to cancel appointment");
+        showToast("error", "Failed to cancel appointment");
       }
     } catch (error) {
-      console.log(error);
+      console.log("Cancelling appointment error:", error);
       Alert.alert("Failed to cancel appointment");
     } finally {
       set({ isCancelling: false });

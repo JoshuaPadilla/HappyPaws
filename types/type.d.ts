@@ -107,6 +107,7 @@ declare interface Medication {
   frequency: string;
   startDate: string;
   endDate: string;
+  indexID?: string;
 }
 
 declare interface MedicationForm {

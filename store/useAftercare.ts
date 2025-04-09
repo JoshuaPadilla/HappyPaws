@@ -12,15 +12,18 @@ interface AftercareStoreState {
   selectedAftercare: Aftercare | null;
   isLoading: boolean;
   isAdding: boolean;
+  action: string;
 
-  setSelectedAftercare: (aftercare: Aftercare) => void;
-  fecthPetAftercare: (petID: string) => Promise<void>;
-  fetchAllAftercare: (signal: any) => Promise<void>;
+  setAction: (action: string) => void;
+  setSelectedAftercare: (aftercare: Aftercare | null) => void;
+  fecthPetAftercare: (petID: string) => void;
+  fetchAllAftercare: (signal: any) => void;
+  updateAftercare: (form: AftercareForm, aftercareID: string) => void;
   addAftercare: (
     aftercareData: AftercareForm,
     petID: string,
     userID: string
-  ) => Promise<void>;
+  ) => void;
 }
 
 export const useAftercareStore = create<AftercareStoreState>((set) => ({
@@ -29,6 +32,7 @@ export const useAftercareStore = create<AftercareStoreState>((set) => ({
   isLoading: false,
   isAdding: false,
   selectedAftercare: null,
+  action: "add",
 
   fecthPetAftercare: async (petID: string) => {
     try {
@@ -71,7 +75,7 @@ export const useAftercareStore = create<AftercareStoreState>((set) => ({
     }
   },
 
-  setSelectedAftercare: (aftercare: Aftercare) => {
+  setSelectedAftercare: (aftercare) => {
     set({ selectedAftercare: aftercare });
   },
 
@@ -106,5 +110,39 @@ export const useAftercareStore = create<AftercareStoreState>((set) => ({
     } finally {
       set({ isAdding: false });
     }
+  },
+
+  updateAftercare: async (form, aftercareID) => {
+    try {
+      set({ isAdding: true });
+      const token = await AsyncStorage.getItem("token");
+
+      const res = await fetch(`${BASE_URL}/aftercare/${aftercareID}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (data.status === "success") {
+        set({ selectedAftercare: data.updatedAftercare });
+        showToast("success", "✅ Aftercare edited successfully");
+      } else {
+        showToast("error", "❌ Aftercare adding fails", "Try again");
+      }
+    } catch (error) {
+      console.log(error);
+      showToast("error", "error to add appointment");
+    } finally {
+      set({ isAdding: false });
+    }
+  },
+
+  setAction: (action) => {
+    set({ action: action });
   },
 }));

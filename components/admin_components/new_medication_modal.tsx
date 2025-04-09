@@ -5,6 +5,7 @@ import { formatDate, isValidMedication, showToast } from "@/lib/utils";
 import CustomButton from "../custom_button";
 import icons from "@/constants/icons";
 import DatePickerModal from "../date_picker_modal";
+import moment from "moment";
 
 interface NewMedicationModalProps {
   modalVisible: boolean;
@@ -35,6 +36,7 @@ const NewMedicationModal = ({
       frequency,
       startDate,
       endDate,
+      indexID: moment().valueOf().toString(),
     };
 
     if (!isValidMedication(medication)) {
