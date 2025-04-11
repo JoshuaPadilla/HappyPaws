@@ -305,7 +305,7 @@ const AddAftercare = () => {
             />
           </View>
 
-          <View>
+          <View className="gap-2">
             {restrictions.map((restriction, index) => (
               <View className="flex-row gap-2 items-center" key={index}>
                 <RestrictionItem key={index} restriction={restriction} />

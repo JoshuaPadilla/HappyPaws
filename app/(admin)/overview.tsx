@@ -9,6 +9,7 @@ import { useAdminAppointmentsStore } from "@/store/useAdminAppointmentsStore";
 import OverviewTimeslotList from "@/components/admin_components/overview_timeslot_list";
 import CustomButton from "@/components/custom_button";
 import { findMostBookedAppointments, formatDate } from "@/lib/utils";
+import { router } from "expo-router";
 
 const Overview = () => {
   const currDate = moment().format("YYYY-MM-DD");
@@ -17,7 +18,7 @@ const Overview = () => {
     useAdminAppointmentsStore();
 
   const handleRefresh = () => {
-    fetchAppointmentByDate(currDate);
+     fetchAppointmentByDate(currDate);
   };
 
   useEffect(() => {

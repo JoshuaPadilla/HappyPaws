@@ -1,4 +1,5 @@
 import { BASE_URL } from "@/constants";
+import { showMarkCompletedBtn, showToast } from "@/lib/utils";
 import { Appointment, AppointmentForm } from "@/types/type";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
@@ -24,13 +25,14 @@ interface AdminAppointmentStoreState {
   fetchAllAppointments: () => Promise<void>;
   fetchAppointment: (appointmentId: string) => void;
 
-  fetchAppointmentByDate: (date: string, signal?: any) => Promise<void>;
-  addAppointment: (appointment: AppointmentForm) => Promise<void>;
-  updateAppointment: (appointment: AppointmentForm) => Promise<void>;
+  fetchAppointmentByDate: (date: string, signal?: any) => void;
+  addAppointment: (appointment: AppointmentForm) => void;
+  updateAppointment: (appointment: AppointmentForm) => void;
   setSelectedAppointment: (appointment: Appointment) => void;
-  cancelAppointment: (appointmentId: string) => Promise<void>;
-  fetchAppointmentHistory: (clientID: string) => Promise<void>;
-  fetchActiveAppointment: (clientID: string) => Promise<void>;
+  cancelAppointment: (appointmentId: string) => void;
+  fetchAppointmentHistory: (clientID: string) => void;
+  fetchActiveAppointment: (clientID: string) => void;
+  markComplete: (appointmentId: string) => void;
 }
 
 export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
@@ -246,7 +248,7 @@ export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
         );
 
         const data = await res.json();
-
+        console.log(data);
         if (data.status === "success") {
           useAdminAppointmentsStore.getState().fetchAllAppointments();
           Alert.alert("Appointment cancelled successfully");
@@ -286,6 +288,38 @@ export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
       } catch (error) {
         console.log(error);
         Alert.alert("Error fetching appointment");
+      } finally {
+        set({ isLoading: false });
+      }
+    },
+
+    markComplete: async (appointmentId) => {
+      try {
+        set({ isLoading: true });
+        const token = await AsyncStorage.getItem("token");
+
+        const res = await fetch(
+          `${BASE_URL}/appointments/completed/${appointmentId}`,
+          {
+            method: "PATCH",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await res.json();
+
+        if (data.status === "success") {
+          set({ selectedAppointment: data.completedAppointment });
+
+          showToast("success", "Appointment marked complete");
+        } else {
+          showToast("error", "Failed to complete appointment");
+        }
+      } catch (error) {
+        console.log("error in mark completed appointment: ", error);
+        Alert.alert("Failed to update appointment");
       } finally {
         set({ isLoading: false });
       }

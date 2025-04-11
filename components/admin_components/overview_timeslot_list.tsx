@@ -144,9 +144,9 @@ const TimeSlot = ({ time, appointment }: TimeSlotProps) => {
           </View>
         </Pressable>
       ) : (
-        <Pressable className="w-[70%] items-center justify-center">
+        <View className="w-[70%] items-center justify-center">
           <View className="border-t w-full border-black-300"></View>
-        </Pressable>
+        </View>
       )}
     </View>
   );

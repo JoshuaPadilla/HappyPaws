@@ -20,6 +20,8 @@ const ViewAftercare = () => {
     goToAddAftercare();
   };
 
+  console.log(selectedAftercare?.restrictions);
+
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
       {/* Headings */}
@@ -112,11 +114,16 @@ const ViewAftercare = () => {
               Restriction:
             </Text>
 
-            <View className="flex-row gap-4 items-center p-4">
-              <Text className="font-rubik-medium text-3xl">*</Text>
-              <Text className="font-rubik-medium text-xl">
-                {selectedAftercare?.restrictions}
-              </Text>
+            <View className="gap-4 p-4">
+              {selectedAftercare?.restrictions &&
+                selectedAftercare.restrictions.map((restriction, index) => (
+                  <View key={index} className="flex-row gap-4 items-center">
+                    <Text className="font-rubik-medium text-3xl">*</Text>
+                    <Text className="font-rubik-medium text-xl">
+                      {restriction}
+                    </Text>
+                  </View>
+                ))}
             </View>
           </View>
 

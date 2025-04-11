@@ -13,6 +13,8 @@ import {
   formatDate,
   getAppointmentColors,
   getStatusColor,
+  isAdmin,
+  showMarkCompletedBtn,
 } from "@/lib/utils";
 import CustomButton from "@/components/custom_button";
 import { goBack } from "@/lib/routerFunctions";
@@ -26,8 +28,11 @@ import { useAdminAppointmentsStore } from "@/store/useAdminAppointmentsStore";
 
 const ViewAppointment = () => {
   const { selectedAppointment, cancelAppointment } = useAppointmentsStore();
-  const { selectedAppointment: adminSelectedAppointment, isLoading } =
-    useAdminAppointmentsStore();
+  const {
+    selectedAppointment: adminSelectedAppointment,
+    isLoading,
+    markComplete,
+  } = useAdminAppointmentsStore();
 
   const thisAppointment = selectedAppointment || adminSelectedAppointment;
   const caller = selectedAppointment ? "user" : "admin";
@@ -52,6 +57,10 @@ const ViewAppointment = () => {
     }
 
     goBack();
+  };
+
+  const handleMarkCompleted = () => {
+    markComplete(thisAppointment?._id || "");
   };
 
   return (
@@ -184,6 +193,16 @@ const ViewAppointment = () => {
           </View>
         </View>
       )}
+
+      {showMarkCompletedBtn(thisAppointment?.status || "") && !isLoading ? (
+        <CustomButton
+          iconLeft={icons.edit_check}
+          title="Completed"
+          btnClassname="flex-row gap-2 p-4 items-center justify-center bg-primary-100 rounded-xl"
+          textClassname="font-rubik-medium text-lg"
+          onPress={handleMarkCompleted}
+        />
+      ) : null}
     </SafeAreaView>
   );
 };
