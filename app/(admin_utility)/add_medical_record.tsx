@@ -20,20 +20,29 @@ import { useMedicalRecordStore } from "@/store/useMedicalRecord";
 
 const AddMedicalRecord = () => {
   const { selectedPet } = useAdminPets();
-  const { addMedicalRecord } = useMedicalRecordStore();
+  const {
+    addMedicalRecord,
+    selectedMedicalRecord,
+    action,
+    updateMedicalRecord,
+  } = useMedicalRecordStore();
 
   const [newMedicationModalVisible, setNewMedicationModalVisible] =
     useState(false);
 
-  const date = moment().format("YYYY-MM-DD");
-  const [diagnosis, setDiagnosis] = useState<string>("");
-  const [treatment, setTreatment] = useState<string>("");
-  const [notes, setNote] = useState<string>("");
+  const date = selectedMedicalRecord?.date || moment().format("YYYY-MM-DD");
+  const [diagnosis, setDiagnosis] = useState<string>(
+    selectedMedicalRecord?.diagnosis || ""
+  );
+  const [treatment, setTreatment] = useState<string>(
+    selectedMedicalRecord?.treatment || ""
+  );
+  const [notes, setNote] = useState<string>(selectedMedicalRecord?.notes || "");
   const [prescribedMedications, setPrescribedMedication] = useState<
     Medication[]
-  >([]);
+  >(selectedMedicalRecord?.prescribedMedications || []);
 
-  const handleAddMedicalRecord = () => {
+  const handleSubmitMedicalRecord = () => {
     const newMedicalRecord: MedicalRecordForm = {
       date,
       diagnosis,
@@ -44,9 +53,23 @@ const AddMedicalRecord = () => {
 
     if (!isValidAftercare) return;
 
-    addMedicalRecord(newMedicalRecord, selectedPet?._id || "");
+    action === "edit"
+      ? updateMedicalRecord(
+          newMedicalRecord,
+          selectedPet?._id || "",
+          selectedMedicalRecord?._id || ""
+        )
+      : addMedicalRecord(newMedicalRecord, selectedPet?._id || "");
 
     goBack();
+  };
+
+  const handleDeleteMedication = (id: string) => {
+    setPrescribedMedication((prev) =>
+      prev.filter(
+        (medication) => medication.indexID !== id && medication._id !== id
+      )
+    );
   };
 
   return (
@@ -74,7 +97,7 @@ const AddMedicalRecord = () => {
         <CustomButton
           iconLeft={icons.edit_check}
           iconSize="size-8"
-          onPress={handleAddMedicalRecord}
+          onPress={handleSubmitMedicalRecord}
         />
       </View>
 
@@ -99,7 +122,19 @@ const AddMedicalRecord = () => {
 
           <View className="w-full gap-2">
             {prescribedMedications.map((medication, index) => (
-              <MedicationItem key={index} medication={medication} />
+              <View className="flex-row gap-2 items-center" key={index}>
+                <MedicationItem medication={medication} />
+                <CustomButton
+                  iconLeft={icons.trash}
+                  tintColor="#F75555"
+                  iconSize="size-6"
+                  onPress={() => {
+                    handleDeleteMedication(
+                      medication?.indexID || medication._id || ""
+                    );
+                  }}
+                />
+              </View>
             ))}
           </View>
         </View>

@@ -14,18 +14,27 @@ import { VALIDITY } from "@/constants";
 import { VaccineForm } from "@/types/type";
 
 const AddVaccine = () => {
-  const { addVaccine } = useVaccineStore();
+  const { addVaccine, selectedVaccine, action, updateVaccine } =
+    useVaccineStore();
   const { selectedPet } = useAdminPets();
 
   const [error, setError] = useState("");
 
-  const [vaccineName, setVaccineName] = useState<string>("");
-  const dateAdministered = moment().format("YYYY-MM-DD");
-  const [administeredBy, setAdministeredBy] = useState<string>("");
-  const [validity, setValidity] = useState<string>("");
-  const [note, setNote] = useState<string>("");
+  const [vaccineName, setVaccineName] = useState<string>(
+    selectedVaccine?.vaccineName || ""
+  );
+  const dateAdministered = moment().format(
+    selectedVaccine?.dateAdministered || "YYYY-MM-DD"
+  );
+  const [administeredBy, setAdministeredBy] = useState<string>(
+    selectedVaccine?.administeredBy || ""
+  );
+  const [validity, setValidity] = useState<string>(
+    selectedVaccine?.validity || ""
+  );
+  const [note, setNote] = useState<string>(selectedVaccine?.notes || "");
 
-  const handleAddVaccine = () => {
+  const handlesubmitVaccine = () => {
     const newVaccine: VaccineForm = {
       vaccineName,
       administeredBy,
@@ -38,7 +47,13 @@ const AddVaccine = () => {
       return;
     }
 
-    addVaccine(newVaccine, selectedPet?._id || "");
+    action === "edit"
+      ? updateVaccine(
+          newVaccine,
+          selectedPet?._id || "",
+          selectedVaccine?._id || ""
+        )
+      : addVaccine(newVaccine, selectedPet?._id || "");
 
     dismiss();
   };
@@ -60,7 +75,7 @@ const AddVaccine = () => {
         <CustomButton
           iconLeft={icons.edit_check}
           iconSize="size-8"
-          onPress={handleAddVaccine}
+          onPress={handlesubmitVaccine}
         />
       </View>
 
@@ -98,6 +113,7 @@ const AddVaccine = () => {
           title="Valid For?"
           iconLeft={icons.dropdown}
           height={250}
+          defaultValue={validity}
         />
       </View>
 

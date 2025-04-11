@@ -10,10 +10,17 @@ interface MedicalRecordStoreProps {
   selectedMedicalRecord: MedicalRecord | null;
   isLoading: boolean;
   isAdding: boolean;
+  action: string;
 
-  setSelectedMedicalRecord: (MedicalRecord: MedicalRecord) => void;
-  addMedicalRecord: (form: MedicalRecordForm, petID: string) => Promise<void>;
-  fetchMedicalRecord: (petID: string) => Promise<void>;
+  setSelectedMedicalRecord: (MedicalRecord: MedicalRecord | null) => void;
+  addMedicalRecord: (form: MedicalRecordForm, petID: string) => void;
+  fetchMedicalRecord: (petID: string) => void;
+  setAction: (action: "add" | "edit") => void;
+  updateMedicalRecord: (
+    form: MedicalRecordForm,
+    petID: string,
+    medicalID: string
+  ) => void;
 }
 
 export const useMedicalRecordStore = create<MedicalRecordStoreProps>((set) => ({
@@ -21,6 +28,7 @@ export const useMedicalRecordStore = create<MedicalRecordStoreProps>((set) => ({
   selectedMedicalRecord: null,
   isLoading: false,
   isAdding: false,
+  action: "add",
 
   fetchMedicalRecord: async (petID) => {
     try {
@@ -82,5 +90,39 @@ export const useMedicalRecordStore = create<MedicalRecordStoreProps>((set) => ({
 
   setSelectedMedicalRecord: (medicalRecord) => {
     set({ selectedMedicalRecord: medicalRecord });
+  },
+
+  updateMedicalRecord: async (form, petID, medicalID) => {
+    try {
+      set({ isLoading: true });
+      const token = await AsyncStorage.getItem("token");
+
+      const res = await fetch(`${BASE_URL}/medical/${petID}/${medicalID}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (data.status === "success") {
+        set({ selectedMedicalRecord: data.updatedMedicalRecord });
+        showToast("success", "✅ Medical record edited successfully");
+      } else {
+        showToast("error", "❌ Medical record editing fails", "Try again");
+      }
+    } catch (error) {
+      console.log(error);
+      showToast("error", "error to edit medical record");
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  setAction: (action) => {
+    set({ action: action });
   },
 }));

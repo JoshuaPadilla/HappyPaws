@@ -13,13 +13,18 @@ import { useVaccineStore } from "@/store/useVaccineStore";
 import VaccineCard from "@/components/vaccineCard";
 
 const VaccineList = () => {
-  const { vaccines, isLoading, fetchVaccineHistory, isAdding } =
+  const { vaccines, isLoading, fetchVaccineHistory, isAdding, setAction } =
     useVaccineStore();
 
   const { selectedPet } = usePetStore();
   const { selectedPet: adminSelectedPet } = useAdminPets();
 
   const thisPet = selectedPet || adminSelectedPet;
+
+  const handleAddVaccine = () => {
+    setAction("add");
+    goToAddVaccine();
+  };
 
   useEffect(() => {
     fetchVaccineHistory(thisPet?._id || "");
@@ -40,7 +45,7 @@ const VaccineList = () => {
             iconLeft={icons.plus_icon}
             iconSize="size-6"
             tintColor="#73C7C7"
-            onPress={goToAddVaccine}
+            onPress={handleAddVaccine}
           />
         )}
       </View>

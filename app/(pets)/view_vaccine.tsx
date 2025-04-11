@@ -3,26 +3,44 @@ import React from "react";
 import { useAftercareStore } from "@/store/useAftercare";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom_button";
-import icons from "@/constants/icons";
-import { goBack } from "@/lib/routerFunctions";
+import icons, { profileIcons } from "@/constants/icons";
+import { goBack, goToAddVaccine } from "@/lib/routerFunctions";
 import { findPetById, formatDate } from "@/lib/utils";
 import { useMedicalRecordStore } from "@/store/useMedicalRecord";
 import { useVaccineStore } from "@/store/useVaccineStore";
 
 const ViewVaccine = () => {
-  const { selectedVaccine } = useVaccineStore();
+  const { selectedVaccine, setAction, setSelectedVaccine } = useVaccineStore();
+
+  const handleEditVaccine = () => {
+    setAction("edit");
+    goToAddVaccine();
+  };
+
+  const handleBack = () => {
+    setSelectedVaccine(null);
+    goBack();
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
       {/* Headings */}
-      <View className="flex-row w-full gap-4 items-center mb-8">
-        <CustomButton
-          iconLeft={icons.back_green}
-          onPress={goBack}
-          iconSize="size-8"
-        />
+      <View className="flex-row w-full justify-between items-center mb-8">
+        <View className="flex-row gap-4">
+          <CustomButton
+            iconLeft={icons.back_green}
+            onPress={handleBack}
+            iconSize="size-8"
+          />
 
-        <Text className="font-poppins-semibold text-xl">Medical Record</Text>
+          <Text className="font-poppins-semibold text-xl">Vaccine Record</Text>
+        </View>
+
+        <CustomButton
+          iconLeft={profileIcons.profile_edit}
+          iconSize="size-6"
+          onPress={handleEditVaccine}
+        />
       </View>
 
       {/* main */}

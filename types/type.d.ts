@@ -148,6 +148,7 @@ declare interface ImageInfo {
 }
 
 declare interface MedicalRecord {
+  _id?: string;
   petID: Pet;
   userID: User;
   diagnosis: string;

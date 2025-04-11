@@ -114,7 +114,7 @@ export const useAftercareStore = create<AftercareStoreState>((set) => ({
 
   updateAftercare: async (form, aftercareID) => {
     try {
-      set({ isAdding: true });
+      set({ isLoading: true });
       const token = await AsyncStorage.getItem("token");
 
       const res = await fetch(`${BASE_URL}/aftercare/${aftercareID}`, {
@@ -132,13 +132,13 @@ export const useAftercareStore = create<AftercareStoreState>((set) => ({
         set({ selectedAftercare: data.updatedAftercare });
         showToast("success", "✅ Aftercare edited successfully");
       } else {
-        showToast("error", "❌ Aftercare adding fails", "Try again");
+        showToast("error", "❌ Aftercare editing fails", "Try again");
       }
     } catch (error) {
       console.log(error);
-      showToast("error", "error to add appointment");
+      showToast("error", "error to edit appointment");
     } finally {
-      set({ isAdding: false });
+      set({ isLoading: false });
     }
   },
 
