@@ -449,3 +449,16 @@ export const showMarkCompletedBtn = (appointmentStatus: string) => {
     appointmentStatus !== "Completed"
   );
 };
+
+export const getServiceIcons = (serviceType: string) => {
+  switch (serviceType) {
+    case "Grooming":
+      return "service_grooming";
+    case "Vaccination":
+      return "service_vaccine";
+    case "Dental":
+      return "service_dental";
+    default:
+      return "service_checkup";
+  }
+};

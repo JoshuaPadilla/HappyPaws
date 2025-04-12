@@ -75,6 +75,11 @@ import client_appointment_history from "@/assets/icons/client_icons/client_appoi
 import client_details from "@/assets/icons/client_icons/client_details.png";
 import client_pets from "@/assets/icons/client_icons/client_pets.png";
 
+import service_checkup from "@/assets/icons/service_icons/service_checkup.png";
+import service_grooming from "@/assets/icons/service_icons/service_grooming.png";
+import service_dental from "@/assets/icons/service_icons/service_dental.png";
+import service_vaccine from "@/assets/icons/service_icons/service_vaccine.png";
+
 interface IconsProps {
   back_green: ImageSourcePropType;
   back_white: ImageSourcePropType;
@@ -166,6 +171,13 @@ interface ClientIconsProps {
   client_appointment_history: ImageSourcePropType;
   client_details: ImageSourcePropType;
   client_pets: ImageSourcePropType;
+}
+
+interface ServiceIconsProps {
+  service_checkup: ImageSourcePropType;
+  service_grooming: ImageSourcePropType;
+  service_dental: ImageSourcePropType;
+  service_vaccine: ImageSourcePropType;
 }
 
 const icons: IconsProps = {
@@ -261,4 +273,10 @@ export const clientIcons: ClientIconsProps = {
   client_pets,
 };
 
+export const service_icons: ServiceIconsProps = {
+  service_checkup,
+  service_grooming,
+  service_dental,
+  service_vaccine,
+};
 export default icons;

@@ -114,3 +114,7 @@ export const goToAddMedicalRecord = () => {
 export const goToAddVaccine = () => {
   router.push("/(admin_utility)/add_vaccine");
 };
+
+export const goToServicePopularity = () => {
+  router.push("/(admin_utility)/service_popularity");
+};

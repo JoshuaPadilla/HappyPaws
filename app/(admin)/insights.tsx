@@ -12,6 +12,7 @@ import LineChartComponent from "@/components/charts/lineChart";
 import { getTotalPercentage } from "@/lib/utils";
 import BarChartComponent from "@/components/charts/bar_chart";
 import { useAuthStore } from "@/store/useAuth";
+import { goToServicePopularity } from "@/lib/routerFunctions";
 
 export default function Insights() {
   const { logout } = useAuthStore();
@@ -86,6 +87,10 @@ export default function Insights() {
     getThisMonthInsights();
     getPrevMonthInsights();
   }, []);
+
+  const handleViewServicePopularity = () => {
+    goToServicePopularity();
+  };
 
   if (isLoading) {
     return (
@@ -244,6 +249,7 @@ export default function Insights() {
               <CustomButton
                 title="See Details"
                 textClassname="font-rubik-regular text-sm text-black-300"
+                onPress={handleViewServicePopularity}
               />
             </View>
 
