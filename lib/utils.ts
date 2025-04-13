@@ -239,13 +239,13 @@ export const findPetById = (petId: string) => {
 export const getStatusColor = (status: string) => {
   switch (status) {
     case "Confirmed":
-      return "#16C47F";
+      return "#64B5F6";
     case "Cancelled":
-      return "#F93827";
+      return "#FF8A80";
     case "Rescheduled":
-      return "#FFD65A";
+      return "#FFD54F";
     case "Completed":
-      return "#16C47F";
+      return "#B9F6CA";
     default:
       return "bg-primary-100";
   }
@@ -460,5 +460,18 @@ export const getServiceIcons = (serviceType: string) => {
       return "service_dental";
     default:
       return "service_checkup";
+  }
+};
+
+export const getStatusIcons = (status: string) => {
+  switch (status) {
+    case "Confirmed":
+      return "status_confirmed";
+    case "Cancelled":
+      return "status_cancelled";
+    case "Completed":
+      return "status_completed";
+    default:
+      return "status_resched";
   }
 };

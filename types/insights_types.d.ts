@@ -2,7 +2,7 @@ declare interface WeeklyInsights {
   numberOfWeeklyAppointment: number | 0;
   weeklyCountsByDay: CountsByDay[];
   weeklyServicePopularity: ServicePopularity[];
-  weeklyStatusCount: StatusCount;
+  weeklyStatusCount: StatusCount[];
   averageAppointmentsPerWeek: number;
   totalUsers: number;
   newUserCount: number;
@@ -14,7 +14,7 @@ declare interface MonthlyInsights {
   numberOfMonthlyAppointments: number | 0;
   monthlyServicePopularity: ServicePopularity[];
   monthlyCountsByDay: CountsByDay[];
-  monthlyStatusCount: StatusCount;
+  monthlyStatusCount: StatusCount[];
   averageAppointmentsPerMonth: number;
   totalUsers: number;
   newUserCount: number;

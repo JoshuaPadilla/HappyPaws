@@ -83,12 +83,10 @@ module.exports = {
 
         insights: {
           total: "#B8B5FF",
-          completed: "#C3FF93",
-          cancelled: "#FF6868",
-          most: "#FFA1F5",
-          completed: "#2fdd92",
-          resched: "#C3FF93",
-          cancelled: "#FF6868",
+          completed: "#B9F6CA",
+          cancelled: "#FF8A80",
+          most: "#64B5F6",
+          resched: "#FFD54F",
         },
       },
     },

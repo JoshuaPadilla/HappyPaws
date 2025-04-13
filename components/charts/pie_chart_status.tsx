@@ -7,13 +7,13 @@ const PieChartStatus = ({ data }: { data: any }) => {
   const mappedData = data.map((item: any) => {
     switch (item.status.toLowerCase()) {
       case "completed":
-        return { value: item.count, color: "#2fdd92" };
+        return { value: item.count, color: "#A5D6A7" };
       case "cancelled":
-        return { value: item.count, color: "#FF6868" };
+        return { value: item.count, color: "#EF9A9A" };
       case "rescheduled":
-        return { value: item.count, color: "#C3FF93" };
+        return { value: item.count, color: "#FFE082" };
       default:
-        return { value: item.count, color: "#FFA1F5" };
+        return { value: item.count, color: "#90CAF9" };
     }
   });
 

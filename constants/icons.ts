@@ -80,6 +80,11 @@ import service_grooming from "@/assets/icons/service_icons/service_grooming.png"
 import service_dental from "@/assets/icons/service_icons/service_dental.png";
 import service_vaccine from "@/assets/icons/service_icons/service_vaccine.png";
 
+import status_cancelled from "@/assets/icons/status_icons/status_cancelled.png";
+import status_completed from "@/assets/icons/status_icons/status_completed.png";
+import status_confirmed from "@/assets/icons/status_icons/status_confirmed.png";
+import status_resched from "@/assets/icons/status_icons/status_resched.png";
+
 interface IconsProps {
   back_green: ImageSourcePropType;
   back_white: ImageSourcePropType;
@@ -180,6 +185,13 @@ interface ServiceIconsProps {
   service_vaccine: ImageSourcePropType;
 }
 
+interface StatusIconsProps {
+  status_cancelled: ImageSourcePropType;
+  status_completed: ImageSourcePropType;
+  status_confirmed: ImageSourcePropType;
+  status_resched: ImageSourcePropType;
+}
+
 const icons: IconsProps = {
   back_green,
   back_white,
@@ -278,5 +290,12 @@ export const service_icons: ServiceIconsProps = {
   service_grooming,
   service_dental,
   service_vaccine,
+};
+
+export const status_icons: StatusIconsProps = {
+  status_cancelled,
+  status_completed,
+  status_confirmed,
+  status_resched,
 };
 export default icons;

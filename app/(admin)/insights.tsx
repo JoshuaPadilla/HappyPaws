@@ -12,7 +12,10 @@ import LineChartComponent from "@/components/charts/lineChart";
 import { getTotalPercentage } from "@/lib/utils";
 import BarChartComponent from "@/components/charts/bar_chart";
 import { useAuthStore } from "@/store/useAuth";
-import { goToServicePopularity } from "@/lib/routerFunctions";
+import {
+  goToAppointmentStatus,
+  goToServicePopularity,
+} from "@/lib/routerFunctions";
 
 export default function Insights() {
   const { logout } = useAuthStore();
@@ -90,6 +93,10 @@ export default function Insights() {
 
   const handleViewServicePopularity = () => {
     goToServicePopularity();
+  };
+
+  const handleViewAppointmentStatuses = () => {
+    goToAppointmentStatus();
   };
 
   if (isLoading) {
@@ -303,6 +310,7 @@ export default function Insights() {
               <CustomButton
                 title="See Details"
                 textClassname="font-rubik-regular text-sm text-black-300"
+                onPress={handleViewAppointmentStatuses}
               />
             </View>
 
