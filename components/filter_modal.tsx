@@ -19,7 +19,6 @@ const FilterModal = ({ modalVisible, setModalVisible }: FilterModalProps) => {
 
   // Get today's date in YYYY-MM-DD format
   const today = new Date().toISOString().split("T")[0];
-  console.log(today);
 
   const handleDateSelect = (date: string) => {
     if (!selectedDate) {

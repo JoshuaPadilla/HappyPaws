@@ -20,8 +20,6 @@ const ViewAftercare = () => {
     goToAddAftercare();
   };
 
-  console.log(selectedAftercare?.restrictions);
-
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
       {/* Headings */}

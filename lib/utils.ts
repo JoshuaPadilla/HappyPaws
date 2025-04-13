@@ -445,7 +445,8 @@ export const isValidVaccineForm = (form: VaccineForm) => {
 
 export const showMarkCompletedBtn = (appointmentStatus: string) => {
   return (
-    (isAdmin() && appointmentStatus !== "Cancelled") ||
+    isAdmin() &&
+    appointmentStatus !== "Cancelled" &&
     appointmentStatus !== "Completed"
   );
 };
