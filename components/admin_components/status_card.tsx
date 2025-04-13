@@ -1,13 +1,15 @@
 import { View, Text, Image } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import {
   getAppointmentBg,
+  getProgressLineColor,
   getServiceIcons,
   getStatusColor,
   getStatusIcons,
   getTotalPercentage,
 } from "@/lib/utils";
 import { status_icons } from "@/constants/icons";
+import ProgressLine from "../charts/progress_line";
 
 interface StatusCardProps {
   status: StatusCount;
@@ -20,12 +22,14 @@ const StatusCard = ({ status, totalStatusCount, weekly }: StatusCardProps) => {
 
   const statusIcon: keyof typeof status_icons = getStatusIcons(status.status);
 
-  const relativeCount = Math.abs((status.count / totalStatusCount) * 100);
+  const progressLineColor = getProgressLineColor(status.status);
+
+  const relativeCount = status.count / totalStatusCount;
 
   return (
     <View
       className="gap-4 w-[47%] h-48 rounded-xl p-4"
-      style={{ backgroundColor: bgColor }}
+      style={{ backgroundColor: "#ffffff" }}
     >
       <Image
         source={status_icons[statusIcon]}
@@ -45,12 +49,15 @@ const StatusCard = ({ status, totalStatusCount, weekly }: StatusCardProps) => {
 
         <View className="">
           <Text className="font-rubik-semibold text-black-200 text-sm px-2">
-            {relativeCount.toFixed()}% relative from
-          </Text>
-          <Text className={`font-rubik-semibold text-black-200 text-sm px-2`}>
-            total status this {weekly ? "week" : "month"}
+            {status.count} out of {totalStatusCount} appointments
           </Text>
         </View>
+
+        <ProgressLine
+          progress={relativeCount}
+          filledColor={progressLineColor.filled}
+          unFilledColor={progressLineColor.unfilled}
+        />
       </View>
     </View>
   );

@@ -475,3 +475,28 @@ export const getStatusIcons = (status: string) => {
       return "status_resched";
   }
 };
+
+export const getProgressLineColor = (status: string) => {
+  switch (status) {
+    case "Completed":
+      return {
+        filled: "rgba(104, 159, 56, 1)",
+        unfilled: "rgba(104, 159, 56, 0.1)",
+      };
+    case "Cancelled":
+      return {
+        filled: "rgba(211, 47, 47, 1)",
+        unfilled: "rgba(211, 47, 47, 0.1)",
+      };
+    case "Confirmed":
+      return {
+        filled: "rgba(25, 118, 210, 1)",
+        unfilled: "rgba(25, 118, 210, 0.1)",
+      };
+    default:
+      return {
+        filled: "rgba(255, 160, 0, 1)",
+        unfilled: "rgba(255, 160, 0, 0.1)",
+      };
+  }
+};
