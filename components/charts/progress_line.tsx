@@ -21,6 +21,7 @@ const ProgressLine = ({
       borderWidth={0}
       color={filledColor}
       unfilledColor={unFilledColor}
+      width={null}
     />
   );
 };

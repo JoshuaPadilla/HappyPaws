@@ -53,11 +53,13 @@ const StatusCard = ({ status, totalStatusCount, weekly }: StatusCardProps) => {
           </Text>
         </View>
 
-        <ProgressLine
-          progress={relativeCount}
-          filledColor={progressLineColor.filled}
-          unFilledColor={progressLineColor.unfilled}
-        />
+        <View className="px-2">
+          <ProgressLine
+            progress={relativeCount}
+            filledColor={progressLineColor.filled}
+            unFilledColor={progressLineColor.unfilled}
+          />
+        </View>
       </View>
     </View>
   );
