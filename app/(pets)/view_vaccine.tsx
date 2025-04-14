@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom_button";
 import icons, { profileIcons } from "@/constants/icons";
 import { goBack, goToAddVaccine } from "@/lib/routerFunctions";
-import { findPetById, formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { useMedicalRecordStore } from "@/store/useMedicalRecord";
 import { useVaccineStore } from "@/store/useVaccineStore";
 

@@ -1,17 +1,18 @@
 import { View, Text, Image, ActivityIndicator, ScrollView } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAftercareStore } from "@/store/useAftercare";
 import { usePetStore } from "@/store/usePets";
 import { useAdminPets } from "@/store/useAdminPets";
 import CustomButton from "@/components/custom_button";
 import icons, { petDetailsIcons } from "@/constants/icons";
-import { isAdmin } from "@/lib/utils";
 import { useMedicalRecordStore } from "@/store/useMedicalRecord";
 import MedicalRecordCard from "@/components/medical_record_card";
 import { goBack, goToAddMedicalRecord } from "@/lib/routerFunctions";
+import { useAuthStore } from "@/store/useAuth";
 
 const MedicalRecordListView = () => {
+  const { isAdmin } = useAuthStore();
   const { medicalRecords, isLoading, fetchMedicalRecord, isAdding } =
     useMedicalRecordStore();
   const { selectedPet } = usePetStore();
@@ -33,7 +34,7 @@ const MedicalRecordListView = () => {
           onPress={goBack}
         />
 
-        {isAdmin() && (
+        {isAdmin && (
           <CustomButton
             iconLeft={icons.plus_icon}
             iconSize="size-6"

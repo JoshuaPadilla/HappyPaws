@@ -1,14 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  Pressable,
-  ScrollView,
-  TouchableOpacity,
-  Button,
-  Alert,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, ScrollView, Alert, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import icons from "@/constants/icons";
@@ -19,7 +9,7 @@ import CustomButton from "@/components/custom_button";
 import TimeSlotList from "@/components/timeslot_list";
 import TabbedFilter from "@/components/tabbed_filter";
 import AppointmentCard from "@/components/appointment_card";
-import { Appointment, AppointmentForm } from "@/types/type";
+import { Appointment } from "@/types/type";
 import { router } from "expo-router";
 import { useAppointmentsStore } from "@/store/useAppointments";
 import NewAppointmentModal from "@/components/new_appointment_modal";

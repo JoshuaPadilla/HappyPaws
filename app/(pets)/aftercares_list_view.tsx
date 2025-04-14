@@ -13,10 +13,12 @@ import { usePetStore } from "@/store/usePets";
 import AfterCareCard from "@/components/aftercare_card";
 import { Aftercare } from "@/types/type";
 import { useAdminPets } from "@/store/useAdminPets";
-import { isAdmin } from "@/lib/utils";
+import { useAuthStore } from "@/store/useAuth";
 
 const AftercareListView = () => {
   const { fecthPetAftercare, isAdding } = useAftercareStore();
+
+  const { isAdmin } = useAuthStore();
 
   const { petAftercares, isLoading, setSelectedAftercare } =
     useAftercareStore();
@@ -48,7 +50,7 @@ const AftercareListView = () => {
           onPress={goBack}
         />
 
-        {isAdmin() && (
+        {isAdmin && (
           <CustomButton
             iconLeft={icons.plus_icon}
             iconSize="size-6"

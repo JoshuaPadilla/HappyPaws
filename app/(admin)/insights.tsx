@@ -11,14 +11,12 @@ import PieChartStatus from "@/components/charts/pie_chart_status";
 import LineChartComponent from "@/components/charts/lineChart";
 import { getTotalPercentage } from "@/lib/utils";
 import BarChartComponent from "@/components/charts/bar_chart";
-import { useAuthStore } from "@/store/useAuth";
 import {
   goToAppointmentStatus,
   goToServicePopularity,
 } from "@/lib/routerFunctions";
 
 export default function Insights() {
-  const { logout } = useAuthStore();
   const [weekly, setWeekly] = useState(true);
 
   const {

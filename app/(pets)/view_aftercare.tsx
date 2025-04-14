@@ -5,11 +5,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom_button";
 import icons, { profileIcons } from "@/constants/icons";
 import { goBack, goToAddAftercare } from "@/lib/routerFunctions";
-import { findPetById, formatDate, isAdmin } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { useAuthStore } from "@/store/useAuth";
 import { isLoaded } from "expo-font";
 
 const ViewAftercare = () => {
+  const { isAdmin } = useAuthStore();
   const { selectedAftercare, setSelectedAftercare, setAction, isLoading } =
     useAftercareStore();
 
@@ -37,7 +38,7 @@ const ViewAftercare = () => {
           <Text className="font-poppins-semibold text-xl">Aftercare</Text>
         </View>
 
-        {isAdmin() && (
+        {isAdmin && (
           <CustomButton
             iconLeft={profileIcons.profile_edit}
             onPress={handleEditAftercare}

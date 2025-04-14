@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, Pressable } from "react-native";
 import React from "react";
-import { findPetById, getAppointmentColors } from "@/lib/utils";
+import { getAppointmentColors } from "@/lib/utils";
 import { businessHours } from "@/constants";
 import { Appointment, AppointmentForm } from "@/types/type";
 import { Image } from "expo-image";

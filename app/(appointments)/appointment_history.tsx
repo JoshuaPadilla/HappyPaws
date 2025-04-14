@@ -3,20 +3,18 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import icons from "@/constants/icons";
 import CustomButton from "@/components/custom_button";
-import { useRouter } from "expo-router";
+
 import AppointmentHistoryItem from "@/components/appointment_history_item";
-import { appointments } from "@/dev-data/appointment_data";
 import { goBack, goToViewAppointment } from "@/lib/routerFunctions";
 import { useAppointmentsStore } from "@/store/useAppointments";
 import { Appointment, AppointmentForm, Pet } from "@/types/type";
-import { usePetStore } from "@/store/usePets";
-import { formatDate, isAdmin } from "@/lib/utils";
-import moment from "moment";
-import FilterModal from "@/components/filter_modal";
+import { formatDate } from "@/lib/utils";
 import { useAdminAppointmentsStore } from "@/store/useAdminAppointmentsStore";
 import { useAuthStore } from "@/store/useAuth";
 import { useClient } from "@/store/useClient";
 const AppointmentHistory = () => {
+  const { isAdmin } = useAuthStore();
+
   const { selectedClient } = useClient();
   const {
     appointmentHistory,
@@ -32,14 +30,14 @@ const AppointmentHistory = () => {
     fetchAppointmentHistory: adminFetchAppointmentHistory,
   } = useAdminAppointmentsStore();
 
-  const thisAppointmentHistory = isAdmin()
+  const thisAppointmentHistory = isAdmin
     ? adminAppointmentHistory
     : appointmentHistory;
-  const thisSetSelectedAppointmentHistory = isAdmin()
+  const thisSetSelectedAppointmentHistory = isAdmin
     ? adminSetSelectedAppointment
     : setSelectedAppointment;
-  const thisIsLoading = isAdmin() ? adminIsLoading : isLoading;
-  const thisFetchAppointmentHistory = isAdmin()
+  const thisIsLoading = isAdmin ? adminIsLoading : isLoading;
+  const thisFetchAppointmentHistory = isAdmin
     ? adminFetchAppointmentHistory
     : fetchAppointmentHistory;
 
@@ -80,7 +78,7 @@ const AppointmentHistory = () => {
 
       <View className="flex gap-2">
         <Text className="font-rubik-bold text-xl text-black-100 mb-4">
-          {isAdmin() ? selectedClient?.firstName : "Appointment"} History
+          {isAdmin ? selectedClient?.firstName : "Appointment"} History
         </Text>
 
         <ScrollView contentContainerClassName="flex pb-[80px] gap-2">

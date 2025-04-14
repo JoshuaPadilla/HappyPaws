@@ -1,22 +1,15 @@
 import {
   AftercareForm,
   Appointment,
-  AppointmentForm,
   MedicalRecordForm,
-  Medication,
   MedicationForm,
   signupForm,
   User,
   VaccineForm,
 } from "@/types/type";
-import { parseSync } from "@babel/core";
-import { router, useRouter } from "expo-router";
 import moment from "moment";
 import * as ImageManipulator from "expo-image-manipulator";
-import { usePetStore } from "@/store/usePets";
-import UtilityScreensLayout from "@/app/(utility)/_layout";
 import Toast from "react-native-toast-message";
-import { useAuthStore } from "@/store/useAuth";
 
 export const getAftercareBg = (type: string) => {
   switch (type.toLowerCase()) {
@@ -231,11 +224,6 @@ export const formatDate = (dateString: string) => {
   }
 };
 
-export const findPetById = (petId: string) => {
-  const { pets } = usePetStore();
-  return pets.find((pet) => pet._id === petId);
-};
-
 export const getStatusColor = (status: string) => {
   switch (status) {
     case "Confirmed":
@@ -362,12 +350,6 @@ export const getTotalPercentage = (currNumber: number, prevNumber: number) => {
 
 export const percentageFormatter = (num: number) => {};
 
-export const isAdmin = (): boolean => {
-  const { authUser } = useAuthStore();
-
-  return authUser?.role === "admin";
-};
-
 export const isValidMedication = (medication: MedicationForm): boolean => {
   if (medication.name.trim() === "") {
     return false;
@@ -444,11 +426,7 @@ export const isValidVaccineForm = (form: VaccineForm) => {
 };
 
 export const showMarkCompletedBtn = (appointmentStatus: string) => {
-  return (
-    isAdmin() &&
-    appointmentStatus !== "Cancelled" &&
-    appointmentStatus !== "Completed"
-  );
+  return appointmentStatus !== "Cancelled" && appointmentStatus !== "Completed";
 };
 
 export const getServiceIcons = (serviceType: string) => {

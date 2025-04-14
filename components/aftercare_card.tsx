@@ -1,7 +1,7 @@
 import { View, Text, Pressable, ActivityIndicator } from "react-native";
 import React from "react";
 import { Aftercare } from "@/types/type";
-import { findPetById, formatDate, getAftercareBg } from "@/lib/utils";
+import { formatDate, getAftercareBg } from "@/lib/utils";
 
 interface AfterCareCardProps {
   aftercare: Aftercare;

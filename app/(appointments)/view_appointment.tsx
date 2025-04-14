@@ -9,24 +9,20 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppointmentsStore } from "@/store/useAppointments";
 import {
-  findPetById,
   formatDate,
   getAppointmentColors,
   getStatusColor,
-  isAdmin,
   showMarkCompletedBtn,
 } from "@/lib/utils";
 import CustomButton from "@/components/custom_button";
 import { goBack } from "@/lib/routerFunctions";
-import icons, {
-  petDetailsIcons,
-  profileIcons,
-  viewPetIcons,
-} from "@/constants/icons";
+import icons, { petDetailsIcons, profileIcons } from "@/constants/icons";
 import NewAppointmentModal from "@/components/new_appointment_modal";
 import { useAdminAppointmentsStore } from "@/store/useAdminAppointmentsStore";
+import { useAuthStore } from "@/store/useAuth";
 
 const ViewAppointment = () => {
+  const { isAdmin } = useAuthStore();
   const { selectedAppointment, cancelAppointment } = useAppointmentsStore();
   const {
     selectedAppointment: adminSelectedAppointment,
@@ -194,7 +190,9 @@ const ViewAppointment = () => {
         </View>
       )}
 
-      {showMarkCompletedBtn(thisAppointment?.status || "") && !isLoading ? (
+      {isAdmin &&
+      showMarkCompletedBtn(thisAppointment?.status || "") &&
+      !isLoading ? (
         <CustomButton
           iconLeft={icons.edit_check}
           title="Completed"

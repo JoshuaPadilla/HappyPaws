@@ -1,7 +1,6 @@
-import { User, userFormData } from "@/types/type";
+import { User } from "@/types/type";
 import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Alert } from "react-native";
 import { BASE_URL } from "@/constants";
 import { resizeImage, showToast } from "@/lib/utils";
 

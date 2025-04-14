@@ -1,12 +1,5 @@
 import { Link, router } from "expo-router";
-import {
-  ActivityIndicator,
-  Alert,
-  ScrollView,
-  StatusBar,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, Alert, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import icons from "@/constants/icons";
@@ -19,14 +12,10 @@ import { Pet } from "@/types/type";
 import { goToViewPet } from "@/lib/routerFunctions";
 import { useEffect, useState } from "react";
 import NewAppointmentModal from "@/components/new_appointment_modal";
-import { useAppointmentsStore } from "@/store/useAppointments";
-import { useAftercareStore } from "@/store/useAftercare";
-import moment from "moment";
-import { Reminder } from "@/types/type";
-import { isBetweenDates } from "@/lib/utils";
 import { userReminders } from "@/store/useReminders";
+import { useAuthStore } from "@/store/useAuth";
 export default function Home() {
-  const { pets, setSelectedPet } = usePetStore();
+  const { pets, setSelectedPet, fetchPets } = usePetStore();
   const { user } = useUserStore();
   const { fetchReminders, reminders, isLoading } = userReminders();
 
@@ -47,6 +36,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchReminders();
+    fetchPets();
   }, []);
 
   return (

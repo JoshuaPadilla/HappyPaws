@@ -1,18 +1,15 @@
 import { signinForm, signupForm, User } from "@/types/type";
 import { create } from "zustand";
-import { axiosInstance } from "@/lib/axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
-import { usePetStore } from "./usePets";
 import { useUserStore } from "./useUser";
 import { BASE_URL } from "@/constants";
-import { useAppointmentsStore } from "./useAppointments";
 import { router } from "expo-router";
-import { useAftercareStore } from "./useAftercare";
-import { isAdmin, showToast } from "@/lib/utils";
+import { showToast } from "@/lib/utils";
 
 interface StoreState {
   authUser: User | null;
+  isAdmin: boolean;
   isSigningIn: boolean;
   isSigningUp: boolean;
   isLoggingOut: boolean;
@@ -25,6 +22,7 @@ interface StoreState {
 
 export const useAuthStore = create<StoreState>((set) => ({
   authUser: null,
+  isAdmin: false,
   isSigningIn: false,
   isSigningUp: false,
   isLoggingOut: false,
@@ -45,7 +43,8 @@ export const useAuthStore = create<StoreState>((set) => ({
       const data = await res.json();
 
       if (data.status === "success") {
-        set({ authUser: data.user });
+        const isAdmin = data.user.role === "admin";
+        set({ authUser: data.user, isAdmin });
         await AsyncStorage.setItem("token", data.token);
 
         const { addUser } = useUserStore.getState();
@@ -79,7 +78,9 @@ export const useAuthStore = create<StoreState>((set) => ({
 
       if (data.status === "success") {
         // Set the user data and token in storage
-        set({ authUser: data.user });
+
+        const isAdmin = data.user.role === "admin";
+        set({ authUser: data.user, isAdmin });
         await AsyncStorage.setItem("token", data.token);
 
         // get the user from the auth store
@@ -89,12 +90,6 @@ export const useAuthStore = create<StoreState>((set) => ({
 
         // Import usePetStore at the top of the file and use it here
         // to fetch pets after successful signin
-
-        const { fetchPets } = usePetStore.getState();
-        const { fetchAppointments } = useAppointmentsStore.getState();
-
-        await fetchPets();
-        await fetchAppointments();
 
         showToast("success", `Welcome Back ${data.user.firstName} 🎉😊`);
       } else {
@@ -142,18 +137,13 @@ export const useAuthStore = create<StoreState>((set) => ({
       const data = await res.json();
 
       if (data.user) {
-        set({ authUser: data.user });
+        const isAdmin = data.user.role === "admin";
+        set({ authUser: data.user, isAdmin });
         // get the user from the auth store
         const { addUser } = useUserStore.getState();
 
         // Import usePetStore at the top of the file and use it here
         // to fetch pets after successful signin
-
-        const { fetchPets } = usePetStore.getState();
-        const { fetchAppointments } = useAppointmentsStore.getState();
-
-        await fetchPets();
-        await fetchAppointments();
 
         addUser(data.user);
       }

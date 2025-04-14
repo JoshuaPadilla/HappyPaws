@@ -14,12 +14,7 @@ import StatusCard from "@/components/admin_components/status_card";
 const AppointmentStatus = () => {
   const [weekly, setWeekly] = useState(true);
 
-  const {
-    thisWeekInsights,
-    thisMonthInsights,
-    prevMonthInsights,
-    prevWeekInsights,
-  } = useInsightsStore();
+  const { thisWeekInsights, thisMonthInsights } = useInsightsStore();
 
   const appointmentStatus = weekly
     ? thisWeekInsights?.weeklyStatusCount

@@ -9,7 +9,7 @@ import {
   goToAddAftercare,
   goToAddMedicalRecord,
 } from "@/lib/routerFunctions";
-import { findPetById, formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { useMedicalRecordStore } from "@/store/useMedicalRecord";
 
 const ViewMedicalRecord = () => {

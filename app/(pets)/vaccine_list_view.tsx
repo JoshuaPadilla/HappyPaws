@@ -1,18 +1,17 @@
 import { View, Text, Image, ScrollView, ActivityIndicator } from "react-native";
 import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useMedicalRecordStore } from "@/store/useMedicalRecord";
 import { usePetStore } from "@/store/usePets";
 import { useAdminPets } from "@/store/useAdminPets";
 import CustomButton from "@/components/custom_button";
 import icons, { petDetailsIcons } from "@/constants/icons";
 import { goBack, goToAddVaccine } from "@/lib/routerFunctions";
-import { isAdmin } from "@/lib/utils";
-import MedicalRecordCard from "@/components/medical_record_card";
 import { useVaccineStore } from "@/store/useVaccineStore";
 import VaccineCard from "@/components/vaccineCard";
+import { useAuthStore } from "@/store/useAuth";
 
 const VaccineList = () => {
+  const { isAdmin } = useAuthStore();
   const { vaccines, isLoading, fetchVaccineHistory, isAdding, setAction } =
     useVaccineStore();
 
@@ -40,7 +39,7 @@ const VaccineList = () => {
           onPress={goBack}
         />
 
-        {isAdmin() && (
+        {isAdmin && (
           <CustomButton
             iconLeft={icons.plus_icon}
             iconSize="size-6"
