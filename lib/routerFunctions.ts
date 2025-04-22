@@ -122,3 +122,7 @@ export const goToServicePopularity = () => {
 export const goToAppointmentStatus = () => {
   router.push("/(admin_utility)/appointment_status");
 };
+
+export const goToAskAiScreen = () => {
+  router.push("/(utility)/ask_ai_screen");
+};

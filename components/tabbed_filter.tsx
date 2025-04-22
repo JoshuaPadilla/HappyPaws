@@ -5,8 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
-import { useSafeAreaFrame } from "react-native-safe-area-context";
+import React from "react";
 
 interface TabbedFilterProps {
   filterCategory: string[];

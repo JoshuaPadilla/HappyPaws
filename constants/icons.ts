@@ -45,6 +45,7 @@ import search_icon from "@/assets/icons/search_icon.png";
 import pet_image_holder from "@/assets/icons/pet_image_holder.png";
 import cancel from "@/assets/icons/cancel.png";
 import appointment_status from "@/assets/icons/appointment_status.png";
+import message_icon from "@/assets/icons/message_icon.png";
 
 import view_pet_aftercare from "@/assets/icons/view_pets_icons/view_pet_aftercare.png";
 import view_pet_medicalrecords from "@/assets/icons/view_pets_icons/view_pet_medicalrecords.png";
@@ -69,6 +70,7 @@ import total_app_icon from "@/assets/icons/admin_icons/total_app_icon.png";
 import refresh_icon from "@/assets/icons/admin_icons/refresh_icon.png";
 import trend_down from "@/assets/icons/trend_down.png";
 import trend_up from "@/assets/icons/trend_up.png";
+import ask_icon from "@/assets/icons/ask_icon.png";
 
 import client_active_appointments from "@/assets/icons/client_icons/client_active_appointments.png";
 import client_appointment_history from "@/assets/icons/client_icons/client_appointment_history.png";
@@ -84,8 +86,12 @@ import status_cancelled from "@/assets/icons/status_icons/status_cancelled.png";
 import status_completed from "@/assets/icons/status_icons/status_completed.png";
 import status_confirmed from "@/assets/icons/status_icons/status_confirmed.png";
 import status_resched from "@/assets/icons/status_icons/status_resched.png";
+import arrow_up from "@/assets/icons/arrow_up.png";
 
 interface IconsProps {
+  arrow_up: ImageSourcePropType;
+  ask_icon: ImageSourcePropType;
+  message_icon: ImageSourcePropType;
   back_green: ImageSourcePropType;
   back_white: ImageSourcePropType;
   next: ImageSourcePropType;
@@ -193,6 +199,9 @@ interface StatusIconsProps {
 }
 
 const icons: IconsProps = {
+  arrow_up,
+  ask_icon,
+  message_icon,
   back_green,
   back_white,
   next,

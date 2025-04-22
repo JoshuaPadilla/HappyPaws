@@ -196,4 +196,7 @@ declare interface AftercareForm {
   startDate: string;
 }
 
-declare interface AppointmentFormType {}
+declare interface Message {
+  sender: "you" | "ai";
+  content: string;
+}

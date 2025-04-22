@@ -1,5 +1,12 @@
 import { Link, router } from "expo-router";
-import { ActivityIndicator, Alert, ScrollView, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import icons from "@/constants/icons";
@@ -14,6 +21,7 @@ import { useEffect, useState } from "react";
 import NewAppointmentModal from "@/components/new_appointment_modal";
 import { userReminders } from "@/store/useReminders";
 import { useAuthStore } from "@/store/useAuth";
+import AskButton from "@/components/ask_button";
 export default function Home() {
   const { pets, setSelectedPet, fetchPets } = usePetStore();
   const { user } = useUserStore();
@@ -41,6 +49,10 @@ export default function Home() {
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-4 py-8">
+      {/* ask Button */}
+
+      <AskButton />
+
       <NewAppointmentModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}

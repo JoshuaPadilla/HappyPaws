@@ -56,7 +56,7 @@ export default function TabLayout() {
         options={{
           title: "Home",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({ focused }: { focused: boolean }) => (
             <TabIcon icon={navIcons.nav_home} focused={focused} title="Home" />
           ),
         }}
@@ -67,7 +67,7 @@ export default function TabLayout() {
         options={{
           title: "Appointment",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({ focused }: { focused: boolean }) => (
             <TabIcon
               icon={navIcons.nav_appointment}
               focused={focused}
@@ -82,7 +82,7 @@ export default function TabLayout() {
         options={{
           title: "Aftercare",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({ focused }: { focused: boolean }) => (
             <TabIcon
               icon={navIcons.nav_aftercare}
               focused={focused}
@@ -97,7 +97,7 @@ export default function TabLayout() {
         options={{
           title: "Pets",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({ focused }: { focused: boolean }) => (
             <TabIcon icon={navIcons.nav_pets} focused={focused} title="Pets" />
           ),
         }}
@@ -108,7 +108,7 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({ focused }: { focused: boolean }) => (
             <TabIcon
               icon={navIcons.nav_profile}
               focused={focused}
