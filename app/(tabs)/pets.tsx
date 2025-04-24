@@ -9,6 +9,7 @@ import { usePetStore } from "@/store/usePets";
 import { goBack, goToViewPet, goToAddPet } from "@/lib/routerFunctions";
 import { Pet } from "@/types/type";
 import Spinner from "react-native-loading-spinner-overlay";
+import AskButton from "@/components/ask_button";
 
 const Pets = () => {
   const { pets, setSelectedPet, isAdding } = usePetStore();
@@ -30,6 +31,8 @@ const Pets = () => {
 
   return (
     <SafeAreaView className="flex-1 px-6 py-8">
+      <AskButton />
+
       <Spinner
         visible={isAdding}
         textContent={"Adding..."}

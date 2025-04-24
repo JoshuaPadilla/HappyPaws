@@ -18,7 +18,6 @@ import { useAuthStore } from "@/store/useAuth";
 import { Message } from "@/types/type";
 import { goBack } from "@/lib/routerFunctions";
 import { useMessageStore } from "@/store/useMessage";
-import SampleQuestionOptions from "@/components/sample_question_options";
 import { SAMPLE_AI_QUESTION } from "@/constants";
 import SampleQuestionItem from "@/components/sample_question_options";
 
@@ -70,33 +69,31 @@ const AskAiScreen = () => {
 
       <View className="flex-1 w-full">
         {messages.length <= 0 ? (
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View className="flex-1 items-center justify-center">
-              <View className="size-24">
-                <Image
-                  source={images.app_logo}
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </View>
-
-              <View className="flex-row gap-2 items-end">
-                <Text className="font-rubik-regular text-black-100/50 text-xl">
-                  Hello
-                </Text>
-                <Text className="font-rubik-semibold text-primary-100 text-2xl">
-                  {authUser?.firstName}
-                </Text>
-              </View>
+          <View className="flex-1 items-center justify-center">
+            <View className="size-24">
+              <Image
+                source={images.app_logo}
+                style={{ width: "100%", height: "100%" }}
+              />
             </View>
-          </TouchableWithoutFeedback>
+
+            <View className="flex-row gap-2 items-end">
+              <Text className="font-rubik-regular text-black-100/50 text-xl">
+                Hello
+              </Text>
+              <Text className="font-rubik-semibold text-primary-100 text-2xl">
+                {authUser?.firstName}
+              </Text>
+            </View>
+          </View>
         ) : (
           <ScrollView
             ref={scrollViewRef}
             contentContainerStyle={{
+              flexGrow: 1,
               justifyContent: "flex-end",
               paddingVertical: 10,
             }}
-            contentContainerClassName="flex-1"
             showsVerticalScrollIndicator={false}
           >
             {messages.map((chat, index) => (
@@ -132,16 +129,15 @@ const AskAiScreen = () => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        {messages.length <= 0 && !message.content && (
-          <ScrollView contentContainerClassName="flex-row gap-2 py-6">
-            {SAMPLE_AI_QUESTION.map((item, index) => {
+        {messages.length < 1 && !message.content && (
+          <ScrollView contentContainerClassName="flex-row gap-2 py-4">
+            {SAMPLE_AI_QUESTION.map((item) => {
               return (
                 <SampleQuestionItem
                   item={item}
-                  onSelect={() =>
-                    setMessage((prev) => (prev = { ...prev, content: item }))
-                  }
-                  key={index}
+                  onSelect={() => {
+                    setMessage((prev) => (prev = { ...prev, content: item }));
+                  }}
                 />
               );
             })}
@@ -164,9 +160,7 @@ const AskAiScreen = () => {
           <CustomButton
             iconLeft={icons.arrow_up}
             iconSize="size-6"
-            btnClassname={`${
-              isResponding ? "bg-primary-100/80 " : "bg-primary-100 "
-            } size-10 items-center justify-center rounded-full self-end`}
+            btnClassname={`bg-primary-100 size-10 items-center justify-center rounded-full self-end`}
             onPress={handleSendMessage}
             disabled={message.content.trim() === "" || isResponding}
           />
