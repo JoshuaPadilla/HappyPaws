@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import { Image } from "react-native";
 import icons from "@/constants/icons";
 import CustomButton from "./custom_button";
+import { addShadow } from "@/lib/utils";
 
 interface SearchBarProps {
   queryValue: string;
@@ -29,7 +30,8 @@ const SearchBar = ({
 
   return (
     <KeyboardAvoidingView
-      className={`w-full flex-row px-4 shadow rounded-xl bg-white items-center justify-between`}
+      className={`w-full flex-row px-4 rounded-xl bg-white items-center justify-between`}
+      style={addShadow()}
     >
       <View className="flex-row gap-2 items-center">
         <Image source={icons.search_icon} className="size-6" />

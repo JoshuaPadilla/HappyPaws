@@ -16,6 +16,7 @@ import NewAppointmentModal from "@/components/new_appointment_modal";
 import { usePetStore } from "@/store/usePets";
 import { SERVICE_TYPES_CATEGORY } from "@/constants";
 import { goToViewAppointment } from "@/lib/routerFunctions";
+import AskButton from "@/components/ask_button";
 
 const Appointments = () => {
   const { appointments, setSelectedAppointment, fetchAppointments, isLoading } =
@@ -70,6 +71,8 @@ const Appointments = () => {
 
   return (
     <SafeAreaView className="flex-1 flex-col  bg-accent-100 px-6 py-8">
+      <AskButton />
+
       <NewAppointmentModal
         modalVisible={appointmentModalVisible}
         setModalVisible={setAppointmentModalVisible}

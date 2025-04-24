@@ -6,7 +6,7 @@ import { Image } from "react-native";
 import icons, { profileIcons } from "@/constants/icons";
 import { gender } from "@/constants";
 import CustomButton from "../custom_button";
-import { textShortener } from "@/lib/utils";
+import { addShadow, textShortener } from "@/lib/utils";
 import { useClient } from "@/store/useClient";
 import { goToViewClient } from "@/lib/routerFunctions";
 
@@ -26,7 +26,8 @@ const ClientCard = ({ client, displayOnly, onPress }: ClientCardProps) => {
 
   return (
     <Pressable
-      className="flex-row w-full h-[120px] bg-white rounded-lg px-4 py-4 shadow gap-4 items-start justify-between"
+      className="flex-row w-full h-[120px] bg-white rounded-lg px-4 py-4 gap-4 items-start justify-between"
+      style={addShadow()}
       onPress={onPress}
     >
       <View className="flex-row gap-4 max-w-[70%]">

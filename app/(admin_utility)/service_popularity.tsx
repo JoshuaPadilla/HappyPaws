@@ -8,6 +8,7 @@ import { useInsightsStore } from "@/store/useInsights";
 import PieChartService from "@/components/charts/pie_chart_service";
 import Toggle from "@/components/toggle";
 import ServiceCard from "@/components/admin_components/service_card";
+import { addShadow } from "@/lib/utils";
 
 const ServicePopularity = () => {
   const [weekly, setWeekly] = useState(true);
@@ -45,50 +46,48 @@ const ServicePopularity = () => {
       </View>
 
       {/* pie chart service*/}
-      <View className="">
-        <View className="p-4 bg-white rounded-lg shadow">
-          <View className="flex-row items-center justify-between">
-            <Text className="font-rubik-medium text-xl text-black-200">
-              Service Popularity
-            </Text>
-          </View>
+      <View className="p-4 bg-white rounded-lg" style={addShadow()}>
+        <View className="flex-row items-center justify-between">
+          <Text className="font-rubik-medium text-xl text-black-200">
+            Service Popularity
+          </Text>
+        </View>
 
-          <View className="flex-row gap-6 items-center p-4 justify-between">
-            {/* legends */}
-            <View className="gap-1">
-              <View className="flex-row items-center gap-2">
-                <View className="size-4 bg-base-vaccine rounded-full"></View>
-                <Text className="font-rubik-regular text-black-200 text-lg">
-                  Vaccine
-                </Text>
-              </View>
-
-              <View className="flex-row items-center gap-2">
-                <View className="size-4 bg-base-groom rounded-full"></View>
-                <Text className="font-rubik-regular text-black-200 text-lg">
-                  Grooming
-                </Text>
-              </View>
-
-              <View className="flex-row items-center gap-2">
-                <View className="size-4 bg-base-dental rounded-full"></View>
-                <Text className="font-rubik-regular text-black-200 text-lg">
-                  Dental
-                </Text>
-              </View>
-
-              <View className="flex-row items-center gap-2">
-                <View className="size-4 bg-base-checkup rounded-full"></View>
-                <Text className="font-rubik-regular text-black-200 text-lg">
-                  Checkup
-                </Text>
-              </View>
+        <View className="flex-row gap-6 items-center p-4 justify-between">
+          {/* legends */}
+          <View className="gap-1">
+            <View className="flex-row items-center gap-2">
+              <View className="size-4 bg-base-vaccine rounded-full"></View>
+              <Text className="font-rubik-regular text-black-200 text-lg">
+                Vaccine
+              </Text>
             </View>
 
-            {thisMonthInsights && thisWeekInsights && (
-              <PieChartService data={servicePopularity} />
-            )}
+            <View className="flex-row items-center gap-2">
+              <View className="size-4 bg-base-groom rounded-full"></View>
+              <Text className="font-rubik-regular text-black-200 text-lg">
+                Grooming
+              </Text>
+            </View>
+
+            <View className="flex-row items-center gap-2">
+              <View className="size-4 bg-base-dental rounded-full"></View>
+              <Text className="font-rubik-regular text-black-200 text-lg">
+                Dental
+              </Text>
+            </View>
+
+            <View className="flex-row items-center gap-2">
+              <View className="size-4 bg-base-checkup rounded-full"></View>
+              <Text className="font-rubik-regular text-black-200 text-lg">
+                Checkup
+              </Text>
+            </View>
           </View>
+
+          {thisMonthInsights && thisWeekInsights && (
+            <PieChartService data={servicePopularity} />
+          )}
         </View>
       </View>
 

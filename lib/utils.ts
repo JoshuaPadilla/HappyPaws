@@ -10,6 +10,7 @@ import {
 import moment from "moment";
 import * as ImageManipulator from "expo-image-manipulator";
 import Toast from "react-native-toast-message";
+import { Platform } from "react-native";
 
 export const getAftercareBg = (type: string) => {
   switch (type.toLowerCase()) {
@@ -478,4 +479,15 @@ export const getProgressLineColor = (status: string) => {
         unfilled: "rgba(255, 160, 0, 0.1)",
       };
   }
+};
+
+export const addShadow = () => {
+  return Platform.OS === "ios"
+    ? {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+      }
+    : { elevation: 4 };
 };

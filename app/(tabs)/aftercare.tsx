@@ -10,6 +10,7 @@ import { useAftercareStore } from "@/store/useAftercare";
 import AfterCareCard from "@/components/aftercare_card";
 import { dismiss, goBack, goToViewAftercare } from "@/lib/routerFunctions";
 import { Aftercare } from "@/types/type";
+import AskButton from "@/components/ask_button";
 
 const AftercareTab = () => {
   const [active, setActive] = useState(true);
@@ -42,6 +43,8 @@ const AftercareTab = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
+      <AskButton />
+
       {/* Headings */}
       <View className="flex-row w-full justify-between items-center mb-8">
         <CustomButton

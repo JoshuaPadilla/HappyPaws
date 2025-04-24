@@ -20,12 +20,13 @@ import { goToViewPet } from "@/lib/routerFunctions";
 import { useEffect, useState } from "react";
 import NewAppointmentModal from "@/components/new_appointment_modal";
 import { userReminders } from "@/store/useReminders";
-import { useAuthStore } from "@/store/useAuth";
 import AskButton from "@/components/ask_button";
+import { useAftercareStore } from "@/store/useAftercare";
 export default function Home() {
   const { pets, setSelectedPet, fetchPets } = usePetStore();
   const { user } = useUserStore();
   const { fetchReminders, reminders, isLoading } = userReminders();
+  const { allAftercares } = useAftercareStore();
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -45,7 +46,7 @@ export default function Home() {
   useEffect(() => {
     fetchReminders();
     fetchPets();
-  }, []);
+  }, [allAftercares.length]);
 
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-4 py-8">

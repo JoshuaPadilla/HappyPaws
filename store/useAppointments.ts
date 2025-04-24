@@ -1,4 +1,5 @@
 import { BASE_URL } from "@/constants";
+import { goToViewAppointment } from "@/lib/routerFunctions";
 import { showToast } from "@/lib/utils";
 import { Appointment, AppointmentForm } from "@/types/type";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -22,6 +23,7 @@ interface AppointmentStoreState {
 
   fetchAppointments: (signal?: any) => void;
   fetchAppointmentHistory: (id?: string) => void;
+  getOneAppointment: (id?: string) => void;
 
   addAppointment: (appointment: AppointmentForm) => void;
   updateAppointment: (appointment: AppointmentForm) => void;
@@ -224,5 +226,28 @@ export const useAppointmentsStore = create<AppointmentStoreState>((set) => ({
 
   setSelectedAppointment: (appointment) => {
     set({ selectedAppointment: appointment });
+  },
+
+  getOneAppointment: async (id) => {
+    try {
+      set({ isLoading: true });
+      const token = await AsyncStorage.getItem("token");
+
+      const response = await fetch(`${BASE_URL}/appointments/all/${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+
+      if (data.status === "success") {
+        set({ selectedAppointment: data.appointment });
+      }
+    } catch (error) {
+      console.log("gettting one appointment error", error);
+    } finally {
+      set({ isLoading: false });
+    }
   },
 }));

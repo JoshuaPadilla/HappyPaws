@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, ActivityIndicator } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAftercareStore } from "@/store/useAftercare";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom_button";
@@ -7,22 +7,52 @@ import icons, { profileIcons } from "@/constants/icons";
 import { goBack, goToAddAftercare } from "@/lib/routerFunctions";
 import { formatDate } from "@/lib/utils";
 import { useAuthStore } from "@/store/useAuth";
-import { isLoaded } from "expo-font";
+import Spinner from "react-native-loading-spinner-overlay";
+import ConfirmationModal from "@/components/confirmationModal";
 
 const ViewAftercare = () => {
   const { isAdmin } = useAuthStore();
-  const { selectedAftercare, setSelectedAftercare, setAction, isLoading } =
-    useAftercareStore();
+  const {
+    selectedAftercare,
+    setSelectedAftercare,
+    setAction,
+    isLoading,
+    deleteAftercare,
+  } = useAftercareStore();
 
-  const petName = selectedAftercare?.petID.petName || "";
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+
+  const petName = selectedAftercare?.petID?.petName || "";
 
   const handleEditAftercare = () => {
     setAction("edit");
     goToAddAftercare();
   };
 
+  const handleDeleteAftercare = () => {
+    deleteAftercare(selectedAftercare?.petID?._id, selectedAftercare?._id);
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
+      <Spinner
+        visible={isLoading}
+        textContent={"Loading..."}
+        textStyle={{ color: "#FFF" }}
+      />
+
+      <ConfirmationModal
+        modalVisible={deleteModalVisible}
+        setModalVisible={setDeleteModalVisible}
+        onConfirm={handleDeleteAftercare}
+        onCancel={() => setDeleteModalVisible(false)}
+        title="Delete Pet"
+        message="Are you sure you want to delete this pet?"
+        onCancelBtnClassname="w-[45%] bg-black-400 items-center py-2 rounded-lg"
+        onConfirmBtnClassname="w-[45%] bg-primary-100 items-center py-2 rounded-lg"
+        icon={icons.trash}
+      />
+
       {/* Headings */}
       <View className="flex-row w-fullitems-center mb-8 justify-between">
         <View className="flex-row items-center gap-4">
@@ -55,6 +85,7 @@ const ViewAftercare = () => {
         <ScrollView
           showsHorizontalScrollIndicator={false}
           contentContainerClassName="pb-[100px] gap-4"
+          showsVerticalScrollIndicator={false}
         >
           {/* Title */}
 
@@ -68,7 +99,7 @@ const ViewAftercare = () => {
               Medications:
             </Text>
 
-            {(selectedAftercare?.medications ?? []).map((medication, index) => (
+            {(selectedAftercare?.medications || []).map((medication, index) => (
               <View
                 key={index}
                 className="px-4 py-4 border-b-2 border-black-400 gap-2"
@@ -153,6 +184,17 @@ const ViewAftercare = () => {
               </Text>
             </View>
           </View>
+
+          {isAdmin && (
+            <CustomButton
+              iconLeft={icons.trash}
+              btnClassname="p-2 bg-danger-500 flex-row items-center justify-center gap-4 bg-danger mt-4 rounded-lg"
+              textClassname="font-rubik-medium text-xl text-black-100"
+              iconSize="size-6"
+              title="Delete Aftercare"
+              onPress={() => setDeleteModalVisible(true)}
+            />
+          )}
         </ScrollView>
       )}
     </SafeAreaView>
@@ -167,19 +209,6 @@ const MedicationItem = ({ title, value }: { title: string; value: string }) => {
       </Text>
       <Text className="font-rubik-semibold text-black-100 text-lg">
         {value}
-      </Text>
-    </View>
-  );
-};
-
-const InstructionsItem = ({ instruction }: { instruction: string }) => {
-  return (
-    <View className="flex-row gap-4 items-center">
-      <Text className="font-rubik-medium text-black-200 text-lg w-40">
-        Instructions:{" "}
-      </Text>
-      <Text className="font-rubik-semibold text-black-100 text-lg">
-        {instruction}
       </Text>
     </View>
   );

@@ -1,8 +1,11 @@
-import { View, Text, ImageBackground } from "react-native";
+import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
 import React from "react";
 import { cards_bg } from "@/constants/images";
 import { Reminder } from "@/types/type";
-import { formatDate, getRemindersCardBg } from "@/lib/utils";
+import { addShadow, formatDate, getRemindersCardBg } from "@/lib/utils";
+import { useAftercareStore } from "@/store/useAftercare";
+import { useAppointmentsStore } from "@/store/useAppointments";
+import { goToViewAftercare, goToViewAppointment } from "@/lib/routerFunctions";
 
 interface RemindersCardProps {
   reminder: Reminder;
@@ -10,8 +13,28 @@ interface RemindersCardProps {
 
 const RemindersCard = ({ reminder }: RemindersCardProps) => {
   const cardBgKey: keyof typeof cards_bg = getRemindersCardBg(reminder.type);
+  const { getAftercare, selectedAftercare } = useAftercareStore();
+  const { getOneAppointment } = useAppointmentsStore();
+
+  const handlePressRemindersCard = () => {
+    if (reminder.remindersType === "Aftercare") {
+      getAftercare(reminder.id);
+      goToViewAftercare();
+    }
+
+    if (reminder.remindersType === "Appointment") {
+      getOneAppointment(reminder.id);
+
+      goToViewAppointment();
+    }
+  };
+
   return (
-    <View className="shadow p-2">
+    <TouchableOpacity
+      className="p-2"
+      style={addShadow()}
+      onPress={handlePressRemindersCard}
+    >
       <ImageBackground
         source={cards_bg[cardBgKey]}
         className="w-[200px] h-[170px] rounded-xl overflow-hidden px-4 py-6 justify-between"
@@ -33,7 +56,7 @@ const RemindersCard = ({ reminder }: RemindersCardProps) => {
           </Text>
         </View>
       </ImageBackground>
-    </View>
+    </TouchableOpacity>
   );
 };
 

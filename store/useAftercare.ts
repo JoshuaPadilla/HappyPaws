@@ -5,6 +5,7 @@ import { BASE_URL } from "@/constants/index";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 import { showToast } from "@/lib/utils";
+import { goToViewAftercare } from "@/lib/routerFunctions";
 
 interface AftercareStoreState {
   petAftercares: Aftercare[];
@@ -15,8 +16,10 @@ interface AftercareStoreState {
   action: string;
 
   setAction: (action: string) => void;
+  getAftercare: (id?: string) => void;
   setSelectedAftercare: (aftercare: Aftercare | null) => void;
   fecthPetAftercare: (petID: string) => void;
+  deleteAftercare: (petID?: string, aftercareID?: string) => void;
   fetchAllAftercare: (signal: any) => void;
   updateAftercare: (form: AftercareForm, aftercareID: string) => void;
   addAftercare: (
@@ -46,7 +49,7 @@ export const useAftercareStore = create<AftercareStoreState>((set) => ({
       });
       const data = await response.json();
 
-      set({ petAftercares: data.aftercares, isLoading: false });
+      set({ petAftercares: data.aftercares });
     } catch (error) {
       console.log("Fetch pet aftercare error", error);
     } finally {
@@ -144,5 +147,54 @@ export const useAftercareStore = create<AftercareStoreState>((set) => ({
 
   setAction: (action) => {
     set({ action: action });
+  },
+
+  getAftercare: async (id) => {
+    try {
+      set({ isLoading: true });
+      const token = await AsyncStorage.getItem("token");
+
+      const response = await fetch(`${BASE_URL}/aftercare/all/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+
+      if (data.status === "success") {
+        set({ selectedAftercare: data.aftercare });
+      }
+    } catch (error) {
+      console.log("gettting after care error", error);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  deleteAftercare: async (petID, aftercareID) => {
+    try {
+      set({ isLoading: true });
+      const token = await AsyncStorage.getItem("token");
+
+      const res = await fetch(`${BASE_URL}/aftercare/${petID}/${aftercareID}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (data.status === "success") {
+        showToast("success", "🗑️ Aftercare deleted");
+      } else {
+        showToast("error", "❌ failed to delete", "Try again");
+      }
+    } catch (error) {
+      console.log(error);
+      showToast("error", "error deleting appointment");
+    } finally {
+      set({ isLoading: false });
+    }
   },
 }));

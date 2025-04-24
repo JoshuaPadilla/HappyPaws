@@ -1,4 +1,4 @@
-import { ActivityIndicator, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/custom_button";
@@ -10,22 +10,16 @@ import {
   goToMedicalRecordListView,
   goToPetDetails,
   goToVaccineListView,
-  goToViewAftercare,
 } from "@/lib/routerFunctions";
 import { usePetStore } from "@/store/usePets";
 import { ImageAvatar } from "@/components/image_avatar";
 import SettingsItem from "@/components/settingsItems";
-import { useAftercareStore } from "@/store/useAftercare";
 import ConfirmationModal from "@/components/confirmationModal";
-import Spinner from "react-native-loading-spinner-overlay";
 import { useAdminPets } from "@/store/useAdminPets";
-import { useRouter } from "expo-router";
-import { useMedicalRecordStore } from "@/store/useMedicalRecord";
 import { useVaccineStore } from "@/store/useVaccineStore";
 
 const ViewPet = () => {
-  const { fetchVaccineHistory } = useVaccineStore();
-  const { selectedPet, deletePet, isUpdating, isDeleting } = usePetStore();
+  const { selectedPet, deletePet } = usePetStore();
   const { selectedPet: adminSelectedPet } = useAdminPets();
 
   const thisPet = selectedPet || adminSelectedPet;

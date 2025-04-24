@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const BASE_URL = "http://192.168.101.11:3000/api/happy-paws";
+export const BASE_URL = "http://172.20.10.6:3000/api/happy-paws";
 
 // 192.168.101.18 Home
 // 172.20.10.13 hotspot
@@ -82,3 +82,9 @@ export const AGE_FORMAT = ["Years", "Months"];
 export const TODAY = moment();
 
 export const VALIDITY = ["3 Months", "6 Months", "9 Months", "1 Year"];
+
+export const SAMPLE_AI_QUESTION = [
+  "Tell me about cats",
+  "How to pet a dog",
+  "Sign of rabies on pets",
+];

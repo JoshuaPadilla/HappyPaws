@@ -10,6 +10,7 @@ import Toggle from "@/components/toggle";
 import ServiceCard from "@/components/admin_components/service_card";
 import PieChartStatus from "@/components/charts/pie_chart_status";
 import StatusCard from "@/components/admin_components/status_card";
+import { addShadow } from "@/lib/utils";
 
 const AppointmentStatus = () => {
   const [weekly, setWeekly] = useState(true);
@@ -45,7 +46,7 @@ const AppointmentStatus = () => {
       </View>
       {/* pie chart status */}
       <View className="">
-        <View className="p-4 bg-white rounded-lg shadow">
+        <View className="p-4 bg-white rounded-lg" style={addShadow()}>
           <View className="flex-row items-center justify-between">
             <Text className="font-rubik-medium text-xl text-black-200">
               Appointments by Status

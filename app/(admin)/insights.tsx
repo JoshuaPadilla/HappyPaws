@@ -9,7 +9,7 @@ import CustomButton from "@/components/custom_button";
 import PieChartService from "@/components/charts/pie_chart_service";
 import PieChartStatus from "@/components/charts/pie_chart_status";
 import LineChartComponent from "@/components/charts/lineChart";
-import { getTotalPercentage } from "@/lib/utils";
+import { addShadow, getTotalPercentage } from "@/lib/utils";
 import BarChartComponent from "@/components/charts/bar_chart";
 import {
   goToAppointmentStatus,
@@ -154,7 +154,7 @@ export default function Insights() {
           showsHorizontalScrollIndicator={false}
         >
           {/* Total Appointments */}
-          <View className="p-4 bg-white rounded-lg shadow gap-2">
+          <View className="p-4 bg-white rounded-lg gap-2" style={addShadow()}>
             <Text className="font-rubik-medium text-md text-black-200">
               Total Appointments
             </Text>
@@ -187,13 +187,11 @@ export default function Insights() {
                   />
                 ) : null}
               </View>
-
-              <View></View>
             </View>
           </View>
 
           {/* New clients */}
-          <View className="p-4 bg-white rounded-lg shadow gap-2">
+          <View className="p-4 bg-white rounded-lg gap-2" style={addShadow()}>
             <Text className="font-rubik-medium text-md text-black-200">
               New Clients
             </Text>
@@ -230,7 +228,7 @@ export default function Insights() {
           </View>
 
           {/* Total Clients */}
-          <View className="p-4 bg-white rounded-lg shadow gap-2">
+          <View className="p-4 bg-white rounded-lg gap-2" style={addShadow()}>
             <Text className="font-rubik-medium text-md text-black-200">
               Total Clients
             </Text>
@@ -245,7 +243,7 @@ export default function Insights() {
 
         {/* pie chart service*/}
         <View className="">
-          <View className="p-4 bg-white rounded-lg shadow">
+          <View className="p-4 bg-white rounded-lg" style={addShadow()}>
             <View className="flex-row items-center justify-between">
               <Text className="font-rubik-medium text-xl text-black-200">
                 Service Popularity
@@ -299,7 +297,7 @@ export default function Insights() {
 
         {/* pie chart status */}
         <View className="">
-          <View className="p-4 bg-white rounded-lg shadow">
+          <View className="p-4 bg-white rounded-lg" style={addShadow()}>
             <View className="flex-row items-center justify-between">
               <Text className="font-rubik-medium text-xl text-black-200">
                 Appointments by Status

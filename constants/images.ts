@@ -10,7 +10,7 @@ import card_medication from "@/assets/images/card_bg/card_medication.jpg";
 import card_wound from "@/assets/images/card_bg/card_wound.jpg";
 import card_diet from "@/assets/images/card_bg/card_diet.jpg";
 import card_followup from "@/assets/images/card_bg/card_followup.jpg";
-import app_logo from "@/assets/images/app-logo.png";
+import app_logo from "@/assets/images/app_logo.png";
 import { ImageSourcePropType } from "react-native";
 
 interface CardsBg {
