@@ -3,32 +3,20 @@ import { Image, Text, View } from "react-native";
 
 import icons, { navIcons } from "@/constants/icons";
 import { useAuthStore } from "@/store/useAuth";
+import AskButton from "@/components/ask_button";
 
-const TabIcon = ({
-  focused,
-  icon,
-  title,
-}: {
-  focused: boolean;
-  icon: any;
-  title: string;
-}) => (
-  <View className="flex-1 mt-3 flex flex-col items-center">
+const TabIcon = ({ focused, icon }: { focused: boolean; icon: any }) => (
+  <View
+    className={`flex-1 min-h-[100px] rounded-full items-center justify-end  pb-[65%] min-w-[80px] ${
+      focused && "bg-white"
+    }`}
+  >
     <Image
       source={icon}
-      tintColor={focused ? "#73C7C7" : "#666876"}
+      tintColor={focused ? "#73C7C7" : "#FFF"}
       resizeMode="contain"
-      className="size-6"
+      className="size-8 mt-4"
     />
-    <Text
-      className={`${
-        focused
-          ? "text-primary-100 font-rubik-medium"
-          : "text-black-200 font-rubik-regular"
-      } text-xs w-full text-center mt-1`}
-    >
-      {title}
-    </Text>
   </View>
 );
 
@@ -42,11 +30,26 @@ export default function TabLayout() {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: "#F6F4F0",
+          backgroundColor: "#73C7C7",
           position: "absolute",
           borderTopColor: "#0061FF1A",
           borderTopWidth: 1,
           height: 70,
+          marginBottom: 30,
+          borderRadius: 9999,
+          outerMargin: 20,
+          marginLeft: 30,
+          marginRight: "25%",
+          overflow: "hidden",
+        },
+        tabBarItemStyle: {
+          width: "100%",
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+          borderColor: "#000",
+          hieght: 40,
+          borderRadius: 9999,
         },
       }}
     >
@@ -57,7 +60,7 @@ export default function TabLayout() {
           title: "Home",
           headerShown: false,
           tabBarIcon: ({ focused }: { focused: boolean }) => (
-            <TabIcon icon={navIcons.nav_home} focused={focused} title="Home" />
+            <TabIcon icon={navIcons.nav_home} focused={focused} />
           ),
         }}
       />
@@ -65,14 +68,9 @@ export default function TabLayout() {
         key="appointment"
         name="appointment"
         options={{
-          title: "Appointment",
           headerShown: false,
           tabBarIcon: ({ focused }: { focused: boolean }) => (
-            <TabIcon
-              icon={navIcons.nav_appointment}
-              focused={focused}
-              title="Appointment"
-            />
+            <TabIcon icon={navIcons.nav_appointment} focused={focused} />
           ),
         }}
       />
@@ -83,11 +81,7 @@ export default function TabLayout() {
           title: "Aftercare",
           headerShown: false,
           tabBarIcon: ({ focused }: { focused: boolean }) => (
-            <TabIcon
-              icon={navIcons.nav_aftercare}
-              focused={focused}
-              title="Aftercare"
-            />
+            <TabIcon icon={navIcons.nav_aftercare} focused={focused} />
           ),
         }}
       />
@@ -98,22 +92,7 @@ export default function TabLayout() {
           title: "Pets",
           headerShown: false,
           tabBarIcon: ({ focused }: { focused: boolean }) => (
-            <TabIcon icon={navIcons.nav_pets} focused={focused} title="Pets" />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        key="profile"
-        name="profile"
-        options={{
-          title: "Profile",
-          headerShown: false,
-          tabBarIcon: ({ focused }: { focused: boolean }) => (
-            <TabIcon
-              icon={navIcons.nav_profile}
-              focused={focused}
-              title="Profile  "
-            />
+            <TabIcon icon={navIcons.nav_pets} focused={focused} />
           ),
         }}
       />

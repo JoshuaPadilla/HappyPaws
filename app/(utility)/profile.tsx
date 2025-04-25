@@ -8,7 +8,11 @@ import SettingsItem from "@/components/settingsItems";
 import { useRouter } from "expo-router";
 import { useUserStore } from "@/store/useUser";
 import { ImageAvatar } from "@/components/image_avatar";
-import { goToAppointmentHistory, goToEditProfile } from "@/lib/routerFunctions";
+import {
+  goBack,
+  goToAppointmentHistory,
+  goToEditProfile,
+} from "@/lib/routerFunctions";
 import ConfirmationModal from "@/components/confirmationModal";
 import { textShortener } from "@/lib/utils";
 const Profile = () => {
@@ -54,16 +58,18 @@ const Profile = () => {
       )}
 
       {/* Headings */}
-      <View className="flex-row justify-between items-end mb-4">
-        <Text className="font-poppins-bold text-2xl">Profile</Text>
-
+      <View className="flex-row justify-between items-end mb-6">
         <CustomButton
-          btnClassname=""
-          textClassname=""
-          iconLeft={icons.bell_icon}
+          iconLeft={icons.back_green}
           iconSize="size-8"
-          onPress={() => {}}
+          onPress={goBack}
         />
+
+        <Text className="font-rubik-bold text-black-100 text-lg self-center">
+          User Profile
+        </Text>
+
+        <CustomButton tintColor="#73c7c7" />
       </View>
 
       {/* Profile Header */}

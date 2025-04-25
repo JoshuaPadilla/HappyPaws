@@ -131,9 +131,10 @@ const AskAiScreen = () => {
       >
         {messages.length < 1 && !message.content && (
           <ScrollView contentContainerClassName="flex-row gap-2 py-4">
-            {SAMPLE_AI_QUESTION.map((item) => {
+            {SAMPLE_AI_QUESTION.map((item, index) => {
               return (
                 <SampleQuestionItem
+                  key={index}
                   item={item}
                   onSelect={() => {
                     setMessage((prev) => (prev = { ...prev, content: item }));

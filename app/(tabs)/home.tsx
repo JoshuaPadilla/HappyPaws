@@ -16,12 +16,13 @@ import PetCard from "@/components/pet_card";
 import { usePetStore } from "@/store/usePets";
 import { useUserStore } from "@/store/useUser";
 import { Pet } from "@/types/type";
-import { goToViewPet } from "@/lib/routerFunctions";
+import { goToProfile, goToViewPet } from "@/lib/routerFunctions";
 import { useEffect, useState } from "react";
 import NewAppointmentModal from "@/components/new_appointment_modal";
 import { userReminders } from "@/store/useReminders";
 import AskButton from "@/components/ask_button";
 import { useAftercareStore } from "@/store/useAftercare";
+import ProfileIcon from "@/components/profile_icon";
 export default function Home() {
   const { pets, setSelectedPet, fetchPets } = usePetStore();
   const { user } = useUserStore();
@@ -71,13 +72,7 @@ export default function Home() {
           </Text>
         </View>
 
-        <CustomButton
-          btnClassname=""
-          textClassname=""
-          iconLeft={icons.bell_icon}
-          iconSize="size-8"
-          onPress={() => {}}
-        />
+        <ProfileIcon />
       </View>
 
       {/* reminders */}

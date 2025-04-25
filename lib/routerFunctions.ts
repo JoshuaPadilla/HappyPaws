@@ -6,6 +6,10 @@ export const goToViewPet = () => {
   router.push("/(pets)/view_pet");
 };
 
+export const goToProfile = () => {
+  router.push("/(utility)/profile");
+};
+
 export const goToAddPet = () => {
   router.push("/(pets)/add_pet");
 };

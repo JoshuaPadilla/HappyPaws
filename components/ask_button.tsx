@@ -7,7 +7,7 @@ import { goToAskAiScreen } from "@/lib/routerFunctions";
 const AskButton = () => {
   return (
     <TouchableOpacity
-      className="absolute size-16 bottom-[90px] right-[20px] rounded-full z-10 bg-primary-100/80"
+      className="absolute size-[70px] bottom-[30px] right-[20px] rounded-full z-10 bg-primary-100/80"
       onPress={goToAskAiScreen}
     >
       <Image
