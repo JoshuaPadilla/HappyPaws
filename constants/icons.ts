@@ -28,6 +28,7 @@ import appointment_notes from "@/assets/icons/appointment_notes.png";
 import appointment_time from "@/assets/icons/appointment_time.png";
 import appointment_type from "@/assets/icons/appointment_type.png";
 import options_icon from "@/assets/icons/options_icon.png";
+import clear_icon from "@/assets/icons/clear_icon.png";
 
 import profile_address from "@/assets/icons/profile_icons/profile_address.png";
 import profile_appointments from "@/assets/icons/profile_icons/profile_appointments.png";
@@ -89,6 +90,7 @@ import status_resched from "@/assets/icons/status_icons/status_resched.png";
 import arrow_up from "@/assets/icons/arrow_up.png";
 
 interface IconsProps {
+  clear_icon: ImageSourcePropType;
   arrow_up: ImageSourcePropType;
   ask_icon: ImageSourcePropType;
   message_icon: ImageSourcePropType;
@@ -199,6 +201,7 @@ interface StatusIconsProps {
 }
 
 const icons: IconsProps = {
+  clear_icon,
   arrow_up,
   ask_icon,
   message_icon,

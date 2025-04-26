@@ -20,10 +20,12 @@ import { goBack } from "@/lib/routerFunctions";
 import { useMessageStore } from "@/store/useMessage";
 import { SAMPLE_AI_QUESTION } from "@/constants";
 import SampleQuestionItem from "@/components/sample_question_options";
+import { Flow } from "react-native-animated-spinkit";
 
 const AskAiScreen = () => {
   const { authUser } = useAuthStore();
-  const { messages, sendMessage, isResponding } = useMessageStore();
+  const { messages, sendMessage, isResponding, resetMessage } =
+    useMessageStore();
   const scrollViewRef = useRef<ScrollView>(null);
 
   const [message, setMessage] = useState<Message>({
@@ -61,9 +63,10 @@ const AskAiScreen = () => {
         <Text className="font-rubik-medium text-black-100">Ask AI</Text>
 
         <CustomButton
-          iconLeft={icons.plus_icon}
-          iconSize="size-6"
+          iconLeft={icons.clear_icon}
+          iconSize="size-8"
           tintColor="#73c7c7"
+          onPress={resetMessage}
         />
       </View>
 
@@ -116,9 +119,7 @@ const AskAiScreen = () => {
                 className={`p-3 my-1 rounded-lg max-w-[80%] "bg-black-100/10 self-start mr-auto"
                   }`}
               >
-                <Text className="font-rubik-regular text-black-100">
-                  Responding...
-                </Text>
+                <Flow size={40} color="#73C7C7" />
               </View>
             )}
           </ScrollView>

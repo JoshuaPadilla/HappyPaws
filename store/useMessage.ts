@@ -10,6 +10,7 @@ interface StoreState {
   isResponding: boolean;
 
   sendMessage: (message: Message) => void;
+  resetMessage: () => void;
 }
 
 export const useMessageStore = create<StoreState>((set) => ({
@@ -54,5 +55,9 @@ export const useMessageStore = create<StoreState>((set) => ({
     } finally {
       set({ isResponding: false });
     }
+  },
+
+  resetMessage: () => {
+    set({ messages: [] });
   },
 }));

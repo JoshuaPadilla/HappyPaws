@@ -309,8 +309,6 @@ export const useAdminAppointmentsStore = create<AdminAppointmentStoreState>(
 
         const data = await res.json();
 
-        console.log(data);
-
         if (data.status === "success") {
           set({ selectedAppointment: data.completedAppointment });
 
