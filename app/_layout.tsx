@@ -6,8 +6,14 @@ import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { Image, StatusBar, View } from "react-native";
 import Toast from "react-native-toast-message";
+import NoConnectionIndicator from "@/components/no_connection";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 export default function RootLayout() {
+  const netInfo = useNetInfo();
+
+  const isConnected = netInfo.isConnected;
+
   const [loaded, error] = useFonts({
     "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
     "Poppins-ExtraBold": require("../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -47,6 +53,7 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
       <Toast />
+      {!isConnected && <NoConnectionIndicator />}
     </View>
   );
 }
