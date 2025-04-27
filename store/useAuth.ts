@@ -108,6 +108,7 @@ export const useAuthStore = create<StoreState>((set) => ({
       set({ isLoggingOut: true });
       await AsyncStorage.removeItem("token");
       set({ authUser: null });
+      router.push("/(auth)/signin");
     } catch (error) {
       Alert.alert("Error logging out");
       console.log(error);

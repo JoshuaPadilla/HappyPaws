@@ -16,7 +16,7 @@ import PetCard from "@/components/pet_card";
 import { usePetStore } from "@/store/usePets";
 import { useUserStore } from "@/store/useUser";
 import { Pet } from "@/types/type";
-import { goToProfile, goToViewPet } from "@/lib/routerFunctions";
+import { goToPetsList, goToProfile, goToViewPet } from "@/lib/routerFunctions";
 import { useEffect, useState } from "react";
 import NewAppointmentModal from "@/components/new_appointment_modal";
 import { userReminders } from "@/store/useReminders";
@@ -62,17 +62,16 @@ export default function Home() {
       />
 
       {/* Headings */}
-      <View className="flex-row justify-between items-center mb-6">
+      <View className="flex-row gap-2 items-center mb-6">
+        <ProfileIcon />
         <View className="max-w-[70%]">
           <Text className="font-poppins-medium text-lg text-black-100">
             Good morning
           </Text>
-          <Text className="font-poppins-semibold text-3xl text-primary-100">
+          <Text className="font-poppins-semibold text-2xl text-primary-100">
             {user?.firstName}
           </Text>
         </View>
-
-        <ProfileIcon />
       </View>
 
       {/* reminders */}
@@ -118,16 +117,23 @@ export default function Home() {
 
       {/* headings */}
       <View className="w-full flex-row justify-between items-end mb-4">
-        <Text className="font-rubik-bold text-2xl text-black-100">Pets</Text>
+        <Text className="font-rubik-bold text-2xl text-black-100/70">Pets</Text>
 
-        <Link href={"/(tabs)/pets"}>
-          <Text className="font-rubik-regular text-primary-100 text-m">
-            See all
-          </Text>
-        </Link>
+        <CustomButton
+          title="View Pets"
+          iconRight={icons.caret_right}
+          iconSize="size-2 "
+          btnClassname="flex-row gap-2 items-center px-2"
+          textClassname="font-rubik-regular text-sm text-black-100/60"
+          onPress={goToPetsList}
+          tintColor="#1E1E1Eb3"
+        />
       </View>
 
-      <ScrollView contentContainerClassName="flex-row flex-wrap justify-between gap-2 pb-[70px]">
+      <ScrollView
+        contentContainerClassName="flex-row flex-wrap justify-between gap-2 pb-[70px]"
+        showsVerticalScrollIndicator={false}
+      >
         {pets &&
           pets.map((pet, index) => (
             <PetCard

@@ -59,7 +59,7 @@ const SignIn = () => {
             />
 
             <CustomButton
-              title="Login"
+              title="Register"
               textClassname="font-poppins-regular text-m text-background-100"
               onPress={gotoSignUp}
             />

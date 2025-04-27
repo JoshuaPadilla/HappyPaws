@@ -125,7 +125,7 @@ const Appointments = () => {
           >
             {isLoading ? (
               <ActivityIndicator color={"#73C7C7"} className="p-16" />
-            ) : (
+            ) : filteredAppointments.length > 0 ? (
               filteredAppointments
                 .reverse()
                 .map(
@@ -138,6 +138,13 @@ const Appointments = () => {
                       />
                     )
                 )
+            ) : (
+              <View className="flex-1 p-8 items-center">
+                <Text className="font-poppins-medium text-black-100/70">
+                  You have {currFilter === "All" ? "no" : currFilter}{" "}
+                  appointments
+                </Text>
+              </View>
             )}
           </ScrollView>
         </View>

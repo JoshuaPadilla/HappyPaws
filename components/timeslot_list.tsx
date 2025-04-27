@@ -19,9 +19,11 @@ const TimeSlotList = ({ appointmentList }: TimeSlotListProps) => {
     <>
       {appointmentList.length === 0 ? (
         <View className="w-full h-[300px] border-black-300 items-center justify-center">
-          <Text className="font-rubik-semibold text-2xl">
-            You have no appointments today
-          </Text>
+          <View className="flex-1 p-8 items-center">
+            <Text className="font-poppins-medium text-black-100/70">
+              You have no appointments for today
+            </Text>
+          </View>
         </View>
       ) : (
         <ScrollView

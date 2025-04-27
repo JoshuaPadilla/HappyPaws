@@ -76,7 +76,11 @@ const AftercareTab = () => {
                   />
                 ))
               ) : (
-                <Text>No active aftercares</Text>
+                <View className="flex-1 p-8 items-center">
+                  <Text className="font-poppins-medium text-black-100/70">
+                    No active aftercares
+                  </Text>
+                </View>
               )
             ) : completedAftercares.length > 0 ? (
               completedAftercares.map((aftercare) => (
@@ -87,7 +91,11 @@ const AftercareTab = () => {
                 />
               ))
             ) : (
-              <Text>No completed aftercares</Text>
+              <View className="flex-1 p-8 items-center">
+                <Text className="font-poppins-medium text-black-100/70">
+                  No completed aftercares
+                </Text>
+              </View>
             )}
           </ScrollView>
         )}

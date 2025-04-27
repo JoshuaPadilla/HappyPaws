@@ -131,7 +131,10 @@ const AskAiScreen = () => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         {messages.length < 1 && !message.content && (
-          <ScrollView contentContainerClassName="flex-row gap-2 py-4">
+          <ScrollView
+            contentContainerClassName="flex-row gap-2 py-4"
+            horizontal
+          >
             {SAMPLE_AI_QUESTION.map((item, index) => {
               return (
                 <SampleQuestionItem

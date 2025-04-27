@@ -77,8 +77,11 @@ const Pets = () => {
         </Text>
       </View>
 
-      <ScrollView contentContainerClassName="flex-row flex-wrap justify-between gap-2 pb-[70px] ">
-        {filteredPets &&
+      <ScrollView
+        contentContainerClassName="flex-row flex-wrap justify-between gap-2 pb-[100px]"
+        showsVerticalScrollIndicator={false}
+      >
+        {filteredPets.length > 0 ? (
           filteredPets.map((pet, index) => (
             <PetCard
               petBreed={pet.petBreed}
@@ -89,7 +92,14 @@ const Pets = () => {
               key={index}
               onPress={() => handleSelecPet(pet)}
             />
-          ))}
+          ))
+        ) : (
+          <View className="flex-1 p-8 items-center">
+            <Text className="font-poppins-medium text-black-100/70">
+              You have no pets yet
+            </Text>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

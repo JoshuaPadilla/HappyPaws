@@ -2,6 +2,10 @@ import VaccineList from "@/app/(pets)/vaccine_list_view";
 import { router } from "expo-router";
 
 // pets route functions
+export const goToPetsList = () => {
+  router.push("/pets");
+};
+
 export const goToViewPet = () => {
   router.push("/(pets)/view_pet");
 };

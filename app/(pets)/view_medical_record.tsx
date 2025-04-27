@@ -11,8 +11,10 @@ import {
 } from "@/lib/routerFunctions";
 import { formatDate } from "@/lib/utils";
 import { useMedicalRecordStore } from "@/store/useMedicalRecord";
+import { useAuthStore } from "@/store/useAuth";
 
 const ViewMedicalRecord = () => {
+  const { isAdmin } = useAuthStore();
   const { selectedMedicalRecord, setAction, setSelectedMedicalRecord } =
     useMedicalRecordStore();
 
@@ -30,32 +32,34 @@ const ViewMedicalRecord = () => {
     <SafeAreaView className="flex-1 bg-accent-100 px-6 py-8">
       {/* Headings */}
       <View className="flex-row w-full justify-between items-center mb-8">
-        <View className="flex-row gap-4">
-          <CustomButton
-            iconLeft={icons.back_green}
-            onPress={handleBack}
-            iconSize="size-8"
-          />
-
-          <Text className="font-poppins-semibold text-xl">Medical Record</Text>
-        </View>
-
         <CustomButton
-          iconLeft={profileIcons.profile_edit}
-          onPress={handleEdit}
+          iconLeft={icons.back_green}
+          onPress={handleBack}
+          iconSize="size-8"
         />
+
+        <Text className="font-poppins-semibold text-xl">Medical Record</Text>
+
+        {isAdmin ? (
+          <CustomButton
+            iconLeft={profileIcons.profile_edit}
+            onPress={handleEdit}
+          />
+        ) : (
+          <CustomButton />
+        )}
       </View>
 
       {/* main */}
 
       <ScrollView
-        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         contentContainerClassName="pb-[100px] gap-4"
       >
         {/* Title */}
 
         <Text className="font-poppins-semibold text-xl text-primary-100 mb-2">
-          {`Record Date: ${selectedMedicalRecord?.date} `}
+          {`Record Date: ${formatDate(selectedMedicalRecord?.date || "")} `}
         </Text>
 
         {/* Diagnosis */}
