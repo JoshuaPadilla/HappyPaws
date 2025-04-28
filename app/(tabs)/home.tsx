@@ -23,6 +23,7 @@ import { userReminders } from "@/store/useReminders";
 import AskButton from "@/components/ask_button";
 import { useAftercareStore } from "@/store/useAftercare";
 import ProfileIcon from "@/components/profile_icon";
+import { getGreeting } from "@/lib/utils";
 export default function Home() {
   const { pets, setSelectedPet, fetchPets } = usePetStore();
   const { user } = useUserStore();
@@ -66,7 +67,7 @@ export default function Home() {
         <ProfileIcon />
         <View className="max-w-[70%]">
           <Text className="font-poppins-medium text-lg text-black-100">
-            Good morning
+            {getGreeting()}
           </Text>
           <Text className="font-poppins-semibold text-2xl text-primary-100">
             {user?.firstName}
